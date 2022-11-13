@@ -83,7 +83,7 @@ public class PlayerMovementInput : MonoBehaviour
     void GetLookInput(InputAction.CallbackContext context)
     {
         lookDirection = context.ReadValue<Vector2>() * lookSensitivity * Time.deltaTime;
-        Debug.Log(lookDirection.x);
+        // Debug.Log(lookDirection.x);
 
         isMouse = context.control.device.name == "Mouse";
         Debug.Log(isMouse);
