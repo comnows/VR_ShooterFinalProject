@@ -86,7 +86,7 @@ public class PlayerMovementInput : MonoBehaviour
         // Debug.Log(lookDirection.x);
 
         isMouse = context.control.device.name == "Mouse";
-        Debug.Log(isMouse);
+        //Debug.Log(isMouse);
 
         playerLookMovement.SetInput(lookDirection);
     }

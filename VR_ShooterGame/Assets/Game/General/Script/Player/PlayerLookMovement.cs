@@ -1,16 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Normal.Realtime;
 
 public class PlayerLookMovement : MonoBehaviour
 {
     [SerializeField] private Transform playerBody;
+
+    private RealtimeView _realtimeView;
 
     private float xInput;
     private float yInput;
 
     private float mouseSensitivity = 100f;
     private float xRotation = 0f;
+
+    private void Awake() {
+        _realtimeView = GetComponent<RealtimeView>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -21,9 +28,14 @@ public class PlayerLookMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_realtimeView.isOwnedLocallyInHierarchy)
+            LocalUpdate();
+    }
+
+    void LocalUpdate()
+    {
         SetRotation();
         Rotate();
-
         RotateBody();
     }
 
