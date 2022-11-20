@@ -7,6 +7,8 @@ public class Gun : MonoBehaviour
     [SerializeField] private GunInput gunInput;
     [SerializeField] private Camera playerCamera;
 
+    public GunData gunData;
+
     private int damage = 10;
     private float fireRate = 10f;
     private float shotRange = 100;
@@ -22,9 +24,10 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gunInput.ShootInput && Time.time >= nextTimeToFire)
+        if(gunInput.ShootInput && Time.time >= nextTimeToFire && gunData.currentMagazineAmmo > 0)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
+
             Shoot();
         }
     }
@@ -42,5 +45,7 @@ public class Gun : MonoBehaviour
                 target.ReceiveAttack(damage);
             }
         }
+
+        gunData.currentMagazineAmmo--;
     }
 }
