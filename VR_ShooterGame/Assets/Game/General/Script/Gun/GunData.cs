@@ -13,6 +13,8 @@ public class GunData : ScriptableObject
     public int currentMagazineAmmo;
     public float reloadTime;
 
+    // public bool isReload;
+
     public void Reload()
     {
         currentStashAmmo += currentMagazineAmmo;

@@ -14,6 +14,7 @@ public class Gun : MonoBehaviour
     private float shotRange = 100;
 
     private float nextTimeToFire = 0f;
+    private bool isReload = false;
 
     // Start is called before the first frame update
     // void Start()
@@ -47,5 +48,23 @@ public class Gun : MonoBehaviour
         }
 
         gunData.currentMagazineAmmo--;
+    }
+
+    IEnumerator Reload()
+    {
+        isReload = true;
+
+        yield return new WaitForSeconds(gunData.reloadTime);
+
+        gunData.Reload();
+
+        isReload = false;
+    }
+
+    void SetGunProperties()
+    {
+        damage = gunData.bulletDamage;
+        fireRate = gunData.fireRate;
+
     }
 }
