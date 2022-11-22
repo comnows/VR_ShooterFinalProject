@@ -8,12 +8,24 @@ public class GunData : ScriptableObject
     public int magazineSize;
 
     public int bulletDamage;
-    public float fireRate;
-    public int currentStashAmmo;
-    public int currentMagazineAmmo;
+    public float fireRatePerSecond;
     public float reloadTime;
+    
+    [HideInInspector] public int currentStashAmmo;
+    [HideInInspector] public int currentMagazineAmmo;
 
     // public bool isReload;
+
+    public void Initialize()
+    {
+        currentStashAmmo = startAmmo;
+        currentMagazineAmmo = magazineSize;
+    }
+
+    public void RemoveCurrentMagazineAmmo()
+    {
+        currentMagazineAmmo--;
+    }
 
     public void Reload()
     {

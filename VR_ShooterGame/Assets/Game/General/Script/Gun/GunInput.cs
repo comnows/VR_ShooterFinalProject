@@ -10,14 +10,17 @@ public class GunInput : MonoBehaviour
 
     InputAction shootAction;
     InputAction aimingAction;
+    InputAction reloadAction;
 
     public bool ShootInput { get; private set; } = false;
+    public bool ReloadInput { get; private set; } = false;
 
     private void Awake() 
     {
         gunInputActions = new GunInputActions();
 
         InitShootAction();
+        InitReloadAction();
     }
 
     private void OnEnable() 
@@ -54,6 +57,13 @@ public class GunInput : MonoBehaviour
         shootAction.canceled += SetShootInput;
     }
 
+    void InitReloadAction()
+    {
+        reloadAction = gunInputActions.GunControls.Reload;
+        reloadAction.performed += SetReloadInput;
+        reloadAction.canceled += SetReloadInput;
+    }
+
     void SetShootInput(InputAction.CallbackContext context)
     {
         if(context.ReadValue<float>() > 0)
@@ -66,6 +76,11 @@ public class GunInput : MonoBehaviour
             ShootInput = false;
             Debug.Log("Shoot released");
         }
+    }
+
+    void SetReloadInput(InputAction.CallbackContext context)
+    {
+        ReloadInput = context.ReadValueAsButton();
     }
 
 

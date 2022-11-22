@@ -27,9 +27,14 @@ public class Gun : MonoBehaviour
     {
         if(gunInput.ShootInput && Time.time >= nextTimeToFire && gunData.currentMagazineAmmo > 0)
         {
-            nextTimeToFire = Time.time + 1f / fireRate;
+            nextTimeToFire = Time.time + 1f / gunData.fireRatePerSecond;
 
             Shoot();
+        }
+
+        if(gunInput.ReloadInput && !isReload && gunData.currentMagazineAmmo < gunData.magazineSize)
+        {
+            StartCoroutine(Reload());
         }
     }
 
@@ -47,7 +52,7 @@ public class Gun : MonoBehaviour
             }
         }
 
-        gunData.currentMagazineAmmo--;
+        gunData.RemoveCurrentMagazineAmmo();
     }
 
     IEnumerator Reload()
@@ -59,12 +64,5 @@ public class Gun : MonoBehaviour
         gunData.Reload();
 
         isReload = false;
-    }
-
-    void SetGunProperties()
-    {
-        damage = gunData.bulletDamage;
-        fireRate = gunData.fireRate;
-
     }
 }
