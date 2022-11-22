@@ -134,6 +134,34 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerInteract"",
+            ""id"": ""84004cd1-6ef3-4228-bc64-530d1173370e"",
+            ""actions"": [
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""3f1917b1-373f-4b89-b521-481a5fe4a992"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""32f830b3-52fc-4b02-95df-273bb0037112"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -160,6 +188,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_PlayerControls_Move = m_PlayerControls.FindAction("Move", throwIfNotFound: true);
         m_PlayerControls_Look = m_PlayerControls.FindAction("Look", throwIfNotFound: true);
         m_PlayerControls_Sprint = m_PlayerControls.FindAction("Sprint", throwIfNotFound: true);
+        // PlayerInteract
+        m_PlayerInteract = asset.FindActionMap("PlayerInteract", throwIfNotFound: true);
+        m_PlayerInteract_Interact = m_PlayerInteract.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -264,6 +295,39 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         }
     }
     public PlayerControlsActions @PlayerControls => new PlayerControlsActions(this);
+
+    // PlayerInteract
+    private readonly InputActionMap m_PlayerInteract;
+    private IPlayerInteractActions m_PlayerInteractActionsCallbackInterface;
+    private readonly InputAction m_PlayerInteract_Interact;
+    public struct PlayerInteractActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public PlayerInteractActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Interact => m_Wrapper.m_PlayerInteract_Interact;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerInteract; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerInteractActions set) { return set.Get(); }
+        public void SetCallbacks(IPlayerInteractActions instance)
+        {
+            if (m_Wrapper.m_PlayerInteractActionsCallbackInterface != null)
+            {
+                @Interact.started -= m_Wrapper.m_PlayerInteractActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_PlayerInteractActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_PlayerInteractActionsCallbackInterface.OnInteract;
+            }
+            m_Wrapper.m_PlayerInteractActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
+            }
+        }
+    }
+    public PlayerInteractActions @PlayerInteract => new PlayerInteractActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -278,5 +342,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+    }
+    public interface IPlayerInteractActions
+    {
+        void OnInteract(InputAction.CallbackContext context);
     }
 }
