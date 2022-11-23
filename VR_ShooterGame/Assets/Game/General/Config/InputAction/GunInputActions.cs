@@ -51,7 +51,7 @@ public partial class @GunInputActions : IInputActionCollection2, IDisposable
                     ""id"": ""97798ea7-2de9-407b-8900-136dacf57532"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 }
             ],

@@ -1842,6 +1842,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunInput: {fileID: 1896386581}
   playerCamera: {fileID: 1092875795}
+  gunData: {fileID: 11400000, guid: c06a8c0c1ad491a438a5a1a8c631eaa8, type: 2}
 --- !u!114 &1896386583
 MonoBehaviour:
   m_ObjectHideFlags: 0

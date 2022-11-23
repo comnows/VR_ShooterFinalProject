@@ -19,6 +19,9 @@ public class GunInput : MonoBehaviour
     {
         gunInputActions = new GunInputActions();
 
+        shootAction = gunInputActions.GunControls.Shoot;
+        reloadAction = gunInputActions.GunControls.Reload;
+
         InitShootAction();
         InitReloadAction();
     }
@@ -52,16 +55,20 @@ public class GunInput : MonoBehaviour
 
     void InitShootAction()
     {
-        shootAction = gunInputActions.GunControls.Shoot;
         shootAction.performed += SetShootInput;
         shootAction.canceled += SetShootInput;
     }
 
     void InitReloadAction()
     {
-        reloadAction = gunInputActions.GunControls.Reload;
         reloadAction.performed += SetReloadInput;
         reloadAction.canceled += SetReloadInput;
+    }
+
+    void TerminateReloadAction()
+    {
+        reloadAction.performed -= SetReloadInput;
+        reloadAction.canceled -= SetReloadInput;
     }
 
     void SetShootInput(InputAction.CallbackContext context)

@@ -17,10 +17,10 @@ public class Gun : MonoBehaviour
     private bool isReload = false;
 
     // Start is called before the first frame update
-    // void Start()
-    // {
-        
-    // }
+    void Start()
+    {
+        gunData.Initialize();
+    }
 
     // Update is called once per frame
     void Update()
@@ -32,8 +32,9 @@ public class Gun : MonoBehaviour
             Shoot();
         }
 
-        if(gunInput.ReloadInput && !isReload && gunData.currentMagazineAmmo < gunData.magazineSize)
+        if(gunInput.ReloadInput && !isReload && gunData.currentMagazineAmmo < gunData.magazineSize && gunData.currentStashAmmo > 0)
         {
+            Debug.Log("Gun Reload");
             StartCoroutine(Reload());
         }
     }
@@ -43,12 +44,13 @@ public class Gun : MonoBehaviour
         RaycastHit hitInfo;
         if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hitInfo, shotRange))
         {
+            Debug.DrawRay(playerCamera.transform.position, playerCamera.transform.forward * shotRange, Color.red, 3);
             AttackTarget target = hitInfo.transform.GetComponent<AttackTarget>();
             Debug.Log(target);
 
             if (target != null)
             {
-                target.ReceiveAttack(damage);
+                target.ReceiveAttack(gunData.bulletDamage);
             }
         }
 
