@@ -36,7 +36,6 @@ public class Gun : MonoBehaviour
         {
             AttackTarget target = hitInfo.transform.GetComponent<AttackTarget>();
             Debug.Log(target);
-
             if (target != null)
             {
                 target.ReceiveAttack(damage);
