@@ -25,18 +25,32 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gunInput.ShootInput && Time.time >= nextTimeToFire && gunData.currentMagazineAmmo > 0)
+        if(gunInput.ShootInput && CanShoot())
         {
             nextTimeToFire = Time.time + 1f / gunData.fireRatePerSecond;
 
             Shoot();
         }
 
-        if(gunInput.ReloadInput && !isReload && gunData.currentMagazineAmmo < gunData.magazineSize && gunData.currentStashAmmo > 0)
+        if(gunInput.ReloadInput && CanReload())
         {
             Debug.Log("Gun Reload");
             StartCoroutine(Reload());
         }
+    }
+
+    bool CanShoot()
+    {
+        bool canShoot = Time.time >= nextTimeToFire && gunData.currentMagazineAmmo > 0 && !isReload;
+
+        return canShoot;
+    }
+
+    bool CanReload()
+    {
+        bool canReload = !isReload && gunData.currentMagazineAmmo < gunData.magazineSize && gunData.currentStashAmmo > 0;
+
+        return canReload;
     }
 
     void Shoot()
@@ -64,6 +78,13 @@ public class Gun : MonoBehaviour
         yield return new WaitForSeconds(gunData.reloadTime);
 
         gunData.Reload();
+
+        isReload = false;
+    }
+
+    void CancelReload()
+    {
+        StopCoroutine(Reload());
 
         isReload = false;
     }

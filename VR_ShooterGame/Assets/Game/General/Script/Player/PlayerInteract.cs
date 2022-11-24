@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerInteract : MonoBehaviour
 {
     [SerializeField] private Camera playerCamera;
+    private PlayerInteractInput playerInteractInput;
 
     private Ray interactRay;
     private RaycastHit hitInfo;
@@ -16,7 +17,7 @@ public class PlayerInteract : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerInteractInput = GetComponent<PlayerInteractInput>();
     }
 
     // Update is called once per frame
@@ -32,8 +33,11 @@ public class PlayerInteract : MonoBehaviour
             Interactable interactable = hitInfo.transform.GetComponent<Interactable>();
             if (interactable != null)
             {
-                //don't for get if key is pressed
-                interactable.Interact();
+                //don't forget if key is pressed
+                if(playerInteractInput.playerInteractActions.Interact.triggered)
+                {
+                    interactable.Interact();
+                }
             }
 
             rayColor = Color.yellow;

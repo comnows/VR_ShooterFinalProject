@@ -21,51 +21,53 @@ public class GunInput : MonoBehaviour
 
         shootAction = gunInputActions.GunControls.Shoot;
         reloadAction = gunInputActions.GunControls.Reload;
-
-        InitShootAction();
-        InitReloadAction();
     }
 
     private void OnEnable() 
     {
         gunInputActions.GunControls.Enable();
+
+        AddGunActionsListener();
     }
 
     private void OnDisable() 
     {
         gunInputActions.GunControls.Disable();
+
+        RemoveGunActionsListener();
     }
-    
-    // Start is called before the first frame update
-    void Start()
+
+    void AddGunActionsListener()
     {
-        
+        AddShootActionListener();
+        AddReloadActionListener();
     }
 
-    // Update is called once per frame
-    void Update()
+    void RemoveGunActionsListener()
     {
-        
+        RemoveShootActionListener();
+        RemoveReloadActionListener();
     }
 
-    void InitGunActions()
-    {
-
-    }
-
-    void InitShootAction()
+    void AddShootActionListener()
     {
         shootAction.performed += SetShootInput;
         shootAction.canceled += SetShootInput;
     }
 
-    void InitReloadAction()
+    void AddReloadActionListener()
     {
         reloadAction.performed += SetReloadInput;
         reloadAction.canceled += SetReloadInput;
     }
 
-    void TerminateReloadAction()
+    void RemoveShootActionListener()
+    {
+        shootAction.performed -= SetShootInput;
+        shootAction.canceled -= SetShootInput;
+    }
+
+    void RemoveReloadActionListener()
     {
         reloadAction.performed -= SetReloadInput;
         reloadAction.canceled -= SetReloadInput;
@@ -88,6 +90,7 @@ public class GunInput : MonoBehaviour
     void SetReloadInput(InputAction.CallbackContext context)
     {
         ReloadInput = context.ReadValueAsButton();
+        Debug.Log("Reload Input = " + ReloadInput);
     }
 
 

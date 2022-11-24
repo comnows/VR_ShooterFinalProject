@@ -7,17 +7,19 @@ public class PlayerInteractInput : MonoBehaviour
 {
     PlayerInputActions playerInputActions;
 
-    InputAction interactAction;
-
-    public bool InteractInput { get; private set; } = false;
+    public PlayerInputActions.PlayerInteractActions playerInteractActions;
 
     private void Awake()
     {
         playerInputActions = new PlayerInputActions();
 
-        InitInteractAction();
+        InitPlayerInteractActions();
     }
 
+    private void InitPlayerInteractActions()
+    {
+        playerInteractActions = playerInputActions.PlayerInteract;
+    }
     private void OnEnable()
     {
         playerInputActions.PlayerInteract.Enable();
@@ -28,14 +30,4 @@ public class PlayerInteractInput : MonoBehaviour
         playerInputActions.PlayerInteract.Disable();
     }
 
-    void InitInteractAction()
-    {
-        interactAction = playerInputActions.PlayerInteract.Interact;
-        interactAction.performed += SetInteractInput;
-    }
-
-    void SetInteractInput(InputAction.CallbackContext context)
-    {
-        InteractInput = context.ReadValueAsButton();
-    }
 }
