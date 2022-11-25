@@ -26,44 +26,66 @@ public class PlayerMovementInput : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         playerMovement = GetComponent<PlayerMovement>();
         // playerLookMovement = GetComponentInChildren<PlayerLookMovement>();
-
-        InitActions();
     }
 
     void OnEnable()
     {
         playerInputActions.PlayerControls.Enable();
+
+        AddMovementActionsListener();
     }
 
     void OnDisable() 
     {
         playerInputActions.PlayerControls.Disable();
+
+        RemoveMovementActionsListener();
     }
 
-    void InitActions()
+    void AddMovementActionsListener()
     {
-        InitMoveAction();
-        InitLookAction();
+        AddMoveActionListener();
+        AddLookActionListener();
     }
 
-    void InitMoveAction()
+    void AddMoveActionListener()
     {
         moveAction = playerInputActions.PlayerControls.Move;
         moveAction.performed += GetMoveInputAndSetMoveDirection;
         moveAction.canceled += SetZeroMoveDirection;
     }
 
-    void InitLookAction()
+    void AddLookActionListener()
     {
         lookAction = playerInputActions.PlayerControls.Look;
         lookAction.performed += GetLookInput;
         lookAction.canceled += SetLookInput;
     }
 
-    void InitSprintAction()
+    void AddSprintActionListener()
     {
         sprintAction = playerInputActions.PlayerControls.Sprint;
         sprintAction.performed += GetSprintInput;
+    }
+
+    void RemoveMovementActionsListener()
+    {
+        RemoveMoveActionListener();
+        RemoveLookActionListener();
+    }
+
+    void RemoveMoveActionListener()
+    {
+        moveAction = playerInputActions.PlayerControls.Move;
+        moveAction.performed -= GetMoveInputAndSetMoveDirection;
+        moveAction.canceled -= SetZeroMoveDirection;
+    }
+
+    void RemoveLookActionListener()
+    {
+        lookAction = playerInputActions.PlayerControls.Look;
+        lookAction.performed -= GetLookInput;
+        lookAction.canceled -= SetLookInput;
     }
 
     void GetMoveInputAndSetMoveDirection(InputAction.CallbackContext context)

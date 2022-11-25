@@ -16,13 +16,11 @@ public class Gun : MonoBehaviour
     private float nextTimeToFire = 0f;
     private bool isReload = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         gunData.Initialize();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(gunInput.ShootInput && CanShoot())
@@ -32,11 +30,16 @@ public class Gun : MonoBehaviour
             Shoot();
         }
 
-        if(gunInput.ReloadInput && CanReload())
+        if(gunInput.reloadAction.triggered && CanReload())
         {
             Debug.Log("Gun Reload");
             StartCoroutine(Reload());
         }
+    }
+
+    void DoShoot()
+    {
+        
     }
 
     bool CanShoot()

@@ -6,19 +6,22 @@ using UnityEngine.InputSystem;
 public class GunInput : MonoBehaviour
 {
     GunInputActions gunInputActions;
-    Gun gun;
 
-    InputAction shootAction;
-    InputAction aimingAction;
-    InputAction reloadAction;
+    private InputAction shootAction;
+    private InputAction aimingAction;
+    public InputAction reloadAction;
 
     public bool ShootInput { get; private set; } = false;
-    public bool ReloadInput { get; private set; } = false;
 
     private void Awake() 
     {
         gunInputActions = new GunInputActions();
 
+        InitGunInputAction();
+    }
+
+    private void InitGunInputAction()
+    {
         shootAction = gunInputActions.GunControls.Shoot;
         reloadAction = gunInputActions.GunControls.Reload;
     }
@@ -40,13 +43,11 @@ public class GunInput : MonoBehaviour
     void AddGunActionsListener()
     {
         AddShootActionListener();
-        AddReloadActionListener();
     }
 
     void RemoveGunActionsListener()
     {
         RemoveShootActionListener();
-        RemoveReloadActionListener();
     }
 
     void AddShootActionListener()
@@ -55,22 +56,10 @@ public class GunInput : MonoBehaviour
         shootAction.canceled += SetShootInput;
     }
 
-    void AddReloadActionListener()
-    {
-        reloadAction.performed += SetReloadInput;
-        reloadAction.canceled += SetReloadInput;
-    }
-
     void RemoveShootActionListener()
     {
         shootAction.performed -= SetShootInput;
         shootAction.canceled -= SetShootInput;
-    }
-
-    void RemoveReloadActionListener()
-    {
-        reloadAction.performed -= SetReloadInput;
-        reloadAction.canceled -= SetReloadInput;
     }
 
     void SetShootInput(InputAction.CallbackContext context)
@@ -86,12 +75,5 @@ public class GunInput : MonoBehaviour
             Debug.Log("Shoot released");
         }
     }
-
-    void SetReloadInput(InputAction.CallbackContext context)
-    {
-        ReloadInput = context.ReadValueAsButton();
-        Debug.Log("Reload Input = " + ReloadInput);
-    }
-
 
 }
