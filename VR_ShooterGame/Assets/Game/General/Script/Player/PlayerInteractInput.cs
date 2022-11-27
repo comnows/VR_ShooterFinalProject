@@ -22,12 +22,12 @@ public class PlayerInteractInput : MonoBehaviour
     }
     private void OnEnable()
     {
-        playerInputActions.PlayerInteract.Enable();
+        playerInteractActions.Enable();
     }
 
     private void OnDisable()
     {
-        playerInputActions.PlayerInteract.Disable();
+        playerInteractActions.Disable();
     }
 
 }

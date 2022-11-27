@@ -68,6 +68,74 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "GunSwitchingControls",
+            "id": "ce03f94f-59fc-4b1d-8685-64bf705c6e67",
+            "actions": [
+                {
+                    "name": "PrimaryWeapon",
+                    "type": "Button",
+                    "id": "398224ad-c06b-41d3-8805-3de0998fde11",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SecondaryWeapon",
+                    "type": "Button",
+                    "id": "28131743-1f00-41de-908b-7851f542bf04",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ScrollSwitching",
+                    "type": "Value",
+                    "id": "bd14187c-6475-417b-8353-0158e7c4c5f1",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "54867aee-1366-4658-93d3-e8e8137d4402",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PrimaryWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f549e440-f12c-4656-ac55-06be6a1f17ba",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SecondaryWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4154f3f3-aed4-4323-953f-6e5ab6a4d2b6",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScrollSwitching",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

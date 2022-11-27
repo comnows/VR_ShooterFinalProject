@@ -90,6 +90,74 @@ public partial class @GunInputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""GunSwitchingControls"",
+            ""id"": ""ce03f94f-59fc-4b1d-8685-64bf705c6e67"",
+            ""actions"": [
+                {
+                    ""name"": ""PrimaryWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""398224ad-c06b-41d3-8805-3de0998fde11"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondaryWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""28131743-1f00-41de-908b-7851f542bf04"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ScrollSwitching"",
+                    ""type"": ""Value"",
+                    ""id"": ""bd14187c-6475-417b-8353-0158e7c4c5f1"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""54867aee-1366-4658-93d3-e8e8137d4402"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PrimaryWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f549e440-f12c-4656-ac55-06be6a1f17ba"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SecondaryWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4154f3f3-aed4-4323-953f-6e5ab6a4d2b6"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScrollSwitching"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -99,6 +167,11 @@ public partial class @GunInputActions : IInputActionCollection2, IDisposable
         m_GunControls_Shoot = m_GunControls.FindAction("Shoot", throwIfNotFound: true);
         m_GunControls_Aiming = m_GunControls.FindAction("Aiming", throwIfNotFound: true);
         m_GunControls_Reload = m_GunControls.FindAction("Reload", throwIfNotFound: true);
+        // GunSwitchingControls
+        m_GunSwitchingControls = asset.FindActionMap("GunSwitchingControls", throwIfNotFound: true);
+        m_GunSwitchingControls_PrimaryWeapon = m_GunSwitchingControls.FindAction("PrimaryWeapon", throwIfNotFound: true);
+        m_GunSwitchingControls_SecondaryWeapon = m_GunSwitchingControls.FindAction("SecondaryWeapon", throwIfNotFound: true);
+        m_GunSwitchingControls_ScrollSwitching = m_GunSwitchingControls.FindAction("ScrollSwitching", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -203,10 +276,65 @@ public partial class @GunInputActions : IInputActionCollection2, IDisposable
         }
     }
     public GunControlsActions @GunControls => new GunControlsActions(this);
+
+    // GunSwitchingControls
+    private readonly InputActionMap m_GunSwitchingControls;
+    private IGunSwitchingControlsActions m_GunSwitchingControlsActionsCallbackInterface;
+    private readonly InputAction m_GunSwitchingControls_PrimaryWeapon;
+    private readonly InputAction m_GunSwitchingControls_SecondaryWeapon;
+    private readonly InputAction m_GunSwitchingControls_ScrollSwitching;
+    public struct GunSwitchingControlsActions
+    {
+        private @GunInputActions m_Wrapper;
+        public GunSwitchingControlsActions(@GunInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PrimaryWeapon => m_Wrapper.m_GunSwitchingControls_PrimaryWeapon;
+        public InputAction @SecondaryWeapon => m_Wrapper.m_GunSwitchingControls_SecondaryWeapon;
+        public InputAction @ScrollSwitching => m_Wrapper.m_GunSwitchingControls_ScrollSwitching;
+        public InputActionMap Get() { return m_Wrapper.m_GunSwitchingControls; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GunSwitchingControlsActions set) { return set.Get(); }
+        public void SetCallbacks(IGunSwitchingControlsActions instance)
+        {
+            if (m_Wrapper.m_GunSwitchingControlsActionsCallbackInterface != null)
+            {
+                @PrimaryWeapon.started -= m_Wrapper.m_GunSwitchingControlsActionsCallbackInterface.OnPrimaryWeapon;
+                @PrimaryWeapon.performed -= m_Wrapper.m_GunSwitchingControlsActionsCallbackInterface.OnPrimaryWeapon;
+                @PrimaryWeapon.canceled -= m_Wrapper.m_GunSwitchingControlsActionsCallbackInterface.OnPrimaryWeapon;
+                @SecondaryWeapon.started -= m_Wrapper.m_GunSwitchingControlsActionsCallbackInterface.OnSecondaryWeapon;
+                @SecondaryWeapon.performed -= m_Wrapper.m_GunSwitchingControlsActionsCallbackInterface.OnSecondaryWeapon;
+                @SecondaryWeapon.canceled -= m_Wrapper.m_GunSwitchingControlsActionsCallbackInterface.OnSecondaryWeapon;
+                @ScrollSwitching.started -= m_Wrapper.m_GunSwitchingControlsActionsCallbackInterface.OnScrollSwitching;
+                @ScrollSwitching.performed -= m_Wrapper.m_GunSwitchingControlsActionsCallbackInterface.OnScrollSwitching;
+                @ScrollSwitching.canceled -= m_Wrapper.m_GunSwitchingControlsActionsCallbackInterface.OnScrollSwitching;
+            }
+            m_Wrapper.m_GunSwitchingControlsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @PrimaryWeapon.started += instance.OnPrimaryWeapon;
+                @PrimaryWeapon.performed += instance.OnPrimaryWeapon;
+                @PrimaryWeapon.canceled += instance.OnPrimaryWeapon;
+                @SecondaryWeapon.started += instance.OnSecondaryWeapon;
+                @SecondaryWeapon.performed += instance.OnSecondaryWeapon;
+                @SecondaryWeapon.canceled += instance.OnSecondaryWeapon;
+                @ScrollSwitching.started += instance.OnScrollSwitching;
+                @ScrollSwitching.performed += instance.OnScrollSwitching;
+                @ScrollSwitching.canceled += instance.OnScrollSwitching;
+            }
+        }
+    }
+    public GunSwitchingControlsActions @GunSwitchingControls => new GunSwitchingControlsActions(this);
     public interface IGunControlsActions
     {
         void OnShoot(InputAction.CallbackContext context);
         void OnAiming(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+    }
+    public interface IGunSwitchingControlsActions
+    {
+        void OnPrimaryWeapon(InputAction.CallbackContext context);
+        void OnSecondaryWeapon(InputAction.CallbackContext context);
+        void OnScrollSwitching(InputAction.CallbackContext context);
     }
 }
