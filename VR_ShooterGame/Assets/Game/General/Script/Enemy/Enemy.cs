@@ -5,26 +5,15 @@ using UnityEngine;
 public class Enemy : AttackTarget
 {
     private EnemyData enemyData;   
-    //private int health = 50;
 
-    private void Awake() {
+    private void Awake() 
+    {
         enemyData = GetComponent<EnemyData>();
     }
 
-    public override void ReceiveAttack(int damage)
+    public override void ReceiveAttack(int damage, GameObject damagesDealer)
     {
-        TakeDamage(damage);
-
-        // if (health <= 0)
-        // {
-        //     Die();
-        // }
-    }
-
-    private void TakeDamage(int damage)
-    {
-        //health -= damage;
-        enemyData.DecreaseEnemyHP(damage);
+        enemyData.DecreaseEnemyHP(damage,damagesDealer);
     }
 
     public void Die()

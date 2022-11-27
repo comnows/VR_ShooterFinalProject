@@ -8,12 +8,14 @@ public class PlayerData : RealtimeComponent<PlayerDataModel>
     private int _playerHP;
     private int _playerScore;
     
-    private void Awake() {
+    private void Awake() 
+    {
         _playerHP = 100;
         _playerScore = 0;
     }
 
-    protected override void OnRealtimeModelReplaced(PlayerDataModel previousModel, PlayerDataModel currentModel) {
+    protected override void OnRealtimeModelReplaced(PlayerDataModel previousModel, PlayerDataModel currentModel) 
+    {
         if (previousModel != null) {
             // Unregister from events
             previousModel.playerHPDidChange -= PlayerHPDidChange;
@@ -34,35 +36,40 @@ public class PlayerData : RealtimeComponent<PlayerDataModel>
         }
     }
 
-    private void PlayerHPDidChange(PlayerDataModel model, int value) {
-        // Update the mesh renderer
+    private void PlayerHPDidChange(PlayerDataModel model, int value) 
+    {
         UpdatePlayerHP();
     }
     
-    private void PlayerScoreDidChange(PlayerDataModel model, int value) {
-        // Update the mesh renderer
+    private void PlayerScoreDidChange(PlayerDataModel model, int value) 
+    {
         UpdatePlayerScore();
     }
 
-    private void UpdatePlayerHP() {
-        // Get the color from the model and set it on the mesh renderer.
+    private void UpdatePlayerHP() 
+    {
         _playerHP = model.playerHP;
     }
 
-    private void UpdatePlayerScore() {
-        // Get the color from the model and set it on the mesh renderer.
+    private void UpdatePlayerScore() 
+    {
         _playerScore = model.playerScore;
+
+        Debug.Log("PlayerScore = " + _playerScore);
     }
 
-    public void SetPlayerHP(int hp) {
-        // Set the color on the model
-        // This will fire the colorChanged event on the model, which will update the renderer for both the local player and all remote players.
-        model.playerHP = hp;
+    public void AddPlayerHP(int hp) 
+    {
+        model.playerHP += hp;
     }
 
-    public void SetPlayerScore(int score) {
-        // Set the color on the model
-        // This will fire the colorChanged event on the model, which will update the renderer for both the local player and all remote players.
-        model.playerScore = score;
+    public void DecreasePlayerHP(int hp) 
+    {
+        model.playerHP -= hp;
+    }
+
+    public void AddPlayerScore(int scoreToAdd) 
+    {
+        model.playerScore += scoreToAdd;
     }
 }

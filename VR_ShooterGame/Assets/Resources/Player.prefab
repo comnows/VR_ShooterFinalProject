@@ -442,11 +442,12 @@ GameObject:
   - component: {fileID: 5791836721697417222}
   - component: {fileID: 5791836721697417216}
   - component: {fileID: 5791836721697417219}
+  - component: {fileID: 5199295041617449911}
   - component: {fileID: 5791836721697417218}
   - component: {fileID: -7596142367833654989}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -542,6 +543,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunInput: {fileID: 5791836721697417216}
   playerCamera: {fileID: 5791836721968385542}
+--- !u!114 &5199295041617449911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5791836721697417221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 677333c0abbfed04591b494972d32f02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5791836721697417218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,6 +577,8 @@ MonoBehaviour:
   _components:
   - componentID: 1
     component: {fileID: -7596142367833654989}
+  - componentID: 2
+    component: {fileID: 5199295041617449911}
   _childViews:
   - componentID: 1
     component: {fileID: 1780244785}

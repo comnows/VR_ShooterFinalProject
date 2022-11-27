@@ -6,12 +6,14 @@ using Normal.Realtime;
 public class EnemyData : RealtimeComponent<EnemyDataModel>
 {
     private int _enemyHP;
-    
+    private GameObject _damagesDealer;
+
     private void Awake() {
         _enemyHP = 100;
     }
 
-    protected override void OnRealtimeModelReplaced(EnemyDataModel previousModel, EnemyDataModel currentModel) {
+    protected override void OnRealtimeModelReplaced(EnemyDataModel previousModel, EnemyDataModel currentModel) 
+    {
         if (previousModel != null) {
             // Unregister from events
             previousModel.enemyHPDidChange -= EnemyHPDidChange;
@@ -28,29 +30,50 @@ public class EnemyData : RealtimeComponent<EnemyDataModel>
         }
     }
 
-    private void EnemyHPDidChange(EnemyDataModel model, int value) {
+    private void EnemyHPDidChange(EnemyDataModel model, int value) 
+    {
         // Update the mesh renderer
         UpdateEnemyHP();
     }
     
-    private void UpdateEnemyHP() {
+    private void UpdateEnemyHP() 
+    {
         // Get the color from the model and set it on the mesh renderer.
         _enemyHP = model.enemyHP;
         
         Debug.Log(_enemyHP);
 
-        if (_enemyHP <= 0)
-        {
-            Enemy enemy = gameObject.GetComponent<Enemy>();
-            enemy.Die();
-        } 
+        CheckIfEnemyDie();
+        // if (_enemyHP <= 0)
+        // {
+        //     Enemy enemy = gameObject.GetComponent<Enemy>();
+        //     enemy.Die();
+        // } 
         
     }
 
-    public void DecreaseEnemyHP(int hp) {
+    public void CheckIfEnemyDie() 
+    {
+        if (_enemyHP <= 0)
+        {
+            if (_damagesDealer != null)
+            {
+            RealtimeView _realtimeView = _damagesDealer.GetComponent<RealtimeView>();
+            Debug.Log("Player ID = " + _realtimeView.ownerIDInHierarchy);
+            _damagesDealer.GetComponent<PlayerData>().AddPlayerScore(50);
+            }
+            
+            Enemy enemy = gameObject.GetComponent<Enemy>();
+            enemy.Die();
+        } 
+    }
+
+    public void DecreaseEnemyHP(int damage, GameObject damagesDealer) 
+    {
         // Set the color on the model
         // This will fire the colorChanged event on the model, which will update the renderer for both the local player and all remote players.
-        model.enemyHP -= hp;
+        model.enemyHP -= damage;
+        _damagesDealer = damagesDealer;
     }
 
 }

@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform _character = default;
 
     [SerializeField] private float moveSpeed = 12f;
+    
     private Vector3 moveDirection;
 
     private RealtimeView _realtimeView;
@@ -26,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void LocalStart() {
         // Request ownership of the Player and the character RealtimeTransforms
-                   GetComponent<RealtimeTransform>().RequestOwnership();
+        GetComponent<RealtimeTransform>().RequestOwnership();
         characterController.GetComponent<RealtimeTransform>().RequestOwnership();
         
     }

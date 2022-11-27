@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class AttackTarget : MonoBehaviour
 {
-    public abstract void ReceiveAttack(int damage);
+    public abstract void ReceiveAttack(int damage, GameObject damagesDealer);
 }

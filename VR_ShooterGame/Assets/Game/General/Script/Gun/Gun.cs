@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Normal.Realtime;
 
 public class Gun : MonoBehaviour
 {
     [SerializeField] private GunInput gunInput;
     [SerializeField] private Camera playerCamera;
+
+    private RealtimeView _realtimeView;
 
     private int damage = 10;
     private float fireRate = 10f;
@@ -13,20 +16,19 @@ public class Gun : MonoBehaviour
 
     private float nextTimeToFire = 0f;
 
-    // Start is called before the first frame update
-    // void Start()
-    // {
-        
-    // }
-
-    // Update is called once per frame
-    void Update()
+    private void Awake() 
     {
-        if(gunInput.ShootInput && Time.time >= nextTimeToFire)
-        {
-            nextTimeToFire = Time.time + 1f / fireRate;
-            Shoot();
-        }
+        _realtimeView = GetComponent<RealtimeView>();
+    }
+
+    void Update()
+    {   
+        if (_realtimeView.isOwnedLocallyInHierarchy)
+            if(gunInput.ShootInput && Time.time >= nextTimeToFire)
+            {
+                nextTimeToFire = Time.time + 1f / fireRate;
+                Shoot();
+            }
     }
 
     void Shoot()
@@ -38,7 +40,7 @@ public class Gun : MonoBehaviour
             Debug.Log(target);
             if (target != null)
             {
-                target.ReceiveAttack(damage);
+                target.ReceiveAttack(damage, this.gameObject);
             }
         }
     }

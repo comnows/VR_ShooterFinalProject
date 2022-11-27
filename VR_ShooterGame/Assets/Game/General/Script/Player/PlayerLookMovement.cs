@@ -15,7 +15,8 @@ public class PlayerLookMovement : MonoBehaviour
     private float mouseSensitivity = 100f;
     private float xRotation = 0f;
 
-    private void Awake() {
+    private void Awake() 
+    {
         _realtimeView = GetComponent<RealtimeView>();
     }
 
@@ -23,6 +24,11 @@ public class PlayerLookMovement : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Debug.Log("Milllllllllll");
+        Debug.Log(_realtimeView.ownerIDSelf);
+        Debug.Log("MillSoCute");
+        Debug.Log(_realtimeView.ownerIDInHierarchy);
+        Debug.Log("MillSoNarak");
     }
 
     // Update is called once per frame
