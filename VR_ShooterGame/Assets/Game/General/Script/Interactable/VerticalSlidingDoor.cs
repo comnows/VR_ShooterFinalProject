@@ -17,7 +17,7 @@ public class VerticalSlidingDoor : Interactable
         startPosition = transform.position;
     }
 
-    public override void Interact()
+    public override void Interact(GameObject player)
     {
         Debug.Log("Door opening");
 

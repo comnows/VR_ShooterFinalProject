@@ -4,21 +4,23 @@ using UnityEngine;
 public class GunData : ScriptableObject
 {
     public new string name;
-    public int startAmmo;
+    public int maxStashAmmo;
     public int magazineSize;
 
     public int bulletDamage;
     public float fireRatePerSecond;
     public float reloadTime;
     
-    [HideInInspector] public int currentStashAmmo;
-    [HideInInspector] public int currentMagazineAmmo;
+    // [HideInInspector] 
+    public int currentStashAmmo;
+    // [HideInInspector] 
+    public int currentMagazineAmmo;
 
     // public bool isReload;
 
     public void Initialize()
     {
-        currentStashAmmo = startAmmo;
+        currentStashAmmo = maxStashAmmo;
         currentMagazineAmmo = magazineSize;
     }
 
@@ -32,6 +34,17 @@ public class GunData : ScriptableObject
         currentStashAmmo += currentMagazineAmmo;
         currentMagazineAmmo = Mathf.Min(currentStashAmmo, magazineSize);
         currentStashAmmo -= currentMagazineAmmo;
+    }
+
+    public void AddAmmo(int ammoAmount)
+    {
+        currentStashAmmo += ammoAmount;
+        Debug.Log("Ammo added");
+    }
+
+    public bool IsAmmoFull()
+    {
+        return currentStashAmmo + currentMagazineAmmo >= maxStashAmmo + magazineSize;
     }
 
 }

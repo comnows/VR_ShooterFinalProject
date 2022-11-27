@@ -14,8 +14,7 @@ public class PlayerInteract : MonoBehaviour
     
     [SerializeField] private float interactRange = 5f;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         playerInteractInput = GetComponent<PlayerInteractInput>();
     }
@@ -36,7 +35,7 @@ public class PlayerInteract : MonoBehaviour
                 //don't forget if key is pressed
                 if(playerInteractInput.playerInteractActions.Interact.triggered)
                 {
-                    interactable.Interact();
+                    interactable.Interact(this.gameObject);
                 }
             }
 

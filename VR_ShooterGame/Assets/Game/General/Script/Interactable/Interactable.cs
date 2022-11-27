@@ -6,5 +6,5 @@ public abstract class Interactable : MonoBehaviour
 {
     public string promptMessage;
     
-    public abstract void Interact();
+    public abstract void Interact(GameObject player);
 }

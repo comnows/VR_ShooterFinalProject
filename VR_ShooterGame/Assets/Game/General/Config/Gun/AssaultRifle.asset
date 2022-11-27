@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: AssaultRifle
   m_EditorClassIdentifier: 
   name: AssaultRifle
-  startAmmo: 90
+  maxStashAmmo: 90
   magazineSize: 30
   bulletDamage: 10
   fireRatePerSecond: 8
   reloadTime: 1
   currentStashAmmo: 0
-  currentMagazineAmmo: 0
+  currentMagazineAmmo: 30
