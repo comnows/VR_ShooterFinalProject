@@ -16,10 +16,10 @@ public class Gun : MonoBehaviour
     private float nextTimeToFire = 0f;
     private bool isReload = false;
 
-    void Start()
-    {
-        gunData.Initialize();
-    }
+    // void Start()
+    // {
+    //     gunData.Initialize();
+    // }
 
     void Update()
     {

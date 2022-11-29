@@ -12,8 +12,9 @@ public class PlayerMovementInput : MonoBehaviour
     InputAction moveAction;
     InputAction lookAction;
     InputAction sprintAction;
+    public InputAction jumpAction;
 
-    Vector2 moveInput;
+    public Vector2 MoveInput { get; private set; }
     Vector2 lookDirection;
 
     bool isMouse;
@@ -26,6 +27,15 @@ public class PlayerMovementInput : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         playerMovement = GetComponent<PlayerMovement>();
         // playerLookMovement = GetComponentInChildren<PlayerLookMovement>();
+
+        InitMovementActions();
+    }
+
+    private void InitMovementActions()
+    {
+        moveAction = playerInputActions.PlayerControls.Move;
+        lookAction = playerInputActions.PlayerControls.Look;
+        jumpAction = playerInputActions.PlayerControls.Jump;
     }
 
     void OnEnable()
@@ -50,14 +60,12 @@ public class PlayerMovementInput : MonoBehaviour
 
     void AddMoveActionListener()
     {
-        moveAction = playerInputActions.PlayerControls.Move;
-        moveAction.performed += GetMoveInputAndSetMoveDirection;
-        moveAction.canceled += SetZeroMoveDirection;
+        moveAction.performed += SetMoveInput;
+        moveAction.canceled += SetMoveInput;
     }
 
     void AddLookActionListener()
     {
-        lookAction = playerInputActions.PlayerControls.Look;
         lookAction.performed += GetLookInput;
         lookAction.canceled += SetLookInput;
     }
@@ -76,30 +84,19 @@ public class PlayerMovementInput : MonoBehaviour
 
     void RemoveMoveActionListener()
     {
-        moveAction = playerInputActions.PlayerControls.Move;
-        moveAction.performed -= GetMoveInputAndSetMoveDirection;
-        moveAction.canceled -= SetZeroMoveDirection;
+        moveAction.performed -= SetMoveInput;
+        moveAction.canceled -= SetMoveInput;
     }
 
     void RemoveLookActionListener()
     {
-        lookAction = playerInputActions.PlayerControls.Look;
         lookAction.performed -= GetLookInput;
         lookAction.canceled -= SetLookInput;
     }
 
-    void GetMoveInputAndSetMoveDirection(InputAction.CallbackContext context)
+    void SetMoveInput(InputAction.CallbackContext context)
     {
-        moveInput = context.ReadValue<Vector2>();
-
-        playerMovement.SetMoveDirection(moveInput);
-    }
-
-    void SetZeroMoveDirection(InputAction.CallbackContext context)
-    {
-        moveInput = Vector2.zero;
-
-        playerMovement.SetMoveDirection(moveInput);
+        MoveInput = context.ReadValue<Vector2>();
     }
     
     void GetLookInput(InputAction.CallbackContext context)

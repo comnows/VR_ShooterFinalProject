@@ -26,8 +26,7 @@ public class PlayerInteract : MonoBehaviour
         
         interactRay = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
 
-        //can add masking for raycast
-        if(Physics.Raycast(interactRay, out hitInfo, interactRange))
+        if(Physics.Raycast(interactRay, out hitInfo, interactRange)) //can add masking for raycast
         {
             Interactable interactable = hitInfo.transform.GetComponent<Interactable>();
             if (interactable != null)
