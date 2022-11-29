@@ -7,9 +7,7 @@ public class PlayerManager : MonoBehaviour {
     [SerializeField] private GameObject _prefab;
 
     private Realtime _realtime;
-
-    public List<GameObject> _playerList = new List<GameObject>();
-
+    
     private void Awake() 
     {
         // Get the Realtime component on this game object
@@ -31,13 +29,5 @@ public class PlayerManager : MonoBehaviour {
 
         GameObject camera = playerGameObject.transform.GetChild(1).gameObject;
         camera.SetActive(true);
-
-        AddPlayerToList(playerGameObject);
-    }
-
-    private void AddPlayerToList(GameObject player)
-    {
-        if(!_playerList.Contains(player))
-        _playerList.Add(player);
     }
 }

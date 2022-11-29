@@ -17,7 +17,6 @@ public class CheckPointManager : MonoBehaviour
         {
             GameObject spawnPoint = this.gameObject.transform.GetChild(0).gameObject;
             respawnPointData.SetNewRespawnPoint(spawnPoint.transform.position);
-            StartCoroutine(FindObjectOfType<PlayerDeathEvent>().RespawnPlayers());
             Destroy(this.gameObject);
         }
     }

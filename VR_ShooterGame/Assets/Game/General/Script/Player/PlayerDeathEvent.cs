@@ -1,34 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Normal.Realtime;
 public class PlayerDeathEvent : MonoBehaviour
 {
-//    public IEnumerator RespawnPlayer(GameObject player)
-//    {
-//     yield return new WaitForSeconds (3);
-//     var positionToSpawn = GetComponent<RespawnPointData>()._respawnPointPos;
-//     player.transform.position = positionToSpawn;
-//     player.SetActive(true);
-//    }
+    private RealtimeView _realtimeView;
 
-    public IEnumerator RespawnPlayers()
+    void Awake() {
+        _realtimeView = GetComponent<RealtimeView>(); 
+    }
+    public void CheckRespawnPlayers()
     {
-    yield return new WaitForSeconds (3);
-    Vector3 positionToSpawn = GetComponent<RespawnPointData>()._respawnPointPos;
-    List<GameObject> playerList = FindObjectOfType<PlayerManager>()._playerList;
-    foreach (GameObject player in playerList)
+        if (_realtimeView.isOwnedLocallyInHierarchy)
         {
-        //GameObject playerObject = player.transform.GetChild(0).gameObject;
-        //GameObject playerObject2 = player.transform.GetChild(1).gameObject;
-        //if (!player.activeSelf)
-        player.transform.position = positionToSpawn;
-        player.GetComponent<PlayerMovement>().enabled = true;
-        //player.GetComponent<PlayerLookMovement>().enabled = true;
-        player.GetComponent<Gun>().enabled = true;
-        //playerObject.SetActive(true);
-        //.SetActive(true);
-        //player.SetActive(true);
+            StartCoroutine(RespawnPlayers());
+        }
+    }
+
+    private IEnumerator RespawnPlayers()
+    {
+        yield return new WaitForSeconds (3);
+
+        if (this.GetComponent<PlayerMovement>().enabled == false)
+        {
+            Vector3 positionToSpawn = FindObjectOfType<RespawnPointData>()._respawnPointPos;
+            this.GetComponent<PlayerMovement>().enabled = true;
+            this.GetComponent<Gun>().enabled = true;
+            this.transform.position = positionToSpawn;
         }
     }
 }

@@ -7,6 +7,7 @@ public class RespawnPointData : RealtimeComponent<RespawnPointDataModel>
 {
     public Vector3 _respawnPointPos;
 
+    private GameObject[] players;
     private void Awake() 
     {
         _respawnPointPos = GameObject.Find("SpawnPoint_1").transform.position;
@@ -34,6 +35,12 @@ public class RespawnPointData : RealtimeComponent<RespawnPointDataModel>
     private void UpdateRespawnPoint() 
     {
         _respawnPointPos = model.respawnPointPos;
+
+        players = GameObject.FindGameObjectsWithTag("Player");
+        foreach(GameObject player in players)
+        {
+            player.GetComponent<PlayerDeathEvent>().CheckRespawnPlayers();
+        }
         
         Debug.Log(_respawnPointPos);
     }

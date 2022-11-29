@@ -24,11 +24,6 @@ public class PlayerLookMovement : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        Debug.Log("Milllllllllll");
-        Debug.Log(_realtimeView.ownerIDSelf);
-        Debug.Log("MillSoCute");
-        Debug.Log(_realtimeView.ownerIDInHierarchy);
-        Debug.Log("MillSoNarak");
     }
 
     // Update is called once per frame

@@ -13,7 +13,7 @@ public class PlayerMovementInput : MonoBehaviour
     InputAction lookAction;
     InputAction sprintAction;
 
-    Vector2 moveInput;
+    public Vector2 MoveInput { get; private set; }
     Vector2 lookDirection;
 
     bool isMouse;
@@ -49,8 +49,8 @@ public class PlayerMovementInput : MonoBehaviour
     void InitMoveAction()
     {
         moveAction = playerInputActions.PlayerControls.Move;
-        moveAction.performed += GetMoveInputAndSetMoveDirection;
-        moveAction.canceled += SetZeroMoveDirection;
+        moveAction.performed += SetMoveInput;
+        moveAction.canceled += SetMoveInput;
     }
 
     void InitLookAction()
@@ -66,18 +66,9 @@ public class PlayerMovementInput : MonoBehaviour
         sprintAction.performed += GetSprintInput;
     }
 
-    void GetMoveInputAndSetMoveDirection(InputAction.CallbackContext context)
+    void SetMoveInput(InputAction.CallbackContext context)
     {
-        moveInput = context.ReadValue<Vector2>();
-
-        playerMovement.SetMoveDirection(moveInput);
-    }
-
-    void SetZeroMoveDirection(InputAction.CallbackContext context)
-    {
-        moveInput = Vector2.zero;
-
-        playerMovement.SetMoveDirection(moveInput);
+        MoveInput = context.ReadValue<Vector2>();
     }
     
     void GetLookInput(InputAction.CallbackContext context)
