@@ -20,14 +20,19 @@ public class Enemy : AttackTarget
         enemyData.DecreaseEnemyHP(damage,damagesDealer);
     }
 
-    public void Die(GameObject damageDealer)
+    public void Die(int damageDealerID)
     {
+        print("damageDealerID = " + damageDealerID);
+        Vector3 thisPosition = this.transform.position;
         if (_realtimeView.isUnownedInHierarchy)
-        _realtimeView.SetOwnership(damageDealer.GetComponent<RealtimeView>().ownerIDInHierarchy);
+        _realtimeView.SetOwnership(damageDealerID);
 
-        if (_realtimeView.isOwnedLocallyInHierarchy)
-        OnEnemyDie?.Invoke(this.transform.position);
-        
+        Debug.Log("_realtimeView.ownerIDInHierarchy = " + _realtimeView.ownerIDInHierarchy);
+
+        if (_realtimeView.ownerIDInHierarchy == damageDealerID)
+        {
+        OnEnemyDie?.Invoke(thisPosition);
+        }
         Destroy(gameObject);
     }
 }

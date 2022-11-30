@@ -59,12 +59,10 @@ public class GunInput : MonoBehaviour
         if(context.ReadValue<float>() > 0)
         {
             ShootInput = true;
-            Debug.Log("Shoot pressed");
         }
         else
         {
             ShootInput = false;
-            Debug.Log("Shoot released");
         }
     }
 

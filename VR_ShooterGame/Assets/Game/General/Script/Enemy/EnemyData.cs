@@ -8,8 +8,14 @@ public class EnemyData : RealtimeComponent<EnemyDataModel>
     private int _enemyHP;
     private GameObject _damagesDealer;
 
+    private RealtimeView _realtimeView;
+
+    private RealtimeTransform _realtimeTransform;
+
     private void Awake() {
         _enemyHP = 100;
+        _realtimeView = GetComponent<RealtimeView>();
+        _realtimeTransform = GetComponent<RealtimeTransform>();
     }
 
     protected override void OnRealtimeModelReplaced(EnemyDataModel previousModel, EnemyDataModel currentModel) 
@@ -23,6 +29,8 @@ public class EnemyData : RealtimeComponent<EnemyDataModel>
                 currentModel.enemyHP = _enemyHP;
             UpdateEnemyHP();
             currentModel.enemyHPDidChange += EnemyHPDidChange;
+            _realtimeView.ClearOwnership();
+            _realtimeTransform.ClearOwnership();
         }
     }
 
@@ -44,15 +52,17 @@ public class EnemyData : RealtimeComponent<EnemyDataModel>
     {
         if (_enemyHP <= 0)
         {
+            int damageDealerID = 0;
             if (_damagesDealer != null)
             {
             RealtimeView _realtimeView = _damagesDealer.GetComponent<RealtimeView>();
             Debug.Log("Player ID = " + _realtimeView.ownerIDInHierarchy);
+            damageDealerID = _realtimeView.ownerIDInHierarchy;
             _damagesDealer.GetComponent<PlayerData>().AddPlayerScore(50);
             }
             
             Enemy enemy = gameObject.GetComponent<Enemy>();
-            enemy.Die(_damagesDealer);
+            enemy.Die(damageDealerID);
         } 
     }
 

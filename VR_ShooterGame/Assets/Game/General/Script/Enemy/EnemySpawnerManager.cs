@@ -22,8 +22,8 @@ public class EnemySpawnerManager : MonoBehaviour
         yield return new WaitForSeconds (2);
         var options = new Realtime.InstantiateOptions 
         {
-            ownedByClient = true,    
-            preventOwnershipTakeover = true,    
+            ownedByClient = false,    
+            preventOwnershipTakeover = false,    
         };
         GameObject enemyGameObject = Realtime.Instantiate("Enemy",options);
         enemyGameObject.GetComponent<RealtimeTransform>().RequestOwnership();

@@ -8,6 +8,8 @@ public class Gun : MonoBehaviour
     [SerializeField] private GunInput gunInput;
     [SerializeField] private Camera playerCamera;
 
+    [SerializeField] private AudioSource audioSource;
+
     private RealtimeView _realtimeView;
 
     private int damage = 10;
@@ -19,6 +21,7 @@ public class Gun : MonoBehaviour
     private void Awake() 
     {
         _realtimeView = GetComponent<RealtimeView>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -33,11 +36,12 @@ public class Gun : MonoBehaviour
 
     void Shoot()
     {
+        audioSource.PlayOneShot(audioSource.clip);
         RaycastHit hitInfo;
         if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hitInfo, shotRange))
         {
             AttackTarget target = hitInfo.transform.GetComponent<AttackTarget>();
-            Debug.Log(target);
+            //Debug.Log(target);
             if (target != null)
             {
                 target.ReceiveAttack(damage, this.gameObject);
