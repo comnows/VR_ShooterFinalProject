@@ -30,6 +30,11 @@ public class Gun : MonoBehaviour
             Shoot();
         }
 
+        if(gunInput.aimAction.triggered)
+        {
+            
+        }
+
         if(gunInput.reloadAction.triggered && CanReload())
         {
             Debug.Log("Gun Reload");

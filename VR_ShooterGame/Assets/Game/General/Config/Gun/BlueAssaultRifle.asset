@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BlueAssaultRifle
   m_EditorClassIdentifier: 
   name: BlueAR
-  prefab: {fileID: 4228013543397365048, guid: 6f5ff98deab62ad43b993508dbe0e8b3, type: 3}
+  prefab: {fileID: 4894634171859805921, guid: 7649429c10562964a83e41217df7d583, type: 3}
   maxStashAmmo: 180
   magazineSize: 25
   bulletDamage: 1

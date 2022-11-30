@@ -37,7 +37,7 @@ public partial class @GunInputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Aiming"",
+                    ""name"": ""Aim"",
                     ""type"": ""Button"",
                     ""id"": ""f23f7ea5-d674-4507-be23-bfaf63992a26"",
                     ""expectedControlType"": ""Button"",
@@ -74,7 +74,7 @@ public partial class @GunInputActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Aiming"",
+                    ""action"": ""Aim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -165,7 +165,7 @@ public partial class @GunInputActions : IInputActionCollection2, IDisposable
         // GunControls
         m_GunControls = asset.FindActionMap("GunControls", throwIfNotFound: true);
         m_GunControls_Shoot = m_GunControls.FindAction("Shoot", throwIfNotFound: true);
-        m_GunControls_Aiming = m_GunControls.FindAction("Aiming", throwIfNotFound: true);
+        m_GunControls_Aim = m_GunControls.FindAction("Aim", throwIfNotFound: true);
         m_GunControls_Reload = m_GunControls.FindAction("Reload", throwIfNotFound: true);
         // GunSwitchingControls
         m_GunSwitchingControls = asset.FindActionMap("GunSwitchingControls", throwIfNotFound: true);
@@ -232,14 +232,14 @@ public partial class @GunInputActions : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_GunControls;
     private IGunControlsActions m_GunControlsActionsCallbackInterface;
     private readonly InputAction m_GunControls_Shoot;
-    private readonly InputAction m_GunControls_Aiming;
+    private readonly InputAction m_GunControls_Aim;
     private readonly InputAction m_GunControls_Reload;
     public struct GunControlsActions
     {
         private @GunInputActions m_Wrapper;
         public GunControlsActions(@GunInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Shoot => m_Wrapper.m_GunControls_Shoot;
-        public InputAction @Aiming => m_Wrapper.m_GunControls_Aiming;
+        public InputAction @Aim => m_Wrapper.m_GunControls_Aim;
         public InputAction @Reload => m_Wrapper.m_GunControls_Reload;
         public InputActionMap Get() { return m_Wrapper.m_GunControls; }
         public void Enable() { Get().Enable(); }
@@ -253,9 +253,9 @@ public partial class @GunInputActions : IInputActionCollection2, IDisposable
                 @Shoot.started -= m_Wrapper.m_GunControlsActionsCallbackInterface.OnShoot;
                 @Shoot.performed -= m_Wrapper.m_GunControlsActionsCallbackInterface.OnShoot;
                 @Shoot.canceled -= m_Wrapper.m_GunControlsActionsCallbackInterface.OnShoot;
-                @Aiming.started -= m_Wrapper.m_GunControlsActionsCallbackInterface.OnAiming;
-                @Aiming.performed -= m_Wrapper.m_GunControlsActionsCallbackInterface.OnAiming;
-                @Aiming.canceled -= m_Wrapper.m_GunControlsActionsCallbackInterface.OnAiming;
+                @Aim.started -= m_Wrapper.m_GunControlsActionsCallbackInterface.OnAim;
+                @Aim.performed -= m_Wrapper.m_GunControlsActionsCallbackInterface.OnAim;
+                @Aim.canceled -= m_Wrapper.m_GunControlsActionsCallbackInterface.OnAim;
                 @Reload.started -= m_Wrapper.m_GunControlsActionsCallbackInterface.OnReload;
                 @Reload.performed -= m_Wrapper.m_GunControlsActionsCallbackInterface.OnReload;
                 @Reload.canceled -= m_Wrapper.m_GunControlsActionsCallbackInterface.OnReload;
@@ -266,9 +266,9 @@ public partial class @GunInputActions : IInputActionCollection2, IDisposable
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
-                @Aiming.started += instance.OnAiming;
-                @Aiming.performed += instance.OnAiming;
-                @Aiming.canceled += instance.OnAiming;
+                @Aim.started += instance.OnAim;
+                @Aim.performed += instance.OnAim;
+                @Aim.canceled += instance.OnAim;
                 @Reload.started += instance.OnReload;
                 @Reload.performed += instance.OnReload;
                 @Reload.canceled += instance.OnReload;
@@ -328,7 +328,7 @@ public partial class @GunInputActions : IInputActionCollection2, IDisposable
     public interface IGunControlsActions
     {
         void OnShoot(InputAction.CallbackContext context);
-        void OnAiming(InputAction.CallbackContext context);
+        void OnAim(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
     }
     public interface IGunSwitchingControlsActions

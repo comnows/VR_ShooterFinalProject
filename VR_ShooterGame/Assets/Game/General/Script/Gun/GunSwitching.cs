@@ -61,11 +61,11 @@ public class GunSwitching : MonoBehaviour
 
     private void SelectGun()
     {
-        int i = 0;
+        int gunLoadoutIndex = 0;
 
         foreach(GunData gun in gunLoadout.guns)
         {
-            if(i == selectedGun)
+            if(gunLoadoutIndex == selectedGun)
             {
                 //destroy current gun
                 GameObject destroyedGun = gunHolder.GetChild(0).gameObject;
@@ -75,7 +75,7 @@ public class GunSwitching : MonoBehaviour
                 GameObject createdGun = Instantiate(gun.prefab, gunHolder.position, gunHolder.rotation, gunHolder);
             }
 
-            i++;
+            gunLoadoutIndex++;
         }
     }
 }

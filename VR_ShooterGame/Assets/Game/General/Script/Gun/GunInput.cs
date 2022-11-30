@@ -8,7 +8,7 @@ public class GunInput : MonoBehaviour
     GunInputActions gunInputActions;
 
     private InputAction shootAction;
-    private InputAction aimingAction;
+    public InputAction aimAction;
     public InputAction reloadAction;
 
     public bool ShootInput { get; private set; } = false;
@@ -23,6 +23,7 @@ public class GunInput : MonoBehaviour
     private void InitGunInputAction()
     {
         shootAction = gunInputActions.GunControls.Shoot;
+        aimAction = gunInputActions.GunControls.Aim;
         reloadAction = gunInputActions.GunControls.Reload;
     }
 
