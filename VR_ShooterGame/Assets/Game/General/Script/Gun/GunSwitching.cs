@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GunSwitching : MonoBehaviour
 {
+    public event Action OnGunSwitch;
+
     private GunSwitchingInput gunSwitchingInput;
     private GunLoadout gunLoadout;
+    private Gun gun;
 
     [SerializeField] private Transform gunHolder;
 
@@ -15,6 +19,7 @@ public class GunSwitching : MonoBehaviour
     {
         gunSwitchingInput = GetComponent<GunSwitchingInput>();
         gunLoadout = GetComponent<GunLoadout>();
+        gun = GetComponent<Gun>();
     }
 
     // Update is called once per frame
@@ -63,7 +68,7 @@ public class GunSwitching : MonoBehaviour
     {
         int gunLoadoutIndex = 0;
 
-        foreach(GunData gun in gunLoadout.guns)
+        foreach(GunData gunData in gunLoadout.guns)
         {
             if(gunLoadoutIndex == selectedGun)
             {
@@ -72,7 +77,11 @@ public class GunSwitching : MonoBehaviour
                 Destroy(destroyedGun);
 
                 //create selected gun
-                GameObject createdGun = Instantiate(gun.prefab, gunHolder.position, gunHolder.rotation, gunHolder);
+                GameObject createdGun = Instantiate(gunData.prefab, gunHolder.position, gunHolder.rotation, gunHolder);
+                gun.currentGun = createdGun;
+                gun.gunData = gunData;
+
+                OnGunSwitch?.Invoke();
             }
 
             gunLoadoutIndex++;

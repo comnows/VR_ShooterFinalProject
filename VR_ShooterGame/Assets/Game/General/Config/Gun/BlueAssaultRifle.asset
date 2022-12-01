@@ -19,5 +19,7 @@ MonoBehaviour:
   bulletDamage: 1
   fireRatePerSecond: 10
   reloadTime: 1
+  aimSpeed: 10
+  aimFieldOfView: 35
   currentStashAmmo: 180
   currentMagazineAmmo: 25

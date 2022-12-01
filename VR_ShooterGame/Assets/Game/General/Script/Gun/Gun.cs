@@ -1,19 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+    public event Action OnGunShoot;
+    public Action<int, int> OnGunReload;
+
     [SerializeField] private GunInput gunInput;
     [SerializeField] private Camera playerCamera;
+    [SerializeField] private Camera weaponCamera;
+    [SerializeField] private GameObject bulletHolePrefab;
 
+    public GameObject currentGun;
     public GunData gunData;
 
     private int damage = 10;
     private float fireRate = 10f;
     private float shotRange = 100;
+    private float defaultFieldOfView = 60f;
 
     private float nextTimeToFire = 0f;
+    public bool isAimingDownSight = false;
     private bool isReload = false;
 
     // void Start()
@@ -32,7 +41,9 @@ public class Gun : MonoBehaviour
 
         if(gunInput.aimAction.triggered)
         {
-            
+            isAimingDownSight = !isAimingDownSight;
+
+            StartCoroutine(AimingDownSight());
         }
 
         if(gunInput.reloadAction.triggered && CanReload())
@@ -74,9 +85,52 @@ public class Gun : MonoBehaviour
             {
                 target.ReceiveAttack(gunData.bulletDamage);
             }
+
+            GameObject bulletHole = Instantiate(bulletHolePrefab, hitInfo.point + hitInfo.normal * 0.001f, Quaternion.LookRotation(hitInfo.normal));
         }
 
         gunData.RemoveCurrentMagazineAmmo();
+        OnGunShoot?.Invoke();
+    }
+
+    private IEnumerator AimingDownSight()
+    {
+        Transform anchor = currentGun.transform.Find("Anchor");
+        Transform hip = currentGun.transform.Find("AimStates/Hip");
+        Transform ads = currentGun.transform.Find("AimStates/ADS");
+
+        float timeInSecond = 0;
+
+        if(isAimingDownSight)
+        {
+            while(timeInSecond < 1)
+            {
+                anchor.position = Vector3.Lerp(anchor.position, ads.position, timeInSecond);
+                SetFieldOfView(Mathf.Lerp(playerCamera.fieldOfView, gunData.aimFieldOfView, timeInSecond));
+
+                yield return null;
+
+                timeInSecond += gunData.aimSpeed * Time.deltaTime;
+            }
+        }
+        else
+        {
+            while(timeInSecond < 1)
+            {
+                anchor.position = Vector3.Lerp(anchor.position, hip.position, gunData.aimSpeed * Time.deltaTime);
+                SetFieldOfView(Mathf.Lerp(playerCamera.fieldOfView, defaultFieldOfView, timeInSecond));
+                
+                yield return null;
+
+                timeInSecond += gunData.aimSpeed * Time.deltaTime;
+            }
+        }
+    }
+
+    private void SetFieldOfView(float fov)
+    {
+        playerCamera.fieldOfView = fov;
+        weaponCamera.fieldOfView = fov;
     }
 
     IEnumerator Reload()
@@ -86,6 +140,7 @@ public class Gun : MonoBehaviour
         yield return new WaitForSeconds(gunData.reloadTime);
 
         gunData.Reload();
+        OnGunReload?.Invoke(gunData.currentMagazineAmmo, gunData.currentStashAmmo);
 
         isReload = false;
     }

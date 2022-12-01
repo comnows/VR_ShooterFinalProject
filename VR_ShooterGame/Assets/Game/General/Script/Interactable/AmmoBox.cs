@@ -8,7 +8,8 @@ public class AmmoBox : Interactable
 
     public override void Interact(GameObject player)
     {
-        GunData gunData = player.GetComponent<Gun>().gunData;
+        Gun gun = player.GetComponent<Gun>();
+        GunData gunData = gun.gunData;
 
         if(gunData.IsAmmoFull()) return;
 
@@ -30,6 +31,8 @@ public class AmmoBox : Interactable
 
             //ammo added event trigger for UI or else
         }
+
+        gun.OnGunReload?.Invoke(gun.gunData.currentMagazineAmmo, gun.gunData.currentStashAmmo);
 
         if(stashAmmo <= 0)
         {
