@@ -18,7 +18,7 @@ public class PlayerMovementInput : MonoBehaviour
     Vector2 lookDirection;
 
     bool isMouse;
-    bool isSprint;
+    public bool IsSprint { get; private set; }
 
     private float lookSensitivity = 100f;
 
@@ -36,6 +36,7 @@ public class PlayerMovementInput : MonoBehaviour
         moveAction = playerInputActions.PlayerControls.Move;
         lookAction = playerInputActions.PlayerControls.Look;
         jumpAction = playerInputActions.PlayerControls.Jump;
+        sprintAction = playerInputActions.PlayerControls.Sprint;
     }
 
     void OnEnable()
@@ -56,6 +57,7 @@ public class PlayerMovementInput : MonoBehaviour
     {
         AddMoveActionListener();
         AddLookActionListener();
+        AddSprintActionListener();
     }
 
     void AddMoveActionListener()
@@ -72,14 +74,15 @@ public class PlayerMovementInput : MonoBehaviour
 
     void AddSprintActionListener()
     {
-        sprintAction = playerInputActions.PlayerControls.Sprint;
         sprintAction.performed += GetSprintInput;
+        sprintAction.canceled += GetSprintInput;
     }
 
     void RemoveMovementActionsListener()
     {
         RemoveMoveActionListener();
         RemoveLookActionListener();
+        RemoveSprintActionListener();
     }
 
     void RemoveMoveActionListener()
@@ -92,6 +95,12 @@ public class PlayerMovementInput : MonoBehaviour
     {
         lookAction.performed -= GetLookInput;
         lookAction.canceled -= SetLookInput;
+    }
+
+    void RemoveSprintActionListener()
+    {
+        sprintAction.performed -= GetSprintInput;
+        sprintAction.canceled -= GetSprintInput;
     }
 
     void SetMoveInput(InputAction.CallbackContext context)
@@ -119,6 +128,6 @@ public class PlayerMovementInput : MonoBehaviour
 
     void GetSprintInput(InputAction.CallbackContext context)
     {
-        isSprint = context.ReadValueAsButton();
+        IsSprint = context.ReadValueAsButton();
     }
 }

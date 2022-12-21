@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private CharacterController characterController;
     private PlayerMovementInput playerMovementInput;
 
+    public Animator animator;
+
     [SerializeField] private float moveSpeed = 12f;
     private Vector3 moveDirection;
 
@@ -18,12 +20,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundDistance = 0.04f;
     [SerializeField] private LayerMask groundMask;
 
-    private Vector3 velocity;
+    float moveSpeedMultiplier;
+    private Vector3 gravityVelocity;
     private bool isGrounded;
 
     private void Awake()
     {
         playerMovementInput = GetComponent<PlayerMovementInput>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void Update() 
@@ -31,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
         SetMoveDirection(playerMovementInput.MoveInput);
         ResetGravity();
         Move();
+        SetMoveAnimation(playerMovementInput.MoveInput);
         Jump();
         SetGravity();
     }
@@ -44,29 +49,36 @@ public class PlayerMovement : MonoBehaviour
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        if(isGrounded && velocity.y < 0)
+        if(isGrounded && gravityVelocity.y < 0)
         {
-            velocity.y = -2f;
+            gravityVelocity.y = -2f;
         }
     }
 
     private void Move()
     {
-        characterController.Move(moveSpeed * Time.deltaTime * moveDirection);
+        moveSpeedMultiplier = playerMovementInput.IsSprint && playerMovementInput.MoveInput.y > 0f ? 1.5f : 1f;
+        characterController.Move(moveSpeed * moveSpeedMultiplier * Time.deltaTime * moveDirection);
+    }
+
+    private void SetMoveAnimation(Vector2 moveInput)
+    {
+        animator.SetFloat("HorizontalMove", moveInput.x * moveSpeedMultiplier, 0.05f, Time.deltaTime);
+        animator.SetFloat("VerticalMove", moveInput.y * moveSpeedMultiplier, 0.05f, Time.deltaTime);
     }
 
     private void Jump()
     {
         if(playerMovementInput.jumpAction.triggered && isGrounded)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravityForce);
+            gravityVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravityForce);
         }
     }
 
     private void SetGravity()
     {
-        velocity.y += gravityForce * Time.deltaTime;
+        gravityVelocity.y += gravityForce * Time.deltaTime;
 
-        characterController.Move(velocity * Time.deltaTime);
+        characterController.Move(gravityVelocity * Time.deltaTime);
     }
 }
