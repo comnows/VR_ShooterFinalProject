@@ -1,28 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Normal.Realtime;
 
 public class Enemy : AttackTarget
 {
-    private int health = 50;
+    private EnemySyncData enemySyncData;
 
-    public override void ReceiveAttack(int damage)
+    private RealtimeTransform _realtimeTransform;
+
+    private void Awake() 
     {
-        TakeDamage(damage);
+        _realtimeTransform = GetComponent<RealtimeTransform>();
+        enemySyncData = GetComponent<EnemySyncData>();
+    }
 
-        if (health <= 0)
+    public override void ReceiveAttack(int damage, GameObject damagesDealer)
+    {
+        if (enemySyncData._enemyHP > 0)
         {
-            Die();
+            enemySyncData.DecreaseEnemyHP(damage, damagesDealer);
         }
     }
 
-    private void TakeDamage(int damage)
+    public void DeleyDeath()
     {
-        health -= damage;
+        StartCoroutine(Die());
     }
 
-    private void Die()
+    public IEnumerator Die()
     {
-        Destroy(gameObject);
+        yield return new WaitForSeconds(5);
+        if (!_realtimeTransform.isUnownedInHierarchy)
+        {
+            _realtimeTransform.ClearOwnership();
+            Destroy(gameObject);
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Normal.Realtime;
 
 public class VerticalSlidingDoor : Interactable
 {
@@ -11,14 +12,23 @@ public class VerticalSlidingDoor : Interactable
 
     private Vector3 startPosition;
     private Vector3 slideDirection = Vector3.up;
+    
+    private RealtimeView _playerRealtimeView;
+    private RealtimeTransform _realtimeTransform;
 
     private void Start()
     {
         startPosition = transform.position;
+        _realtimeTransform = GetComponent<RealtimeTransform>();
     }
 
     public override void Interact(GameObject player)
     {
+        if (_realtimeTransform.isUnownedInHierarchy)
+        _playerRealtimeView = player.GetComponent<RealtimeView>();
+        int playerID = _playerRealtimeView.ownerIDInHierarchy;
+        GetComponent<RealtimeTransform>().SetOwnership(playerID);
+
         Debug.Log("Door opening");
 
         if (isOpen) return;

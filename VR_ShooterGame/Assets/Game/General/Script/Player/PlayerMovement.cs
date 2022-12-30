@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Normal.Realtime;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -24,20 +25,40 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 gravityVelocity;
     private bool isGrounded;
 
+    private PlayerSyncData playerSyncData;
+
+    private RealtimeView _realtimeView;
+
     private void Awake()
     {
+        _realtimeView = GetComponent<RealtimeView>();  
+        playerSyncData = GetComponent<PlayerSyncData>();  
         playerMovementInput = GetComponent<PlayerMovementInput>();
         animator = GetComponentInChildren<Animator>();
     }
 
+    private void Start() {
+        if (_realtimeView.isOwnedLocallyInHierarchy)
+            LocalStart();
+    }
+
+    private void LocalStart() {
+        GetComponent<RealtimeTransform>().RequestOwnership();
+        characterController.GetComponent<RealtimeTransform>().RequestOwnership();
+    }
+
     private void Update() 
     {
-        SetMoveDirection(playerMovementInput.MoveInput);
-        ResetGravity();
-        Move();
-        SetMoveAnimation(playerMovementInput.MoveInput);
-        Jump();
-        SetGravity();
+        if (_realtimeView.isOwnedLocallyInHierarchy)
+        {
+            //playerSyncData.ChangedPlayerMoveInput(playerMovementInput.MoveInput);
+            SetMoveDirection(playerMovementInput.MoveInput);
+            ResetGravity();
+            Move();
+            SetMoveAnimation(playerMovementInput.MoveInput);
+            Jump();
+            SetGravity();
+        }
     }
 
     public void SetMoveDirection(Vector2 moveInput)
@@ -58,10 +79,13 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
         moveSpeedMultiplier = playerMovementInput.IsSprint && playerMovementInput.MoveInput.y > 0f ? 1.5f : 1f;
+        
+        playerSyncData.ChangedPlayerMoveSpeedMultiplier(moveSpeedMultiplier);
+
         characterController.Move(moveSpeed * moveSpeedMultiplier * Time.deltaTime * moveDirection);
     }
 
-    private void SetMoveAnimation(Vector2 moveInput)
+    public void SetMoveAnimation(Vector2 moveInput)
     {
         animator.SetFloat("HorizontalMove", moveInput.x * moveSpeedMultiplier, 0.05f, Time.deltaTime);
         animator.SetFloat("VerticalMove", moveInput.y * moveSpeedMultiplier, 0.05f, Time.deltaTime);

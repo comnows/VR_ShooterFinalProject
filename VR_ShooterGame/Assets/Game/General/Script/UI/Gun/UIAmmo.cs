@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using Normal.Realtime;
 
 public class UIAmmo : MonoBehaviour
 {
@@ -8,17 +9,21 @@ public class UIAmmo : MonoBehaviour
 
     [SerializeField] private TMP_Text magazineAmmoText;
     [SerializeField] private TMP_Text stashAmmoText;
+    
+    private RealtimeView _realtimeView;
 
     private void Awake()
     {
-        gun = GameObject.FindObjectOfType<Gun>();
-        gunSwitching = GameObject.FindObjectOfType<GunSwitching>();
+        //gun = GameObject.FindObjectOfType<Gun>();
+        //gunSwitching = GameObject.FindObjectOfType<GunSwitching>();
     }
 
-    private void Start()
-    {
-        SetAmmoText(gun.gunData.currentMagazineAmmo, gun.gunData.currentStashAmmo);
-    }
+    // private void Start()
+    // {
+    //     gun = GameObject.FindObjectOfType<Gun>();
+    //     gunSwitching = GameObject.FindObjectOfType<GunSwitching>();
+    //     SetAmmoText(gun.gunData.currentMagazineAmmo, gun.gunData.currentStashAmmo);
+    // }
     
     private void OnEnable()
     {
