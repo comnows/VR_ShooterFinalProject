@@ -26,6 +26,15 @@ public class VerticalSlidingDoor : Interactable
         StartCoroutine(DoorOpen());
     }
 
+    public void VRInteract()
+    {
+        Debug.Log("Door opening");
+
+        if (isOpen) return;
+
+        StartCoroutine(DoorOpen());
+    }
+
     private IEnumerator DoorOpen()
     {
         Vector3 endPosition = startPosition + slideAmount * slideDirection;
