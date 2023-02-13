@@ -22,4 +22,4 @@ MonoBehaviour:
   aimSpeed: 10
   aimFieldOfView: 15
   currentStashAmmo: 30
-  currentMagazineAmmo: 0
+  currentMagazineAmmo: 9999

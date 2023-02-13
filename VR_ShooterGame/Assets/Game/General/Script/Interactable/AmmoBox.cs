@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class AmmoBox : Interactable
 {
@@ -38,5 +39,10 @@ public class AmmoBox : Interactable
         {
             Destroy(gameObject);
         }
+    }
+
+    public override void VRInteract(SelectEnterEventArgs args)
+    {
+        Gun gun = args.interactorObject.transform.GetComponentInParent<Gun>();
     }
 }

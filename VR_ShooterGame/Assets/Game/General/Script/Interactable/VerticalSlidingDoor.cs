@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class VerticalSlidingDoor : Interactable
 {
@@ -26,7 +27,7 @@ public class VerticalSlidingDoor : Interactable
         StartCoroutine(DoorOpen());
     }
 
-    public void VRInteract()
+    public override void VRInteract(SelectEnterEventArgs args)
     {
         Debug.Log("Door opening");
 
