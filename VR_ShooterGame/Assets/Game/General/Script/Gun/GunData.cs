@@ -4,6 +4,7 @@ using UnityEngine;
 public class GunData : ScriptableObject
 {
     public new string name;
+    public int type; //1-primary 2-secondary 3-special
     public GameObject prefab;
     public int maxStashAmmo;
     public int magazineSize;

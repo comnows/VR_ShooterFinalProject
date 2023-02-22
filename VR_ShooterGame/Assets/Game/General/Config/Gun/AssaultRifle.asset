@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: AssaultRifle
   m_EditorClassIdentifier: 
   name: AssaultRifle
+  type: 1
   prefab: {fileID: 3958516044013683163, guid: 0e01a6d881471b94d8e910003cfe437d, type: 3}
   maxStashAmmo: 270
   magazineSize: 30

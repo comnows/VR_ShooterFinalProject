@@ -768,6 +768,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
+    Android: NORMCORE
     Standalone: NORMCORE
   additionalCompilerArguments: {}
   platformArchitecture: {}
