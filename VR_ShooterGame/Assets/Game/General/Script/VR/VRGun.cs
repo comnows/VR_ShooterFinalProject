@@ -30,7 +30,7 @@ public class VRGun : MonoBehaviour
 
             if (target != null)
             {
-                target.ReceiveAttack(gunData.bulletDamage);
+                target.ReceiveAttack(gunData.bulletDamage, this.gameObject);
             }
         }
     }

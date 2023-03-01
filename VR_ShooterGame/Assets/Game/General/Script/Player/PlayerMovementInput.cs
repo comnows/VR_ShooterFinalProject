@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Normal.Realtime;
 
 public class PlayerMovementInput : MonoBehaviour
 {
@@ -21,11 +22,15 @@ public class PlayerMovementInput : MonoBehaviour
     public bool IsSprint { get; private set; }
 
     private float lookSensitivity = 100f;
+    private PlayerSyncData playerSyncData;
+    private RealtimeView _realtimeView;
 
     void Awake()
     {
+        _realtimeView = GetComponent<RealtimeView>(); 
         playerInputActions = new PlayerInputActions();
         playerMovement = GetComponent<PlayerMovement>();
+        playerSyncData = GetComponent<PlayerSyncData>();  
         // playerLookMovement = GetComponentInChildren<PlayerLookMovement>();
 
         InitMovementActions();
@@ -105,7 +110,11 @@ public class PlayerMovementInput : MonoBehaviour
 
     void SetMoveInput(InputAction.CallbackContext context)
     {
-        MoveInput = context.ReadValue<Vector2>();
+        if (_realtimeView.isOwnedLocallyInHierarchy)
+        {
+            MoveInput = context.ReadValue<Vector2>();
+            playerSyncData.ChangedPlayerMoveInput(MoveInput);
+        }
     }
     
     void GetLookInput(InputAction.CallbackContext context)

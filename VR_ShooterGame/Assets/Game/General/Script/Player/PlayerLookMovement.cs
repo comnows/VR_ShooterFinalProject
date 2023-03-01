@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Normal.Realtime;
 
 public class PlayerLookMovement : MonoBehaviour
 {
@@ -13,6 +14,13 @@ public class PlayerLookMovement : MonoBehaviour
     [SerializeField] private float mouseSensitivity = 100f;
     private float xRotation = 0f;
 
+    private RealtimeView _realtimeView;
+
+    private void Awake() 
+    {
+        _realtimeView = GetComponent<RealtimeView>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,9 +30,14 @@ public class PlayerLookMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_realtimeView.isOwnedLocallyInHierarchy)
+            LocalUpdate();
+    }
+
+    void LocalUpdate()
+    {
         SetVerticalRotation();
         VerticalRotate();
-
         RotateBody();
     }
 
