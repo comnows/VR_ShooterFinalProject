@@ -5,7 +5,6 @@ public class UIAmmo : MonoBehaviour
 {
     private Gun gun;
     private GunSwitching gunSwitching;
-
     [SerializeField] private TMP_Text magazineAmmoText;
     [SerializeField] private TMP_Text stashAmmoText;
 

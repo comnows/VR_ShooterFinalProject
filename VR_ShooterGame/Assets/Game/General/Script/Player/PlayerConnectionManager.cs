@@ -9,6 +9,7 @@ public class PlayerConnectionManager : MonoBehaviour {
     public GameObject spawnPoint;
     private Realtime _realtime;
     private UIAmmo uIAmmo;
+
     private void Awake() 
     {
         // Get the Realtime component on this game object

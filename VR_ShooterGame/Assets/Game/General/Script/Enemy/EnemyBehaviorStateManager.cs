@@ -9,7 +9,7 @@ public class EnemyBehaviorStateManager : MonoBehaviour
     private string currentState;
     public Animator animator;
     public NavMeshAgent nav;
-    private Transform player;
+    private GameObject player;
     public LayerMask whatIsGround, whatIsPlayer;
 
     private float highestDistance;
@@ -18,7 +18,6 @@ public class EnemyBehaviorStateManager : MonoBehaviour
 
     private float timeBetweenAttacks;
     private bool alreadyAttacked;
-    
     private GameObject[] playersInSight;
 
     private EnemySyncData enemySyncData;
@@ -104,6 +103,7 @@ public class EnemyBehaviorStateManager : MonoBehaviour
             case "Die":
             Death();
             break;
+
         } 
     }
 
@@ -115,6 +115,15 @@ public class EnemyBehaviorStateManager : MonoBehaviour
         if (playerInSightRange)
         {
             playersInSight = GameObject.FindGameObjectsWithTag("Player"); 
+            foreach (GameObject _player in playersInSight)
+            {
+                float distanceBetweenPlayer = Vector3.Distance(_player.transform.position, this.transform.position);
+                if (distanceBetweenPlayer < 10 && _player.GetComponent<PlayerSyncData>()._playerHP > 0)
+                {
+                    currentState = "Chase";
+                    enemySyncData.ChangeBehaviorState(currentState);
+                }
+            }
             // foreach (GameObject _player in playersInSight)
             // {
             //     float distanceBetweenPlayer = Vector3.Distance(_player.transform.position, transform.position);
@@ -126,8 +135,8 @@ public class EnemyBehaviorStateManager : MonoBehaviour
             //         highestDistance = distanceBetweenPlayer;
             //     }
             // }
-            currentState = "Chase";
-            enemySyncData.ChangeBehaviorState(currentState);
+            // currentState = "Chase";
+            // enemySyncData.ChangeBehaviorState(currentState);
         }
     }
 
@@ -140,11 +149,16 @@ public class EnemyBehaviorStateManager : MonoBehaviour
             float distanceBetweenPlayer = Vector3.Distance(_player.transform.position, this.transform.position);
             // Debug.Log("distanceBetweenPlayer = " + distanceBetweenPlayer);
             // Debug.Log("highestDistance = " + highestDistance);
-            if (distanceBetweenPlayer < 10)
+            if (distanceBetweenPlayer < 10 && _player.GetComponent<PlayerSyncData>()._playerHP > 0)
             {
-                player = _player.transform;
-                nav.SetDestination(player.position);
+                player = _player;
+                nav.SetDestination(player.transform.position);
                 //highestDistance = distanceBetweenPlayer;
+            }
+            else
+            {
+                currentState = "Chase";
+                enemySyncData.ChangeBehaviorState(currentState);
             }
         }
         //nav.SetDestination(player.position);
@@ -153,8 +167,16 @@ public class EnemyBehaviorStateManager : MonoBehaviour
 
         if (playerInAttackRange) 
         {
-            currentState = "Attack";
-            enemySyncData.ChangeBehaviorState(currentState);
+            if (player.GetComponent<PlayerSyncData>()._playerHP > 0)
+            {
+                currentState = "Attack";
+                enemySyncData.ChangeBehaviorState(currentState);
+            }
+            else 
+            {
+                currentState = "Idle";
+                enemySyncData.ChangeBehaviorState(currentState);
+            }
         }
     }
 
@@ -162,22 +184,41 @@ public class EnemyBehaviorStateManager : MonoBehaviour
     {
         animator.SetBool("isChase",false);
         nav.SetDestination(transform.position);
-        transform.LookAt(player);
+        transform.LookAt(player.transform);
         //animator.SetBool("canAttack",true);
         if (!alreadyAttacked)
         {
-            animator.SetTrigger("Attack");
-            alreadyAttacked = true;
-            //animator.SetBool("canAttack",false);
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            if (player.GetComponent<PlayerSyncData>()._playerHP > 0)
+            {
+                animator.SetTrigger("Attack");
+                alreadyAttacked = true;
+                //animator.SetBool("canAttack",false);
+                Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            }
         }
 
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer); 
 
         if (!playerInAttackRange)
         {
-            currentState = "Chase";
-            enemySyncData.ChangeBehaviorState(currentState);
+            if (player.GetComponent<PlayerSyncData>()._playerHP > 0)
+            {
+                currentState = "Chase";
+                enemySyncData.ChangeBehaviorState(currentState);
+            }
+            else 
+            {
+                currentState = "Idle";
+                enemySyncData.ChangeBehaviorState(currentState);
+            }
+        }
+        else if (playerInAttackRange)
+        {
+            if (player.GetComponent<PlayerSyncData>()._playerHP <= 0)
+            {
+                currentState = "Idle";
+                enemySyncData.ChangeBehaviorState(currentState);
+            }
         }
     }
 

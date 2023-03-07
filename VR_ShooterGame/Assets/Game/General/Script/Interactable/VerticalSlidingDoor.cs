@@ -7,7 +7,6 @@ using Normal.Realtime;
 public class VerticalSlidingDoor : Interactable
 {
     public bool isOpen = false;
-
     [SerializeField] private float slideAmount = 1.0f;
     [SerializeField] private float slideSpeed = 1.0f;
 

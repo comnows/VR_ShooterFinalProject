@@ -5,7 +5,7 @@ using Normal.Realtime;
 
 public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
 {
-    private int _playerHP;
+    public int _playerHP;
     private int _playerScore;
     public Vector2 _playerMoveInput;
     public float _playerMoveSpeedMultiplier;
@@ -87,6 +87,12 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         _playerHP = model.playerHP;
 
         Debug.Log("PlayerHP = " + _playerHP);
+
+        if (_playerHP <= 0) 
+        {
+            this.GetComponent<PlayerMovement>().enabled = false;
+            this.GetComponent<Gun>().enabled = false;
+        } 
     }
 
 
