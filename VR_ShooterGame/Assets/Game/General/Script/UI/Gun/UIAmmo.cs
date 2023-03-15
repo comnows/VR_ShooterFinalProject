@@ -5,22 +5,36 @@ public class UIAmmo : MonoBehaviour
 {
     private Gun gun;
     private GunSwitching gunSwitching;
-
     [SerializeField] private TMP_Text magazineAmmoText;
     [SerializeField] private TMP_Text stashAmmoText;
 
-    private void Awake()
+    // private void Awake()
+    // {
+    //     gun = GameObject.FindObjectOfType<Gun>();
+    //     gunSwitching = GameObject.FindObjectOfType<GunSwitching>();
+    // }
+
+    // private void Start()
+    // {
+    //     SetAmmoText(gun.gunData.currentMagazineAmmo, gun.gunData.currentStashAmmo);
+    // }
+    
+    // private void OnEnable()
+    // {
+    //     gun.OnGunShoot += SetMagazineAmmoText;
+    //     gun.OnGunReload += SetAmmoText;
+    //     gunSwitching.OnGunSwitch += SetAllAmmoText;
+    // }
+
+    public void InitScript(GameObject player)
     {
-        gun = GameObject.FindObjectOfType<Gun>();
-        gunSwitching = GameObject.FindObjectOfType<GunSwitching>();
+        gun = player.GetComponent<Gun>();
+        gunSwitching = player.GetComponent<GunSwitching>();
+        SetAmmoText(gun.gunData.currentMagazineAmmo, gun.gunData.currentStashAmmo);
+        Subscribe();
     }
 
-    private void Start()
-    {
-        SetAmmoText(gun.gunData.currentMagazineAmmo, gun.gunData.currentStashAmmo);
-    }
-    
-    private void OnEnable()
+    private void Subscribe()
     {
         gun.OnGunShoot += SetMagazineAmmoText;
         gun.OnGunReload += SetAmmoText;

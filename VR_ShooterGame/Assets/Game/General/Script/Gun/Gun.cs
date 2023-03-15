@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Normal.Realtime;
 
 public class Gun : MonoBehaviour
 {
@@ -12,7 +13,9 @@ public class Gun : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Camera weaponCamera;
     [SerializeField] private GameObject bulletHolePrefab;
+    [SerializeField] private AudioSource audioSource;
 
+    private RealtimeView _realtimeView;
     public GameObject currentGun;
     public GunData gunData;
     private GameObject weaponHolder;
@@ -32,11 +35,19 @@ public class Gun : MonoBehaviour
         weaponHolder = transform.Find("NonVRController/CameraHolder/CameraRecoil/WeaponCamera/WeaponHolder").gameObject;
     }
 
+    private void Awake() 
+    {
+        _realtimeView = GetComponent<RealtimeView>();
+        audioSource = GetComponent<AudioSource>();
+    }
+
     void Update()
     {
-        if(gunInput.ShootInput && CanShoot())
+        if (_realtimeView.isOwnedLocallyInHierarchy)
         {
-            nextTimeToFire = Time.time + 1f / gunData.fireRatePerSecond;
+            if(gunInput.ShootInput && CanShoot())
+            {
+                nextTimeToFire = Time.time + 1f / gunData.fireRatePerSecond;
 
             Shoot();
 
@@ -49,13 +60,14 @@ public class Gun : MonoBehaviour
         {
             isAimingDownSight = !isAimingDownSight;
 
-            StartCoroutine(AimingDownSight());
-        }
+                StartCoroutine(AimingDownSight());
+            }
 
-        if(gunInput.reloadAction.triggered && CanReload())
-        {
-            Debug.Log("Gun Reload");
-            StartCoroutine(Reload());
+            if(gunInput.reloadAction.triggered && CanReload())
+            {
+                Debug.Log("Gun Reload");
+                StartCoroutine(Reload());
+            }
         }
     }
 
@@ -80,6 +92,7 @@ public class Gun : MonoBehaviour
 
     void Shoot()
     {
+        audioSource.PlayOneShot(audioSource.clip);
         RaycastHit hitInfo;
         if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hitInfo, shotRange))
         {
@@ -89,7 +102,7 @@ public class Gun : MonoBehaviour
 
             if (target != null)
             {
-                target.ReceiveAttack(gunData.bulletDamage);
+                target.ReceiveAttack(gunData.bulletDamage, gameObject);
             }
 
             GameObject bulletHole = Instantiate(bulletHolePrefab, hitInfo.point + hitInfo.normal * 0.001f, Quaternion.LookRotation(hitInfo.normal));
