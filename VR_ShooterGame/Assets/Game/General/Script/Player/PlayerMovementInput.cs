@@ -10,7 +10,7 @@ public class PlayerMovementInput : MonoBehaviour
     [SerializeField] PlayerLookMovement playerLookMovement;
 
     InputAction moveAction;
-    InputAction lookAction;
+    public InputAction lookAction;
     InputAction sprintAction;
     public InputAction jumpAction;
 

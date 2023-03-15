@@ -15,6 +15,7 @@ public class Gun : MonoBehaviour
 
     public GameObject currentGun;
     public GunData gunData;
+    private GameObject weaponHolder;
 
     private int damage = 10;
     private float fireRate = 10f;
@@ -25,10 +26,11 @@ public class Gun : MonoBehaviour
     public bool isAimingDownSight = false;
     private bool isReload = false;
 
-    // void Start()
-    // {
-    //     gunData.Initialize();
-    // }
+    void Start()
+    {
+        //gunData.Initialize();
+        weaponHolder = transform.Find("NonVRController/CameraHolder/CameraRecoil/WeaponCamera/WeaponHolder").gameObject;
+    }
 
     void Update()
     {
@@ -37,7 +39,11 @@ public class Gun : MonoBehaviour
             nextTimeToFire = Time.time + 1f / gunData.fireRatePerSecond;
 
             Shoot();
+
+            ApplyKickback();
         }
+
+        MoveGunToDefaultPosition();
 
         if(gunInput.aimAction.triggered)
         {
@@ -91,6 +97,16 @@ public class Gun : MonoBehaviour
 
         gunData.RemoveCurrentMagazineAmmo();
         OnGunShoot?.Invoke();
+    }
+
+    private void ApplyKickback()
+    {
+        weaponHolder.transform.position -= weaponHolder.transform.forward * gunData.kickback;
+    }
+
+    private void MoveGunToDefaultPosition()
+    {
+        weaponHolder.transform.localPosition = Vector3.Lerp(weaponHolder.transform.localPosition, Vector3.zero, Time.deltaTime * 4f);
     }
 
     private IEnumerator AimingDownSight()

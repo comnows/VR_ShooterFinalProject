@@ -19,8 +19,9 @@ MonoBehaviour:
   magazineSize: 30
   bulletDamage: 10
   fireRatePerSecond: 8
+  kickback: 0.025
   reloadTime: 1
   aimSpeed: 10
   aimFieldOfView: 15
-  currentStashAmmo: 30
-  currentMagazineAmmo: 9999
+  currentStashAmmo: 270
+  currentMagazineAmmo: 0

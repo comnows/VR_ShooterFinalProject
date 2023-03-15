@@ -11,6 +11,7 @@ public class GunData : ScriptableObject
 
     public int bulletDamage;
     public float fireRatePerSecond;
+    public float kickback;
     public float reloadTime;
     public float aimSpeed;
     public float aimFieldOfView;
