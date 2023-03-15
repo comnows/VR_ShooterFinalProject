@@ -4,12 +4,14 @@ using UnityEngine;
 public class GunData : ScriptableObject
 {
     public new string name;
+    public int type; //1-primary 2-secondary 3-special
     public GameObject prefab;
     public int maxStashAmmo;
     public int magazineSize;
 
     public int bulletDamage;
     public float fireRatePerSecond;
+    public float kickback;
     public float reloadTime;
     public float aimSpeed;
     public float aimFieldOfView;

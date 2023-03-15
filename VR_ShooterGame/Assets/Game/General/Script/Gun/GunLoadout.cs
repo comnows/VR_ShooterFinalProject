@@ -18,4 +18,10 @@ public class GunLoadout : MonoBehaviour
             gun.Initialize();
         }
     }
+
+    public void AddGun(GunData gun)
+    {
+        int slot = gun.type - 1;
+        guns[slot] = gun;
+    }
 }
