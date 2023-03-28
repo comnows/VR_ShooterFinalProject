@@ -18,7 +18,7 @@ public class PlayerLookMovement : MonoBehaviour
 
     private void Awake() 
     {
-        _realtimeView = GetComponent<RealtimeView>();
+        // _realtimeView = GetComponent<RealtimeView>();
     }
 
     // Start is called before the first frame update
@@ -30,7 +30,7 @@ public class PlayerLookMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_realtimeView.isOwnedLocallyInHierarchy)
+        // if (_realtimeView.isOwnedLocallyInHierarchy)
             LocalUpdate();
     }
 
