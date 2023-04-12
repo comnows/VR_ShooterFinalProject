@@ -18,7 +18,7 @@ public class Gun : MonoBehaviour
     private RealtimeView _realtimeView;
     public GameObject currentGun;
     public GunData gunData;
-    private GameObject weaponHolder;
+    public GameObject weaponHolder;
 
     private int damage = 10;
     private float fireRate = 10f;
@@ -32,7 +32,7 @@ public class Gun : MonoBehaviour
     void Start()
     {
         //gunData.Initialize();
-        weaponHolder = transform.Find("NonVRController/CameraHolder/CameraRecoil/WeaponCamera/WeaponHolder").gameObject;
+        //weaponHolder = transform.Find("NonVRController/CameraHolder/CameraRecoil/WeaponCamera/WeaponHolder").gameObject;
     }
 
     private void Awake() 
@@ -43,42 +43,56 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        if (_realtimeView.isOwnedLocallyInHierarchy)
-        {
-            if(gunInput.ShootInput && CanShoot())
-            {
-                nextTimeToFire = Time.time + 1f / gunData.fireRatePerSecond;
+        // if (_realtimeView.isOwnedLocallyInHierarchy)
+        // {
+                if(gunData.isAutoFire)
+                {
+                    if(gunInput.ShootInput && CanShoot())
+                    {
+                        nextTimeToFire = 1f / gunData.fireRatePerSecond;
 
-            Shoot();
+                        Shoot();
 
-            ApplyKickback();
-        }
+                        //ApplyKickback();
+                    }
+                }
+                else
+                {
+                    if(gunInput.shootAction.triggered)
+                    {
+                        if(CanShoot())
+                        {
+                            nextTimeToFire = 1f / gunData.fireRatePerSecond;
+                            Shoot();
+                        }
+                    }
+                }
 
-        MoveGunToDefaultPosition();
+                nextTimeToFire -= Time.deltaTime;
 
-        if(gunInput.aimAction.triggered)
-        {
-            isAimingDownSight = !isAimingDownSight;
+                    //MoveGunToDefaultPosition();
 
-                StartCoroutine(AimingDownSight());
-            }
-
-            if(gunInput.reloadAction.triggered && CanReload())
-            {
-                Debug.Log("Gun Reload");
-                StartCoroutine(Reload());
-            }
-        }
-    }
-
-    void DoShoot()
-    {
-        
+                if(gunInput.aimAction.triggered)
+                {
+                    if(!gunData.canAimDownSight) return;
+                    
+                    isAimingDownSight = !isAimingDownSight;
+                    StartCoroutine(AimingDownSight());
+                }
+                
+                if(gunInput.reloadAction.triggered && CanReload())
+                {
+                    if(gunData.isAmmoLimited && gunData.currentStashAmmo <= 0) return;
+                    
+                    Debug.Log("Gun Reload");
+                    StartCoroutine(Reload());
+                }
+        // }
     }
 
     bool CanShoot()
     {
-        bool canShoot = Time.time >= nextTimeToFire && gunData.currentMagazineAmmo > 0 && !isReload;
+        bool canShoot = nextTimeToFire <= 0 && gunData.currentMagazineAmmo > 0 && !isReload;
 
         return canShoot;
     }
@@ -92,7 +106,7 @@ public class Gun : MonoBehaviour
 
     void Shoot()
     {
-        audioSource.PlayOneShot(audioSource.clip);
+        // audioSource.PlayOneShot(audioSource.clip);
         RaycastHit hitInfo;
         if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hitInfo, shotRange))
         {
@@ -114,7 +128,7 @@ public class Gun : MonoBehaviour
 
     private void ApplyKickback()
     {
-        weaponHolder.transform.position -= weaponHolder.transform.forward * gunData.kickback;
+        weaponHolder.transform.position += weaponHolder.transform.up * gunData.kickback;
     }
 
     private void MoveGunToDefaultPosition()
@@ -180,4 +194,5 @@ public class Gun : MonoBehaviour
 
         isReload = false;
     }
+
 }
