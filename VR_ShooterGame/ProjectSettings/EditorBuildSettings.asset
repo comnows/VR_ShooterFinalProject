@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Game/General/Scenes/GameMap_LV1.unity
     guid: 99ec177bbd8d4fe4fb8c23028a3bf843
+  - enabled: 0
+    path: Assets/Game/General/Scenes/GameMap_LV_Boss_Test.unity
+    guid: 56bd15230ce47ab4097b3c958fa15bae
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3ef2d597f561da8489356ac373c42e2d,
       type: 2}
