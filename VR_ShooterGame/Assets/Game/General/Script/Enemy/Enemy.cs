@@ -5,26 +5,40 @@ using Normal.Realtime;
 
 public class Enemy : AttackTarget
 {
-    private EnemySyncData enemySyncData;
-    private RealtimeTransform _realtimeTransform;
-    public Animator animator;
+    public EnemySyncData enemySyncData;
+    //private RealtimeTransform _realtimeTransform;
 
-    private void Awake() 
+    public void Awake() 
     {
-        _realtimeTransform = GetComponent<RealtimeTransform>();
+        //_realtimeTransform = GetComponent<RealtimeTransform>();
         enemySyncData = GetComponent<EnemySyncData>();
-        animator = GetComponentInChildren<Animator>();
     }
 
     public override void ReceiveAttack(int damage, GameObject damagesDealer)
     {
-        TakeDamage(damage);
+        TakeDamage(damage,damagesDealer);
+        EnemyBehaviorStateManager enemyBehaviorStateManager = gameObject.GetComponent<EnemyBehaviorStateManager>();
+        if (enemyBehaviorStateManager != null) 
+        {
+            if (enemyBehaviorStateManager.player == null)
+            {
+                enemyBehaviorStateManager.SetTarget(damagesDealer);
+            }
+        }
+        else
+        {
+            EnemyTypeShootBehaviorStateManager enemyTypeShootBehaviorStateManager = gameObject.GetComponent<EnemyTypeShootBehaviorStateManager>();
+            if (enemyTypeShootBehaviorStateManager.player == null)
+            {
+                enemyTypeShootBehaviorStateManager.SetTarget(damagesDealer);
+            }
+        }
     }
-    private void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage, GameObject damagesDealer)
     {
         if (enemySyncData._enemyHP > 0)
         {
-            enemySyncData.ChangeEnemyHP(damage);
+            enemySyncData.ChangeEnemyHP(damage,damagesDealer);
         }
     
     }

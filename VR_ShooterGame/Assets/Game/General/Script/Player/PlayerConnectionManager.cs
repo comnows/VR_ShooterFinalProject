@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Animations;
 using System.Collections.Generic;
+using System.Collections;
 using Normal.Realtime;
 
 public class PlayerConnectionManager : MonoBehaviour {
@@ -9,6 +10,8 @@ public class PlayerConnectionManager : MonoBehaviour {
     public GameObject spawnPoint;
     private Realtime _realtime;
     private UIAmmo uIAmmo;
+
+    private UIScore uIScore;
 
     private void Awake() 
     {
@@ -19,6 +22,7 @@ public class PlayerConnectionManager : MonoBehaviour {
         _realtime.didConnectToRoom += DidConnectToRoom;
 
         uIAmmo = GameObject.FindObjectOfType<UIAmmo>();
+        uIScore = GameObject.FindObjectOfType<UIScore>();
     }
 
     private void DidConnectToRoom(Realtime realtime) 
@@ -32,6 +36,8 @@ public class PlayerConnectionManager : MonoBehaviour {
         GameObject playerGameObject = Realtime.Instantiate(_prefab.name, options);
 
         playerGameObject.transform.position = spawnPoint.transform.position;
+
+        ChangePlayerName(playerGameObject);
 
         GameObject playerGameObjectChild = playerGameObject.transform.GetChild(0).gameObject;
 
@@ -48,7 +54,17 @@ public class PlayerConnectionManager : MonoBehaviour {
         normalCamera.SetActive(true);
 
         RealtimeView _realtimeView = playerGameObject.GetComponent<RealtimeView>();  
-        if (_realtimeView.isOwnedLocallyInHierarchy)       
-         uIAmmo.InitScript(playerGameObject);
+        if (_realtimeView.isOwnedLocallyInHierarchy)
+        {       
+            uIAmmo.InitScript(playerGameObject);
+            uIScore.InitScript(playerGameObject);
+        }
+    }
+
+    private void ChangePlayerName(GameObject connectedPlayer)
+    {
+        GameObject [] allPlayerInGame = GameObject.FindGameObjectsWithTag("Player");
+        string connectedPlayerName = "Player " + allPlayerInGame.Length;
+        connectedPlayer.GetComponent<PlayerSyncData>().ChangedPlayerName(connectedPlayerName);
     }
 }
