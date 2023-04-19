@@ -420,7 +420,7 @@ MonoBehaviour:
     trackingPositionOffset: {x: 0, y: 0, z: 0}
     trackingRotationOffset: {x: 0, y: 0, z: 0}
   headConstraint: {fileID: 1382258331}
-  headBodyOffset: {x: 0, y: 0, z: 0}
+  turnSmoothness: 0
 --- !u!1 &272282566
 GameObject:
   m_ObjectHideFlags: 0
@@ -1064,6 +1064,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 321372458}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1007602096 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4206993759831475632, guid: 615e024c5af8a7c4d996e3d9efe6395b,
+    type: 3}
+  m_PrefabInstance: {fileID: 6880171646451191104}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88aae7cc1d6c085429056fd74f135d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1050990117 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 474934590818528309, guid: 320b1c2af77554f99a1658df4a6d3d5c,
@@ -1371,7 +1383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24611f90316388f4fbdda8ae11db7f31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  enemySyncData: {fileID: 0}
 --- !u!65 &1259015584
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2429,5 +2441,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6880171645126352214, guid: 615e024c5af8a7c4d996e3d9efe6395b,
+        type: 3}
+      propertyPath: gunEffect
+      value: 
+      objectReference: {fileID: 1007602096}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 615e024c5af8a7c4d996e3d9efe6395b, type: 3}

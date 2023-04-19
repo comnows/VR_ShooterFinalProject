@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GunEffect : MonoBehaviour
 {
-    [SerializeField] private Gun gun;
-
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private ParticleSystem hitEffect;
     [SerializeField] private TrailRenderer tracerEffect;
@@ -15,16 +13,6 @@ public class GunEffect : MonoBehaviour
 
     private Ray ray;
     private RaycastHit hitInfo;
-
-    private void OnEnable()
-    {
-        gun.OnGunShoot += CastFireEffect;
-    }
-
-    private void OnDisable()
-    {
-        gun.OnGunShoot -= CastFireEffect;
-    }
 
     public void CastFireEffect()
     {
@@ -36,11 +24,14 @@ public class GunEffect : MonoBehaviour
 
         if (Physics.Raycast(ray, out hitInfo))
         {
-            hitEffect.transform.position = hitInfo.point;
-            hitEffect.transform.forward = hitInfo.normal;
-            hitEffect.Emit(1);
+            SetTransformAndPlayHitEffect();
 
-            tracer.transform.position = hitInfo.point;
+            //tracer.transform.position = hitInfo.point;
+            SetTracerPositionTo(tracer, hitInfo.point);
+        }
+        else
+        {
+            SetTracerPositionTo(tracer, ray.GetPoint(100));
         }
     }
 
@@ -61,6 +52,18 @@ public class GunEffect : MonoBehaviour
         tracer.AddPosition(ray.origin);
 
         return tracer;
+    }
+
+    private void SetTransformAndPlayHitEffect()
+    {
+        hitEffect.transform.position = hitInfo.point;
+        hitEffect.transform.forward = hitInfo.normal;
+        hitEffect.Emit(1);
+    }
+
+    private void SetTracerPositionTo(TrailRenderer tracer, Vector3 point)
+    {
+        tracer.transform.position = point;
     }
 
     public void SetRaycastOrigin(Transform newRaycastOrigin)

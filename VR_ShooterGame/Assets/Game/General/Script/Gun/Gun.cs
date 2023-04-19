@@ -9,6 +9,7 @@ public class Gun : MonoBehaviour
     public event Action OnGunShoot;
     public Action<int, int> OnGunReload;
 
+    [SerializeField] private GunEffect gunEffect;
     [SerializeField] private GunInput gunInput;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Camera weaponCamera;
@@ -28,6 +29,16 @@ public class Gun : MonoBehaviour
     private float nextTimeToFire = 0f;
     public bool isAimingDownSight = false;
     private bool isReload = false;
+
+    private void OnEnable()
+    {
+        OnGunShoot += gunEffect.CastFireEffect;
+    }
+
+    private void OnDisable()
+    {
+        OnGunShoot -= gunEffect.CastFireEffect;
+    }
 
     void Start()
     {
@@ -119,7 +130,7 @@ public class Gun : MonoBehaviour
                 target.ReceiveAttack(gunData.bulletDamage, gameObject);
             }
 
-            GameObject bulletHole = Instantiate(bulletHolePrefab, hitInfo.point + hitInfo.normal * 0.001f, Quaternion.LookRotation(hitInfo.normal));
+            //GameObject bulletHole = Instantiate(bulletHolePrefab, hitInfo.point + hitInfo.normal * 0.001f, Quaternion.LookRotation(hitInfo.normal));
         }
 
         gunData.RemoveCurrentMagazineAmmo();

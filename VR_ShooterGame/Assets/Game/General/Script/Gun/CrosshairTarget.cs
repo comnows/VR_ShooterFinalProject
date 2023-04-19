@@ -19,9 +19,14 @@ public class CrosshairTarget : MonoBehaviour
     {
         RaySetup();
 
-        Physics.Raycast(ray, out hitInfo);
-
-        SetHitPosition();
+        if(Physics.Raycast(ray, out hitInfo))
+        {
+            SetHitPosition(hitInfo.point);
+        }
+        else
+        {
+            SetHitPosition(ray.GetPoint(100));
+        }
     }
 
     private void RaySetup()
@@ -30,8 +35,8 @@ public class CrosshairTarget : MonoBehaviour
         ray.direction = mainCamera.transform.forward;
     }
 
-    private void SetHitPosition()
+    private void SetHitPosition(Vector3 point)
     {
-        transform.position = hitInfo.point;
+        transform.position = point;
     }
 }
