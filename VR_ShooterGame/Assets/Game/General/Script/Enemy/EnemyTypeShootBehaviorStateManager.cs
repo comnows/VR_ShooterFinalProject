@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine.AI;
 using Normal.Realtime;
 public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
 {
+    public event Action OnAttack; 
     public string currentState;
     public Animator animator;
     public NavMeshAgent nav;
@@ -205,7 +207,6 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
         RaycastHit hitInfo;
         if(Physics.Raycast(aimingObj.transform.position, aimingObj.transform.forward, out hitInfo, attackRange))
         {
-            Debug.Log("Millllllllll" + hitInfo.transform.name);
             Debug.DrawRay(transform.position, transform.forward * attackRange, Color.green, 3);
 
             if (hitInfo.transform.CompareTag("Player"))
@@ -213,6 +214,7 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
                 hitInfo.transform.gameObject.GetComponent<PlayerSyncData>().DecreasePlayerHP(5);
             }
         }
+        OnAttack?.Invoke();
     }
 
     private void ResetAttack()
@@ -237,5 +239,10 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
         Destroy(gameObject);
+    }
+
+    private void SetRaycastOrigin()
+    {
+
     }
 }

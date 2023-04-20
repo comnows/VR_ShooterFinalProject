@@ -37,8 +37,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Start() {
-        // if (_realtimeView.isOwnedLocallyInHierarchy)
-            // LocalStart();
+        if (_realtimeView.isOwnedLocallyInHierarchy)
+            LocalStart();
     }
 
     private void LocalStart() {
@@ -48,14 +48,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update() 
     {
-        /*if (_realtimeView.isOwnedLocallyInHierarchy)
+        if (_realtimeView.isOwnedLocallyInHierarchy)
         {
             SetMoveDirection(playerMovementInput.MoveInput);
             ResetGravity();
             Move();
             Jump();
             SetGravity();
-        }*/
+        }
         SetMoveAnimation();
     }
 

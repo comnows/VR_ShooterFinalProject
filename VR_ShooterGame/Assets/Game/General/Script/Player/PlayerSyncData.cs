@@ -101,14 +101,12 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
 
         Debug.Log("PlayerHP = " + _playerHP);
 
-        if (_playerHP <= 0) 
-        {
-            this.GetComponent<PlayerMovement>().enabled = false;
-            this.GetComponent<Gun>().enabled = false;
-            
-        } 
+        // if (_playerHP <= 0) 
+        // {
+        //     this.GetComponent<PlayerMovement>().enabled = false;
+        //     this.GetComponent<Gun>().enabled = false;
+        // } 
     }
-
 
     private void UpdatePlayerScore() 
     {
@@ -152,6 +150,10 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
     public void AddPlayerHP(int hp) 
     {
         model.playerHP += hp;
+        if (model.playerHP > 100)
+        {
+            model.playerHP = 100;
+        }
     }
 
     public void DecreasePlayerHP(int hp) 
