@@ -9,30 +9,39 @@ public class VRGunMagazine : MonoBehaviour
     public XRGrabInteractable gunMagazineGrabInteractable;
     public VRGun vrGun;
 
+    private IEnumerator coroutine;
+
     private void Awake()
     {
         gunMagazineGrabInteractable = GetComponent<XRGrabInteractable>();
+        coroutine = DestroyMagazineIn(5f);
     }
 
     private void Start()
     {
-        gunMagazineGrabInteractable.selectEntered.AddListener(CancelDestroyMagazineOnSelectEntered);
-        gunMagazineGrabInteractable.selectExited.AddListener(DestroyMagazineOnSelectExited);
+        gunMagazineGrabInteractable.hoverEntered.AddListener(CancelDestroyMagazineOnHoverEntered);
+        gunMagazineGrabInteractable.hoverExited.AddListener(DestroyMagazineOnHoverExited);
     }
 
-    public void CancelDestroyMagazineOnSelectEntered(SelectEnterEventArgs args)
+    public void CancelDestroyMagazineOnHoverEntered(HoverEnterEventArgs args)
     {
-        StopCoroutine(DestroyMagazineIn(5));
+        StopCoroutine(coroutine);
     }
 
-    public void DestroyMagazineOnSelectExited(SelectExitEventArgs args)
+    public void DestroyMagazineOnHoverExited(HoverExitEventArgs args)
     {
-        if(args.interactableObject.isSelected){return;}
+        if(args.interactableObject.isHovered)
+        {
+            Debug.Log("is hovered by something");
+            return;
+        }
 
-        StartCoroutine(DestroyMagazineIn(5));
+        Debug.Log("isnt hover by anything and start coroutine");
+
+        StartCoroutine(coroutine);
     }
 
-    public IEnumerator DestroyMagazineIn(float timeInSecond)
+    IEnumerator DestroyMagazineIn(float timeInSecond)
     {
         yield return new WaitForSeconds(timeInSecond);
 

@@ -961,6 +961,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &992507477 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2655037159935168628, guid: 1726116822ab48c4cb66e80d1a646487,
+    type: 3}
+  m_PrefabInstance: {fileID: 2655037159519610539}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &992507478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992507477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32ff333b65f3e4144b8973c07925b0c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guns:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1001 &1033146840
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1553,6 +1575,16 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 209792960}
+    - target: {fileID: 6913271563341959896, guid: 1726116822ab48c4cb66e80d1a646487,
+        type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6913271563341959896, guid: 1726116822ab48c4cb66e80d1a646487,
+        type: 3}
+      propertyPath: m_LastSelectExited.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6913271563341959902, guid: 1726116822ab48c4cb66e80d1a646487,
         type: 3}
       propertyPath: vrGun

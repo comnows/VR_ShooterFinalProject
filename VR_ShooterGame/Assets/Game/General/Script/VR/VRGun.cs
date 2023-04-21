@@ -25,6 +25,11 @@ public class VRGun : MonoBehaviour
     private void Awake()
     {
         gunData = gunData.Clone();
+        gunData.Initialize();
+
+        GunLoadout gunLoadout = GetComponentInParent<GunLoadout>();
+        Debug.Log("gunLoadout is " + gunLoadout);
+        gunLoadout.AddGun(gunData);
     }
 
     private void OnEnable()

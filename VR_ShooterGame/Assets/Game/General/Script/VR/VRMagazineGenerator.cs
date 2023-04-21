@@ -12,41 +12,41 @@ public class VRMagazineGenerator : MonoBehaviour
 
     public Transform createdTransform;
 
+    private VRGunMagazine newMagazine;
+
     void Start()
     {
         CreateNewMagazine();
 
-        magazineInventory.selectExited.AddListener(CreateNewMagazineOnSelectExited);
+        magazineInventory.hoverExited.AddListener(CreateNewMagazineOnHoverExited);
     }
 
     public void CreateNewMagazine()
     {
-        VRGunMagazine newMagazine = CreateMagazine();
-        SetupMagazine(newMagazine);
+        CreateMagazine();
+        SetupMagazine();
     }
 
-    public VRGunMagazine CreateMagazine()
+    public void CreateMagazine()
     {
-        VRGunMagazine newMagazine = Instantiate(magazinePrefab, createdTransform.position, Quaternion.identity);
-
-        return newMagazine;
+        newMagazine = Instantiate(magazinePrefab, createdTransform.position, Quaternion.identity);
     }
 
-    public void SetupMagazine(VRGunMagazine magazine)
+    public void SetupMagazine()
     {
         if(!CanReload()){return;}
 
-        magazine.vrGun = vrGun;
+        newMagazine.vrGun = vrGun;
 
         GunData gunData = vrGun.gunData;
         if(IsAmmoLimit())
         {
-            magazine.bulletCount = Mathf.Min(gunData.magazineSize, gunData.currentStashAmmo);
-            RemoveBulletFromStash(magazine.bulletCount);
+            newMagazine.bulletCount = Mathf.Min(gunData.magazineSize, gunData.currentStashAmmo);
+            RemoveBulletFromStash(newMagazine.bulletCount);
         }
         else
         {
-            magazine.bulletCount = gunData.magazineSize;
+            newMagazine.bulletCount = gunData.magazineSize;
         }
     }
 
@@ -70,11 +70,10 @@ public class VRMagazineGenerator : MonoBehaviour
         vrGun.gunData.currentStashAmmo -= amount;
     }
 
-    public void CreateNewMagazineOnSelectExited(SelectExitEventArgs args)
+    public void CreateNewMagazineOnHoverExited(HoverExitEventArgs args)
     {
         if(magazineInventory.hasSelection){return;}
 
         CreateNewMagazine();
     }
-
 }
