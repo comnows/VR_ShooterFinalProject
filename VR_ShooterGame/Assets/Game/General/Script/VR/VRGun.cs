@@ -30,13 +30,11 @@ public class VRGun : MonoBehaviour
     private void OnEnable()
     {
         OnGunShoot += vrGunEffect.CastFireEffect;
-        OnGunShoot += gunData.RemoveCurrentMagazineAmmo;
     }
 
     private void OnDisable()
     {
         OnGunShoot -= vrGunEffect.CastFireEffect;
-        OnGunShoot -= gunData.RemoveCurrentMagazineAmmo;
     }
 
     // Start is called before the first frame update
@@ -75,7 +73,7 @@ public class VRGun : MonoBehaviour
         {
             if(gunData.isAutoFire)
             {
-                if(nextTimeToFire <= 0 && gunData.currentMagazineAmmo > 0)
+                if(CanShoot())
                 {
                     nextTimeToFire = 1f / gunData.fireRatePerSecond;
 
@@ -110,12 +108,18 @@ public class VRGun : MonoBehaviour
             }
         }
 
+        RemoveBulletFromMagazine();
         OnGunShoot?.Invoke();
+    }
+
+    public void RemoveBulletFromMagazine()
+    {
+        magazine.bulletCount -= 1;
     }
 
     private bool CanShoot()
     {
-        bool canShoot = nextTimeToFire <= 0 && gunData.currentMagazineAmmo > 0 && !isReload;
+        bool canShoot = nextTimeToFire <= 0 && magazine && magazine.bulletCount > 0;
 
         return canShoot;
     }
