@@ -7,12 +7,12 @@ public class BossEnemy : Enemy
     public override void ReceiveAttack(int damage, GameObject damagesDealer)
     {
         TakeDamage(damage,damagesDealer);
-        EnemyBehaviorStateManager enemyBehaviorStateManager = gameObject.GetComponent<EnemyBehaviorStateManager>();
-        if (enemyBehaviorStateManager != null) 
+        BossBehaviorStateManager bossBehaviorStateManager = gameObject.GetComponent<BossBehaviorStateManager>();
+        if (bossBehaviorStateManager != null) 
         {
-            if (enemyBehaviorStateManager.player == null)
+            if (bossBehaviorStateManager.player == null)
             {
-                enemyBehaviorStateManager.SetTarget(damagesDealer);
+                bossBehaviorStateManager.SetTarget(damagesDealer);
             }
         }
     }

@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Normal.Realtime;
-public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
+
+public class BossBehaviorStateManager : MonoBehaviour
 {
     public event Action OnAttack; 
     public string currentState;
@@ -12,12 +13,17 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
     public NavMeshAgent nav;
     public GameObject aimingObj;
     public GameObject player;
+    public GameObject superAttackObj;
     public LayerMask whatIsGround, whatIsPlayer;
     private float sightRange, attackRange;
     public float fieldOfViewAngle;
     public bool playerInAttackRange;
     private float timeBetweenAttacks;
     private bool alreadyAttacked;
+    public bool isSuperAttack,canRotate;
+    private int countNormalAttack;
+    private float superAttackTime;
+    float rotationTime = 5f; 
     private GameObject[] playersInSight;
     private EnemySyncData enemySyncData;
     private RealtimeTransform _realtimeTransform;
@@ -33,6 +39,11 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
         attackRange = 8f;
         fieldOfViewAngle = 120f;
         currentState = "Idle";
+        countNormalAttack = 0;
+        isSuperAttack = false;
+        canRotate = false;
+        rotationTime = 5f;
+        superAttackTime = rotationTime;
     }
 
     void Start()
@@ -43,6 +54,10 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
 
     void Update()
     {
+        if (canRotate)
+        {
+            Rotate();
+        }
        CheckState();
     }
 
@@ -160,15 +175,28 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
         animator.SetBool("isChase",false);
         animator.SetBool("isAim",true);
         nav.SetDestination(transform.position);
+
+        if (!isSuperAttack)
+        {
         transform.LookAt(player.transform);
+        }
+
         if (!alreadyAttacked)
         {
-            if (player.GetComponent<PlayerSyncData>()._playerHP > 0)
+            if (player.GetComponent<PlayerSyncData>()._playerHP > 0 && countNormalAttack < 4)
             {
+                Debug.Log("Mill Cute Attack");
+                countNormalAttack += 1;
                 animator.SetTrigger("Attack");
                 Shoot();
                 alreadyAttacked = true;
                 Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            }
+            else if (player.GetComponent<PlayerSyncData>()._playerHP > 0 && countNormalAttack >= 4)
+            {
+                alreadyAttacked = true;
+                isSuperAttack = true;
+                StartCoroutine(DeleySuperAtk());
             }
         }
 
@@ -211,10 +239,25 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
 
             if (hitInfo.transform.CompareTag("Player"))
             {
-                hitInfo.transform.gameObject.GetComponent<PlayerSyncData>().DecreasePlayerHP(5);
+                hitInfo.transform.gameObject.GetComponent<PlayerSyncData>().DecreasePlayerHP(0);
             }
         }
-        OnAttack?.Invoke();
+        //OnAttack?.Invoke();
+    }
+
+    IEnumerator DeleySuperAtk()
+    {
+        yield return new WaitForSeconds(1.5f);
+        Debug.Log("Mill SuperCute Attack");
+        countNormalAttack = 0;
+        animator.SetTrigger("SuperAttack");
+        SuperShoot();
+        canRotate = true;
+    } 
+
+    void SuperShoot()
+    {
+        superAttackObj.SetActive(true);
     }
 
     private void ResetAttack()
@@ -239,5 +282,23 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
         Destroy(gameObject);
+    }
+
+    void Rotate()
+    {   
+        float rotationSpeed = 360f / rotationTime; 
+        transform.Rotate(Vector3.up, 360f); 
+        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime); 
+
+        superAttackTime -= Time.deltaTime;
+
+        if (superAttackTime <= 0)
+        {
+            isSuperAttack = false;
+            canRotate = false;
+            superAttackTime = rotationTime;
+            superAttackObj.SetActive(false);
+            Invoke(nameof(ResetAttack), 3);
+        }
     }
 }

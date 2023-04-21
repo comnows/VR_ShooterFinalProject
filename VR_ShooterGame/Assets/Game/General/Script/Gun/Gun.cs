@@ -30,15 +30,15 @@ public class Gun : MonoBehaviour
     public bool isAimingDownSight = false;
     private bool isReload = false;
 
-    private void OnEnable()
-    {
-        OnGunShoot += gunEffect.CastFireEffect;
-    }
+    // private void OnEnable()
+    // {
+    //     OnGunShoot += gunEffect.CastFireEffect;
+    // }
 
-    private void OnDisable()
-    {
-        OnGunShoot -= gunEffect.CastFireEffect;
-    }
+    // private void OnDisable()
+    // {
+    //     OnGunShoot -= gunEffect.CastFireEffect;
+    // }
 
     void Start()
     {

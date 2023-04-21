@@ -8,6 +8,7 @@ TagManager:
   - PNameTag
   - ARMagazine
   - ARGun
+  - BossGuard
   layers:
   - Default
   - TransparentFX

@@ -19,8 +19,8 @@ public class LevelManager : MonoBehaviour
         numPlayerInArea += 1;
         if (other.tag == "Player")
         {   
-            UIScoreBoard uIScoreBoard = GameObject.Find("Canvas").GetComponent<UIScoreBoard>();
-            uIScoreBoard.UpdateScoreBoard(); 
+            // UIScoreBoard uIScoreBoard = GameObject.Find("Canvas").GetComponent<UIScoreBoard>();
+            // uIScoreBoard.UpdateScoreBoard(); 
 
             var playersInGame = GameObject.FindGameObjectsWithTag("Player");
             if(playersInGame.Length == numPlayerInArea)
