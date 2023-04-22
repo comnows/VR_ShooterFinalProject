@@ -28,9 +28,8 @@ public class EnemySyncData : RealtimeComponent<EnemySyncDataModel>
             if (currentModel.isFreshModel)
             {
                 currentModel.enemyHP = _enemyHP;
-            }
                 currentModel.enemyBehaviorState = _enemyBehaviorState;
-            
+            }
             // Update the mesh render to match the new model
             UpdateEnemyHP();
             UpdateEnemyBehaviorState();
