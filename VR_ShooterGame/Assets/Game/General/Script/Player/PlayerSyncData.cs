@@ -10,6 +10,7 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
     public Vector2 _playerMoveInput;
     public float _playerMoveSpeedMultiplier;
     public string _playerName;
+    public bool _playerIsCanShootGunEffect;
     private GameObject weaponModel;
     private RealtimeView _realtimeView;
 
@@ -20,6 +21,7 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         _playerMoveInput = new Vector2(0.0f,0.0f);
         _playerMoveSpeedMultiplier = 0;
         _playerName = "Player";
+        _playerIsCanShootGunEffect = false;
     }
 
     private void Start()
@@ -43,6 +45,7 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
             previousModel.playerMoveInputDidChange -= PlayerMoveInputDidChange;
             previousModel.playerMoveSpeedMultiplierDidChange -= PlayerMoveSpeedMultiplierDidChange;
             previousModel.playerNameDidChange -= PlayerNameDidChange;
+            previousModel.playerIsCanShootGunEffectDidChange -= PlayerIsCanShootGunEffectDidChange;
         }
         
         if (currentModel != null) {
@@ -54,6 +57,7 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
                 currentModel.playerMoveInput = _playerMoveInput;
                 currentModel.playerMoveSpeedMultiplier = _playerMoveSpeedMultiplier;
                 currentModel.playerName = _playerName;
+                currentModel.playerIsCanShootGunEffect = _playerIsCanShootGunEffect;
             }
             // Update the mesh render to match the new model
             UpdatePlayerHP();
@@ -61,12 +65,14 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
             UpdatePlayerMoveInput();
             UpdatePlayerMoveSpeedMultiplier();
             UpdatePlayerName();
+            UpdateIsCanShootGunEffect();
             // Register for events so we'll know if the color changes later
             currentModel.playerHPDidChange += PlayerHPDidChange;
             currentModel.playerScoreDidChange += PlayerScoreDidChange;
             currentModel.playerMoveInputDidChange += PlayerMoveInputDidChange;
             currentModel.playerMoveSpeedMultiplierDidChange += PlayerMoveSpeedMultiplierDidChange;
             currentModel.playerNameDidChange += PlayerNameDidChange;
+            currentModel.playerIsCanShootGunEffectDidChange += PlayerIsCanShootGunEffectDidChange;
         }
     }
 
@@ -95,17 +101,16 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         UpdatePlayerName();
     }
 
+    private void PlayerIsCanShootGunEffectDidChange(PlayerSyncDataModel model, bool value)
+    {
+        UpdateIsCanShootGunEffect();
+    }
+
     private void UpdatePlayerHP() 
     {
         _playerHP = model.playerHP;
 
         Debug.Log("PlayerHP = " + _playerHP);
-
-        // if (_playerHP <= 0) 
-        // {
-        //     this.GetComponent<PlayerMovement>().enabled = false;
-        //     this.GetComponent<Gun>().enabled = false;
-        // } 
     }
 
     private void UpdatePlayerScore() 
@@ -147,6 +152,13 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         }
     }
 
+    private void UpdateIsCanShootGunEffect()
+    {
+        _playerIsCanShootGunEffect = model.playerIsCanShootGunEffect;
+        
+        Debug.Log("PlayerIsCanShootGunEffect = " + _playerIsCanShootGunEffect);
+    }
+
     public void AddPlayerHP(int hp) 
     {
         model.playerHP += hp;
@@ -179,5 +191,10 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
     public void ChangedPlayerName(string playerName)
     {
         model.playerName = playerName;
+    }
+
+    public void ChangeIsCanShootGunEffect(bool iscanShootGunEffect )
+    {
+        model.playerIsCanShootGunEffect = iscanShootGunEffect;
     }
 }

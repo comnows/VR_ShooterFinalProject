@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-
+using Normal.Realtime;
 public class VRGun : MonoBehaviour
 {
     [SerializeField] private VRGunEffect vrGunEffect;
     [SerializeField] private Transform barrelTransform;
+
+    [SerializeField] private GameObject player;
 
     public GunData gunData;
 
@@ -19,7 +21,9 @@ public class VRGun : MonoBehaviour
     private float nextTimeToFire = 0f;
     private bool isShoot = false;
     private bool isReload = false;
-
+    private RealtimeView _realtimeView;
+    private RealtimeTransform _realtimeTransform;
+    private PlayerSyncData playerSyncData;
     public event Action OnGunShoot;
 
     private void Awake()
@@ -30,6 +34,14 @@ public class VRGun : MonoBehaviour
         GunLoadout gunLoadout = GetComponentInParent<GunLoadout>();
         Debug.Log("gunLoadout is " + gunLoadout);
         gunLoadout.AddGun(gunData);
+
+        _realtimeView = GetComponent<RealtimeView>();
+        _realtimeTransform = GetComponent<RealtimeTransform>();
+
+        // _realtimeView.RequestOwnership();
+        // _realtimeTransform.RequestOwnership();
+
+        playerSyncData = player.GetComponent<PlayerSyncData>();
     }
 
     private void OnEnable()
@@ -47,7 +59,9 @@ public class VRGun : MonoBehaviour
     {
         //XRGrabInteractable grabbable = GetComponent<XRGrabInteractable>();
         //grabbable.activated.AddListener(Shoot);
-
+        _realtimeView.RequestOwnership();
+        _realtimeTransform.RequestOwnership();
+        
         socketInteractor.selectEntered.AddListener(AddMagazine);
         socketInteractor.selectExited.AddListener(RemoveMagazine);
     }
@@ -74,26 +88,35 @@ public class VRGun : MonoBehaviour
 
     private void Update()
     {
-        if(isShoot)
+        if (_realtimeView.isOwnedLocallyInHierarchy)
         {
-            if(gunData.isAutoFire)
+            if(isShoot)
             {
-                if(CanShoot())
+                if(gunData.isAutoFire)
                 {
-                    nextTimeToFire = 1f / gunData.fireRatePerSecond;
+                    if(CanShoot())
+                    {
+                        nextTimeToFire = 1f / gunData.fireRatePerSecond;
+
+                        Shoot();
+                    }
+                }
+                else
+                {
+                    isShoot = false;
 
                     Shoot();
                 }
             }
-            else
-            {
-                isShoot = false;
 
-                Shoot();
-            }
+            nextTimeToFire -= Time.deltaTime;
         }
 
-        nextTimeToFire -= Time.deltaTime;
+        if (playerSyncData._playerIsCanShootGunEffect)
+        {
+            OnGunShoot?.Invoke();
+            playerSyncData.ChangeIsCanShootGunEffect(false);
+        }
     }
 
     public void Shoot()
@@ -114,7 +137,9 @@ public class VRGun : MonoBehaviour
         }
 
         RemoveBulletFromMagazine();
-        OnGunShoot?.Invoke();
+        
+        playerSyncData.ChangeIsCanShootGunEffect(true);
+        //OnGunShoot?.Invoke();
     }
 
     public void RemoveBulletFromMagazine()
