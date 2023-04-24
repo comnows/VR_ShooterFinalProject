@@ -222,6 +222,13 @@ public class EnemyBehaviorStateManager : MonoBehaviour
     private IEnumerator RemoveBody()
     {
         yield return new WaitForSeconds(5);
-        Destroy(gameObject);
+        if (gameObject.tag == "BossGuard")
+        {
+            Realtime.Destroy(gameObject);
+        } 
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

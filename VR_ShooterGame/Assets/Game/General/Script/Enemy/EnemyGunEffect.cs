@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyGunEffect : MonoBehaviour
 {
     [SerializeField] private EnemyTypeShootBehaviorStateManager enemyTypeShootBehaviorStateManager;
-
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private TrailRenderer tracerEffect;
     [SerializeField] private Transform raycastOrigin;

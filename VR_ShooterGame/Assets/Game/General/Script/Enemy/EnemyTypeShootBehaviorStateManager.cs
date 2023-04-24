@@ -240,9 +240,4 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
         yield return new WaitForSeconds(5);
         Destroy(gameObject);
     }
-
-    private void SetRaycastOrigin()
-    {
-
-    }
 }

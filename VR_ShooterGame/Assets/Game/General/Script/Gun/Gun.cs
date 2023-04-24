@@ -30,15 +30,15 @@ public class Gun : MonoBehaviour
     public bool isAimingDownSight = false;
     private bool isReload = false;
 
-    private void OnEnable()
-    {
-        OnGunShoot += gunEffect.CastFireEffect;
-    }
+    // private void OnEnable()
+    // {
+    //     OnGunShoot += gunEffect.CastFireEffect;
+    // }
 
-    private void OnDisable()
-    {
-        OnGunShoot -= gunEffect.CastFireEffect;
-    }
+    // private void OnDisable()
+    // {
+    //     OnGunShoot -= gunEffect.CastFireEffect;
+    // }
 
     void Start()
     {
@@ -54,8 +54,8 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        // if (_realtimeView.isOwnedLocallyInHierarchy)
-        // {
+        if (_realtimeView.isOwnedLocallyInHierarchy)
+        {
                 if(gunData.isAutoFire)
                 {
                     if(gunInput.ShootInput && CanShoot())
@@ -98,7 +98,7 @@ public class Gun : MonoBehaviour
                     Debug.Log("Gun Reload");
                     StartCoroutine(Reload());
                 }
-        // }
+        }
     }
 
     bool CanShoot()
@@ -117,7 +117,7 @@ public class Gun : MonoBehaviour
 
     void Shoot()
     {
-        // audioSource.PlayOneShot(audioSource.clip);
+        audioSource.PlayOneShot(audioSource.clip);
         RaycastHit hitInfo;
         if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hitInfo, shotRange))
         {

@@ -75,6 +75,5 @@ public class PlayerStatus : MonoBehaviour
     public void RevivingPlayer()
     {
         playerSyncData.AddPlayerHP(200);
-        Debug.Log("Mill is Love, Mill is Life");
     }
 }

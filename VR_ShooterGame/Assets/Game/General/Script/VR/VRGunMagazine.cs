@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-
+using Normal.Realtime;
 public class VRGunMagazine : MonoBehaviour
 {
     public int bulletCount = 30;
