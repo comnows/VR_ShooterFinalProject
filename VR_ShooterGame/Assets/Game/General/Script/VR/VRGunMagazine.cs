@@ -9,12 +9,12 @@ public class VRGunMagazine : MonoBehaviour
     public XRGrabInteractable gunMagazineGrabInteractable;
     public VRGun vrGun;
 
-    private IEnumerator coroutine;
+    private IEnumerator destroyMagazineCoroutine;
 
     private void Awake()
     {
         gunMagazineGrabInteractable = GetComponent<XRGrabInteractable>();
-        coroutine = DestroyMagazineIn(5f);
+        destroyMagazineCoroutine = DestroyMagazineIn(5f);
     }
 
     private void Start()
@@ -25,7 +25,7 @@ public class VRGunMagazine : MonoBehaviour
 
     public void CancelDestroyMagazineOnHoverEntered(HoverEnterEventArgs args)
     {
-        StopCoroutine(coroutine);
+        StopCoroutine(destroyMagazineCoroutine);
     }
 
     public void DestroyMagazineOnHoverExited(HoverExitEventArgs args)
@@ -38,7 +38,7 @@ public class VRGunMagazine : MonoBehaviour
 
         Debug.Log("isnt hover by anything and start coroutine");
 
-        StartCoroutine(coroutine);
+        StartCoroutine(destroyMagazineCoroutine);
     }
 
     IEnumerator DestroyMagazineIn(float timeInSecond)
