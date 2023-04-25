@@ -80,4 +80,11 @@ public class VRMagazineGenerator : MonoBehaviour
 
         CreateNewMagazine();
     }
+
+    public void AssignVRGun(GameObject gun)
+    {
+        vrGun = gun.GetComponent<VRGun>();
+    }
 }
+
+
