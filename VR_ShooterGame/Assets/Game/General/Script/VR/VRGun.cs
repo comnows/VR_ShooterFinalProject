@@ -139,7 +139,7 @@ public class VRGun : MonoBehaviour
         RemoveBulletFromMagazine();
         
         //playerSyncData.ChangeIsCanShootGunEffect(true);
-        //OnGunShoot?.Invoke();
+        OnGunShoot?.Invoke();
     }
 
     public void RemoveBulletFromMagazine()

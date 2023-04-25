@@ -70,9 +70,13 @@ public class VRMagazineGenerator : MonoBehaviour
         vrGun.gunData.currentStashAmmo -= amount;
     }
 
+    // public void CreateNewMagazineOn
+
     public void CreateNewMagazineOnHoverExited(HoverExitEventArgs args)
     {
-        if(magazineInventory.hasSelection){return;}
+        if(args.interactorObject.hasHover){return;}
+
+        // newMagazine = null;
 
         CreateNewMagazine();
     }
