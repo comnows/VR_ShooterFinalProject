@@ -11,16 +11,20 @@ public class VRGunMagazine : MonoBehaviour
 
     private IEnumerator destroyMagazineCoroutine;
 
+    private RealtimeTransform _realtimeTransform;
+
     private void Awake()
     {
         gunMagazineGrabInteractable = GetComponent<XRGrabInteractable>();
         destroyMagazineCoroutine = DestroyMagazineIn(5f);
+        _realtimeTransform = GetComponent<RealtimeTransform>();
     }
 
     private void Start()
     {
         gunMagazineGrabInteractable.hoverEntered.AddListener(CancelDestroyMagazineOnHoverEntered);
         gunMagazineGrabInteractable.hoverExited.AddListener(DestroyMagazineOnHoverExited);
+        _realtimeTransform.RequestOwnership();
     }
 
     public void CancelDestroyMagazineOnHoverEntered(HoverEnterEventArgs args)

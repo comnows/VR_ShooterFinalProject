@@ -8,6 +8,7 @@ public class PlayerVROwnership : MonoBehaviour
     [SerializeField] private GameObject leftArmIK_target;
     [SerializeField] private GameObject rightArmIK_target;
     [SerializeField] private GameObject head_Constraint;
+    [SerializeField] private GameObject inventorySocket;
     RealtimeTransform _realtimeTransform;
     RealtimeView _realtimeView;
     void Start()
@@ -24,6 +25,8 @@ public class PlayerVROwnership : MonoBehaviour
         _realtimeTransform = GetComponent<RealtimeTransform>();
         _realtimeTransform.RequestOwnership();
         characterController.GetComponent<RealtimeTransform>().RequestOwnership();
+
+        inventorySocket.GetComponent<RealtimeTransform>().RequestOwnership();
 
         GameObject cameraOffset = transform.GetChild(0).gameObject;
         GameObject playerModel = transform.GetChild(1).gameObject;

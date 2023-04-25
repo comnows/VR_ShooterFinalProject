@@ -16,8 +16,8 @@ public class PlayerConnectionManager : MonoBehaviour {
     private UIScore uIScore;
     private RealtimeTransform _realtimeTransform;
 
-    private enum Platform {PC,VR};
-    private Platform currentPlatform;
+    public enum Platform {PC,VR};
+    public Platform currentPlatform;
 
     private void Awake() 
     {

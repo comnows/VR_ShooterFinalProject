@@ -35,8 +35,8 @@ public class VRGun : MonoBehaviour
         // Debug.Log("gunLoadout is " + gunLoadout);
         // gunLoadout.AddGun(gunData);
 
-        //_realtimeView = GetComponent<RealtimeView>();
-        //_realtimeTransform = GetComponent<RealtimeTransform>();
+        _realtimeView = GetComponent<RealtimeView>();
+        _realtimeTransform = GetComponent<RealtimeTransform>();
 
         // _realtimeView.RequestOwnership();
         // _realtimeTransform.RequestOwnership();
@@ -59,8 +59,8 @@ public class VRGun : MonoBehaviour
     {
         //XRGrabInteractable grabbable = GetComponent<XRGrabInteractable>();
         //grabbable.activated.AddListener(Shoot);
-        //_realtimeView.RequestOwnership();
-        //_realtimeTransform.RequestOwnership();
+        _realtimeView.RequestOwnership();
+        _realtimeTransform.RequestOwnership();
         
         socketInteractor.selectEntered.AddListener(AddMagazine);
         socketInteractor.selectExited.AddListener(RemoveMagazine);

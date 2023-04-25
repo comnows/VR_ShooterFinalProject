@@ -13,6 +13,7 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
     public bool _playerIsCanShootGunEffect;
     private GameObject weaponModel;
     private RealtimeView _realtimeView;
+    private PlayerConnectionManager playerConnectionManager;
 
     private void Awake() 
     {
@@ -28,12 +29,12 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
     {
         _realtimeView = GetComponent<RealtimeView>();  
 
-        if (!_realtimeView.isOwnedLocallyInHierarchy)
-        {
-            weaponModel = this.transform.Find("NonVRController/CameraHolder/CameraRecoil/WeaponCamera/WeaponHolder/AssaultRifle/Anchor/Design/AssaultRifleModel").gameObject;
-            int LayerIgnoreRaycast = LayerMask.NameToLayer("Default");
-            weaponModel.layer = LayerIgnoreRaycast;
-        }
+        // if (!_realtimeView.isOwnedLocallyInHierarchy && gameObject.tag != "VRPlayer")
+        // {
+        //     weaponModel = this.transform.Find("NonVRController/CameraHolder/CameraRecoil/WeaponCamera/WeaponHolder/AssaultRifle/Anchor/Design/AssaultRifleModel").gameObject;
+        //     int LayerIgnoreRaycast = LayerMask.NameToLayer("Default");
+        //     weaponModel.layer = LayerIgnoreRaycast;
+        // }
     }
 
     protected override void OnRealtimeModelReplaced(PlayerSyncDataModel previousModel, PlayerSyncDataModel currentModel) 

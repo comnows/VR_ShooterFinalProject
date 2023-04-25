@@ -9,6 +9,7 @@ TagManager:
   - ARMagazine
   - ARGun
   - BossGuard
+  - VRPlayer
   layers:
   - Default
   - TransparentFX
