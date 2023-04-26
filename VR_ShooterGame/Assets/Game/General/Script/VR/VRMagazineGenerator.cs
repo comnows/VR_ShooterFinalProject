@@ -77,9 +77,39 @@ public class VRMagazineGenerator : MonoBehaviour
     {
         if(args.interactorObject.hasHover){return;}
 
-        // newMagazine = null;
+        // if(args.interactableObject.isHovered)
+        // {
+        newMagazine = null;
+        
+        CreateNewMagazine();
+        // }
+
+        magazineInventory.hoverExited.RemoveListener(CreateNewMagazineOnHoverExited);
+        magazineInventory.selectExited.AddListener(CreateNewMagazineOnSelectExited);
+    }
+
+    public void CreateNewMagazineOnStart(SelectExitEventArgs args)
+    {
+        if(args.interactorObject.hasSelection){return;}
 
         CreateNewMagazine();
+
+        magazineInventory.selectExited.RemoveListener(CreateNewMagazineOnStart);
+        magazineInventory.selectExited.AddListener(CreateNewMagazineOnSelectExited);
+    }
+
+    public void CreateNewMagazineOnSelectExited(SelectExitEventArgs args)
+    {
+        if(args.interactorObject.hasSelection){return;}
+        Debug.Log("isSelected " + args.interactableObject.isSelected);
+        if(!args.interactableObject.isSelected){return;}
+
+        // if(args.interactableObject.isHovered)
+        // {
+        // newMagazine = null;
+        
+        CreateNewMagazine();
+        // }
     }
 
     public void AssignVRGun(GameObject gun)
