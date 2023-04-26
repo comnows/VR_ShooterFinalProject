@@ -25,8 +25,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 gravityVelocity;
     private bool isGrounded;
     private PlayerSyncData playerSyncData;
-
     private RealtimeView _realtimeView;
+    private GameObject weaponModel;
 
     private void Awake()
     {
@@ -39,6 +39,14 @@ public class PlayerMovement : MonoBehaviour
     private void Start() {
         if (_realtimeView.isOwnedLocallyInHierarchy)
             LocalStart();
+
+
+        if (!_realtimeView.isOwnedLocallyInHierarchy)
+        {
+            weaponModel = this.transform.Find("NonVRController/CameraHolder/CameraRecoil/WeaponCamera/WeaponHolder/AssaultRifle/Anchor/Design/AssaultRifleModel").gameObject;
+            int LayerIgnoreRaycast = LayerMask.NameToLayer("Default");
+            weaponModel.layer = LayerIgnoreRaycast;
+        }
     }
 
     private void LocalStart() {

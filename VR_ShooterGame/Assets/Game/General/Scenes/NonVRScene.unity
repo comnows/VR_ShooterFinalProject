@@ -4103,6 +4103,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6880171645126352213, guid: 615e024c5af8a7c4d996e3d9efe6395b,
+        type: 3}
+      propertyPath: shootAction.m_Name
+      value: Shoot
+      objectReference: {fileID: 0}
     - target: {fileID: 6880171645126352214, guid: 615e024c5af8a7c4d996e3d9efe6395b,
         type: 3}
       propertyPath: gunEffect

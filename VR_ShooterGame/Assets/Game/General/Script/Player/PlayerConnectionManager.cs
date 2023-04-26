@@ -18,7 +18,7 @@ public class PlayerConnectionManager : MonoBehaviour {
     private UIScore uIScore;
     private RealtimeTransform _realtimeTransform;
 
-    private enum Platform {PC,VR};
+    private enum Platform {VR,PC};
     private Platform currentPlatform;
 
     private void Awake() 
@@ -77,18 +77,10 @@ public class PlayerConnectionManager : MonoBehaviour {
             break;
         }
         
-        //GameObject playerGameObject = Realtime.Instantiate(_prefab.name, options);
-
         playerGameObject.transform.position = spawnPoint.transform.position;
 
         ChangePlayerName(playerGameObject);
         CloseButton();
-        // RealtimeView _realtimeView = playerGameObject.GetComponent<RealtimeView>();  
-        // if (_realtimeView.isOwnedLocallyInHierarchy)
-        // {       
-        //     uIAmmo.InitScript(playerGameObject);
-        //     uIScore.InitScript(playerGameObject);
-        // }
     }
 
     private void AssignVRGunVariable()
@@ -97,12 +89,17 @@ public class PlayerConnectionManager : MonoBehaviour {
         GameObject arInventory = inventorySockets.transform.GetChild(0).gameObject;
         GameObject arInventoryAttach = arInventory.transform.GetChild(0).gameObject;
         GameObject arMagazineInventory = inventorySockets.transform.GetChild(1).gameObject;
-    
+
         vrGunGameObject.transform.position = arInventoryAttach.transform.position;
         arMagazineInventory.GetComponent<VRMagazineGenerator>().AssignVRGun(vrGunGameObject);
 
-        GameObject arMagazine = GameObject.FindGameObjectWithTag("ARMagazine");
-        arMagazine.GetComponent<VRGunMagazine>().AssignVRGun(vrGunGameObject);
+        Invoke(nameof(AssignVRGunInARMagazine),1);
+    }
+
+    private void AssignVRGunInARMagazine()
+    {
+       GameObject arMagazine = GameObject.FindGameObjectWithTag("ARMagazine");
+       arMagazine.GetComponent<VRGunMagazine>().AssignVRGun(vrGunGameObject);
     }
 
     private void CreatePCPlayer()

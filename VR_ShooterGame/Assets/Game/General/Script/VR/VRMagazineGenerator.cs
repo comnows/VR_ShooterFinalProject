@@ -16,7 +16,8 @@ public class VRMagazineGenerator : MonoBehaviour
 
     void Start()
     {
-        CreateNewMagazine();
+        Invoke(nameof(CreateMagazine),1.2f);
+        //CreateNewMagazine();
 
         magazineInventory.hoverExited.AddListener(CreateNewMagazineOnHoverExited);
     }

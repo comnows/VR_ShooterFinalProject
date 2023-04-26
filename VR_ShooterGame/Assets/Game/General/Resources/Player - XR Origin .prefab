@@ -3249,6 +3249,7 @@ GameObject:
   - component: {fileID: 2082019141685764039}
   - component: {fileID: 1935747455861265214}
   - component: {fileID: 1935747455861265215}
+  - component: {fileID: 5905703447018952967}
   m_Layer: 0
   m_Name: Inventory Sockets
   m_TagString: Untagged
@@ -3318,6 +3319,18 @@ MonoBehaviour:
   _syncScale: 0
   _syncVelocity: 1
   _maintainOwnershipWhileSleeping: 0
+--- !u!114 &5905703447018952967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082019141685764056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfde515a295974f42a03e91456131bb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2082019141777715433
 GameObject:
   m_ObjectHideFlags: 0
