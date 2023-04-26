@@ -16,7 +16,8 @@ public class VRMagazineGenerator : MonoBehaviour
 
     void Start()
     {
-        CreateNewMagazine();
+        Invoke(nameof(CreateMagazine),1.2f);
+        //CreateNewMagazine();
 
         magazineInventory.hoverExited.AddListener(CreateNewMagazineOnHoverExited);
     }
@@ -110,4 +111,11 @@ public class VRMagazineGenerator : MonoBehaviour
         CreateNewMagazine();
         // }
     }
+
+    public void AssignVRGun(GameObject gun)
+    {
+        vrGun = gun.GetComponent<VRGun>();
+    }
 }
+
+

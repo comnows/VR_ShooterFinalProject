@@ -7,16 +7,18 @@ using Normal.Realtime;
 public class PlayerConnectionManager : MonoBehaviour {
     [SerializeField] private GameObject _prefab;
     [SerializeField] private GameObject _prefabVRPlayer;
+    [SerializeField] private GameObject _prefabVRGun;
     [SerializeField] private GameObject pcButton;
     [SerializeField] private GameObject vrButton;
     public GameObject spawnPoint;
     private Realtime _realtime;
     GameObject playerGameObject;
+    GameObject vrGunGameObject;
     private UIAmmo uIAmmo;
     private UIScore uIScore;
     private RealtimeTransform _realtimeTransform;
 
-    private enum Platform {PC,VR};
+    private enum Platform {VR,PC};
     private Platform currentPlatform;
 
     private void Awake() 
@@ -50,7 +52,7 @@ public class PlayerConnectionManager : MonoBehaviour {
         // Instantiate the CubePlayer for this client once we've successfully connected to the room. Position it 1 meter in the air.
         var options = new Realtime.InstantiateOptions {
             ownedByClient            = true,    // Make sure the RealtimeView on this prefab is owned by this client.
-            preventOwnershipTakeover = true,    // Prevent other clients from calling RequestOwnership() on the root RealtimeView.
+            preventOwnershipTakeover = false,    // Prevent other clients from calling RequestOwnership() on the root RealtimeView.
             useInstance              = realtime // Use the instance of Realtime that fired the didConnectToRoom event.
             };
 
@@ -62,25 +64,42 @@ public class PlayerConnectionManager : MonoBehaviour {
             break;
         case Platform.VR:
             playerGameObject = Realtime.Instantiate(_prefabVRPlayer.name, options);
+            vrGunGameObject = Realtime.Instantiate(_prefabVRGun.name, options);
+            vrGunGameObject.GetComponent<RealtimeTransform>().RequestOwnership();
+            Invoke(nameof(AssignVRGunVariable),1);
+            //AssignVRGunVariable();
             break;
         default:
-            playerGameObject = Realtime.Instantiate(_prefab.name, options);
-            CreatePCPlayer();
+            playerGameObject = Realtime.Instantiate(_prefabVRPlayer.name, options);
+            vrGunGameObject = Realtime.Instantiate(_prefabVRGun.name, options);
+            vrGunGameObject.GetComponent<RealtimeTransform>().RequestOwnership();
+            Invoke(nameof(AssignVRGunVariable),1);
             break;
         }
         
-        //GameObject playerGameObject = Realtime.Instantiate(_prefab.name, options);
-
         playerGameObject.transform.position = spawnPoint.transform.position;
 
         ChangePlayerName(playerGameObject);
         CloseButton();
-        // RealtimeView _realtimeView = playerGameObject.GetComponent<RealtimeView>();  
-        // if (_realtimeView.isOwnedLocallyInHierarchy)
-        // {       
-        //     uIAmmo.InitScript(playerGameObject);
-        //     uIScore.InitScript(playerGameObject);
-        // }
+    }
+
+    private void AssignVRGunVariable()
+    {
+        GameObject inventorySockets = playerGameObject.transform.GetChild(2).gameObject;
+        GameObject arInventory = inventorySockets.transform.GetChild(0).gameObject;
+        GameObject arInventoryAttach = arInventory.transform.GetChild(0).gameObject;
+        GameObject arMagazineInventory = inventorySockets.transform.GetChild(1).gameObject;
+
+        vrGunGameObject.transform.position = arInventoryAttach.transform.position;
+        arMagazineInventory.GetComponent<VRMagazineGenerator>().AssignVRGun(vrGunGameObject);
+
+        Invoke(nameof(AssignVRGunInARMagazine),1);
+    }
+
+    private void AssignVRGunInARMagazine()
+    {
+       GameObject arMagazine = GameObject.FindGameObjectWithTag("ARMagazine");
+       arMagazine.GetComponent<VRGunMagazine>().AssignVRGun(vrGunGameObject);
     }
 
     private void CreatePCPlayer()

@@ -4,10 +4,11 @@ using UnityEngine;
 using Normal.Realtime;
 public class PlayerVROwnership : MonoBehaviour
 {
-    [SerializeField] private CharacterController characterController;
     [SerializeField] private GameObject leftArmIK_target;
     [SerializeField] private GameObject rightArmIK_target;
     [SerializeField] private GameObject head_Constraint;
+    [SerializeField] private GameObject arInventory;
+    [SerializeField] private GameObject arInventoryMagazine;
     RealtimeTransform _realtimeTransform;
     RealtimeView _realtimeView;
     void Start()
@@ -23,16 +24,18 @@ public class PlayerVROwnership : MonoBehaviour
     {
         _realtimeTransform = GetComponent<RealtimeTransform>();
         _realtimeTransform.RequestOwnership();
-        characterController.GetComponent<RealtimeTransform>().RequestOwnership();
-
         GameObject cameraOffset = transform.GetChild(0).gameObject;
         GameObject playerModel = transform.GetChild(1).gameObject;
+        GameObject invetorySocket = transform.GetChild(2).gameObject;
 
         playerModel.GetComponent<RealtimeTransform>().RequestOwnership();
         playerModel.GetComponent<RealtimeView>().RequestOwnership();
 
         cameraOffset.GetComponent<RealtimeTransform>().RequestOwnership();
         cameraOffset.GetComponent<RealtimeView>().RequestOwnership();
+
+        invetorySocket.GetComponent<RealtimeTransform>().RequestOwnership();
+        invetorySocket.GetComponent<RealtimeView>().RequestOwnership();
 
         for (int i = 0; i < 5; i++)
         {
@@ -51,5 +54,19 @@ public class PlayerVROwnership : MonoBehaviour
         rightArmIK_target.GetComponent<RealtimeView>().RequestOwnership();
         head_Constraint.GetComponent<RealtimeTransform>().RequestOwnership();
         head_Constraint.GetComponent<RealtimeView>().RequestOwnership();
+
+        arInventory.GetComponent<RealtimeTransform>().RequestOwnership();
+        arInventory.GetComponent<RealtimeView>().RequestOwnership();
+
+        arInventoryMagazine.GetComponent<RealtimeTransform>().RequestOwnership();
+        arInventoryMagazine.GetComponent<RealtimeView>().RequestOwnership();
+        
+        GameObject attachTransformMagazine = arInventoryMagazine.transform.GetChild(0).gameObject;
+        attachTransformMagazine.GetComponent<RealtimeTransform>().RequestOwnership();
+        attachTransformMagazine.GetComponent<RealtimeView>().RequestOwnership();
+
+        GameObject attachTransform = arInventory.transform.GetChild(0).gameObject;
+        attachTransform.GetComponent<RealtimeTransform>().RequestOwnership();
+        attachTransform.GetComponent<RealtimeView>().RequestOwnership();
     }
 }

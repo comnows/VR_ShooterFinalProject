@@ -24,18 +24,6 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         _playerIsCanShootGunEffect = false;
     }
 
-    private void Start()
-    {
-        _realtimeView = GetComponent<RealtimeView>();  
-
-        if (!_realtimeView.isOwnedLocallyInHierarchy)
-        {
-            weaponModel = this.transform.Find("NonVRController/CameraHolder/CameraRecoil/WeaponCamera/WeaponHolder/AssaultRifle/Anchor/Design/AssaultRifleModel").gameObject;
-            int LayerIgnoreRaycast = LayerMask.NameToLayer("Default");
-            weaponModel.layer = LayerIgnoreRaycast;
-        }
-    }
-
     protected override void OnRealtimeModelReplaced(PlayerSyncDataModel previousModel, PlayerSyncDataModel currentModel) 
     {
         if (previousModel != null) {
