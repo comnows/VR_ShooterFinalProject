@@ -1,11 +1,11 @@
-// using System;
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
-// using UnityEditor.Animations;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor.Animations;
 
-// public class GunSwitching : MonoBehaviour
-// {
+public class GunSwitching : MonoBehaviour
+{
 //     public event Action OnGunSwitch;
 
 //     private GunSwitchingInput gunSwitchingInput;
@@ -167,4 +167,4 @@
 //     //     recorder.SaveToClip(gun.gunData.gunHoldAnimation);
 //     //     UnityEditor.AssetDatabase.SaveAssets();
 //     // }
-// }
+}

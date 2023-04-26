@@ -8,6 +8,7 @@ public class VRInventoryEvent : MonoBehaviour
     public XRSocketInteractorTag inventorySocketInteractor;
 
     public MeshRenderer meshRenderer;
+    public bool isSelect = false;
     
     // Start is called before the first frame update
     void Start()
@@ -40,5 +41,21 @@ public class VRInventoryEvent : MonoBehaviour
     {
         Debug.Log("Interactable select entered");
         meshRenderer.enabled = false;
+    }
+
+    private void OnSocketSelectEntered(SelectEnterEventArgs args)
+    {
+        if(args.interactorObject.hasSelection)
+        {
+            isSelect = true;
+        }
+    }
+
+    private void OnSocketSelectExited(SelectExitEventArgs args)
+    {
+        if(args.interactorObject.hasSelection)
+        {
+            isSelect = false;
+        }
     }
 }
