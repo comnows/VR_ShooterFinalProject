@@ -12,6 +12,7 @@ TagManager:
   - VRCamera
   - Realtime
   - Boss
+  - Enemy
   layers:
   - Default
   - TransparentFX

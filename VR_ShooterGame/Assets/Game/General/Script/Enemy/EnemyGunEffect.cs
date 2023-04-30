@@ -46,7 +46,7 @@ public class EnemyGunEffect : MonoBehaviour
     {
         ray.origin = raycastOrigin.position;
         
-        GameObject aimtarget = enemyTypeShootBehaviorStateManager.player.transform.GetChild(2).gameObject;
+        GameObject aimtarget = enemyTypeShootBehaviorStateManager.player.transform.GetChild(3).gameObject;
 
         ray.direction = aimtarget.transform.position- raycastOrigin.position;
     }

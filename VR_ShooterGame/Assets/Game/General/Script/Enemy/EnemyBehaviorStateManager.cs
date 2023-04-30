@@ -18,28 +18,26 @@ public class EnemyBehaviorStateManager : MonoBehaviour
     private GameObject[] playersInSight;
     private EnemySyncData enemySyncData;
     private RealtimeTransform _realtimeTransform;
+    private RealtimeView _realtimeView;
     
-    void Awake()
+    void Start()
     {
-        _realtimeTransform = GetComponent<RealtimeTransform>(); 
+        _realtimeView = GetComponent<RealtimeView>();
+        _realtimeTransform = GetComponent<RealtimeTransform>();
+
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         enemySyncData = GetComponent<EnemySyncData>();
         timeBetweenAttacks = 1.5f;
-        sightRange = 5f;
+        sightRange = 10f;
         attackRange = 1.5f;
         fieldOfViewAngle = 120f;
         currentState = "Idle";
     }
 
-    void Start()
-    {
-        if (_realtimeTransform.isUnownedInHierarchy)
-        GetComponent<RealtimeTransform>().SetOwnership(0);
-    }
-
     void Update()
     {
+        currentState = enemySyncData._enemyBehaviorState;
        CheckState();
     }
 
@@ -127,8 +125,8 @@ public class EnemyBehaviorStateManager : MonoBehaviour
     IEnumerator DeleyChangeIdleToChaseState()
     {
         yield return new WaitForSeconds (0.8f);
-        currentState = "Chase";
-        enemySyncData.ChangeBehaviorState(currentState);
+        //currentState = "Chase";
+        enemySyncData.ChangeBehaviorState("Chase");
     }
 
     private void ChasePlayer()
@@ -146,14 +144,14 @@ public class EnemyBehaviorStateManager : MonoBehaviour
         {
             if (player.GetComponent<PlayerSyncData>()._playerHP > 0)
             {
-                currentState = "Attack";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Attack";
+                enemySyncData.ChangeBehaviorState("Attack");
             }
             else 
             {
                 player = null;
-                currentState = "Idle";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Idle";
+                enemySyncData.ChangeBehaviorState("Idle");
             }
         }
     }
@@ -180,14 +178,14 @@ public class EnemyBehaviorStateManager : MonoBehaviour
         {
             if (player.GetComponent<PlayerSyncData>()._playerHP > 0)
             {
-                currentState = "Chase";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Chase";
+                enemySyncData.ChangeBehaviorState("Chase");
             }
             else 
             {
                 player = null;
-                currentState = "Idle";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Idle";
+                enemySyncData.ChangeBehaviorState("Idle");
             }
         }
         else if (playerInAttackRange)
@@ -195,8 +193,8 @@ public class EnemyBehaviorStateManager : MonoBehaviour
             if (player.GetComponent<PlayerSyncData>()._playerHP <= 0)
             {
                 player = null;
-                currentState = "Idle";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Idle";
+                enemySyncData.ChangeBehaviorState("Idle");
             }
         }
     }

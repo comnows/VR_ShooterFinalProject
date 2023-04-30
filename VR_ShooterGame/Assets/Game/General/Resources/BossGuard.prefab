@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3428579427453657692}
   - component: {fileID: 3428579427453657693}
   m_Layer: 0
-  m_Name: Enemy (1)
+  m_Name: BossGuard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

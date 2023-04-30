@@ -18,29 +18,28 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
     private GameObject[] playersInSight;
     private EnemySyncData enemySyncData;
     private RealtimeTransform _realtimeTransform;
-    void Awake()
+    private RealtimeView _realtimeView;
+
+    void Start()
     {
-        _realtimeTransform = GetComponent<RealtimeTransform>(); 
+        _realtimeView = GetComponent<RealtimeView>();
+        _realtimeTransform = GetComponent<RealtimeTransform>();
+
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         enemySyncData = GetComponent<EnemySyncData>();
         timeBetweenAttacks = 1.5f;
-        sightRange = 5f;
-        attackRange = 1.4f;
-        defenceRange = 2.5f;
+        sightRange = 10f;
+        attackRange = 2f;
+        defenceRange = 5f;
         fieldOfViewAngle = 120f;
         enemyInDefenceState = false;
         currentState = "Idle";
     }
 
-    void Start()
-    {
-        if (_realtimeTransform.isUnownedInHierarchy)
-        GetComponent<RealtimeTransform>().SetOwnership(0);
-    }
-
     void Update()
     {
+        currentState = enemySyncData._enemyBehaviorState;
        CheckState();
     }
 
@@ -131,8 +130,8 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
 
     private void DeleyChangeIdleToChaseState()
     {
-        currentState = "Chase";
-        enemySyncData.ChangeBehaviorState(currentState);
+        //currentState = "Chase";
+        enemySyncData.ChangeBehaviorState("Chase");
     }
 
     private void ChasePlayer()
@@ -151,14 +150,14 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
         {
             if (player.GetComponent<PlayerSyncData>()._playerHP > 0)
             {
-                currentState = "Attack";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Attack";
+                enemySyncData.ChangeBehaviorState("Attack");
             }
             else 
             {
                 player = null;
-                currentState = "Idle";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Idle";
+                enemySyncData.ChangeBehaviorState("Idle");
             }
         }
     }
@@ -169,8 +168,8 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
         
         if (distanceBetweenTarget > defenceRange)
         {
-            currentState = "Defence";
-            enemySyncData.ChangeBehaviorState(currentState);
+            //currentState = "Defence";
+            enemySyncData.ChangeBehaviorState("Defence");
         }
     }
 
@@ -191,8 +190,8 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
     {
         animator.SetBool("isShieldActivated",false);
         enemyInDefenceState = false;
-        currentState = "Chase";
-        enemySyncData.ChangeBehaviorState(currentState);
+        //currentState = "Chase";
+        enemySyncData.ChangeBehaviorState("Chase");
     }
 
     private void AttackPlayer()
@@ -217,14 +216,14 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
         {
             if (player.GetComponent<PlayerSyncData>()._playerHP > 0)
             {
-                currentState = "Chase";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Chase";
+                enemySyncData.ChangeBehaviorState("Chase");
             }
             else 
             {
                 player = null;
-                currentState = "Idle";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Idle";
+                enemySyncData.ChangeBehaviorState("Idle");
             }
         }
         else if (playerInAttackRange)
@@ -232,8 +231,8 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
             if (player.GetComponent<PlayerSyncData>()._playerHP <= 0)
             {
                 player = null;
-                currentState = "Idle";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Idle";
+                enemySyncData.ChangeBehaviorState("Idle");
             }
         }
     }
@@ -259,7 +258,14 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
     private IEnumerator RemoveBody()
     {
         yield return new WaitForSeconds(5);
-        Destroy(gameObject);
+        if (gameObject.tag == "BossGuard")
+        {
+            Realtime.Destroy(gameObject);
+        } 
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }
 

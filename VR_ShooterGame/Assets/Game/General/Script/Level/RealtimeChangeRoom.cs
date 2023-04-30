@@ -21,7 +21,7 @@ public class RealtimeChangeRoom : MonoBehaviour
             boss = Realtime.Instantiate(bossPrefab.name,options);
             boss.GetComponent<RealtimeTransform>().RequestOwnership();
 
-            Invoke(nameof(ChangeBossPos),3);
+            Invoke(nameof(ChangeBossPos),1);
             //boss.transform.position = bossSpawnPoint.transform.position;
         }
     }

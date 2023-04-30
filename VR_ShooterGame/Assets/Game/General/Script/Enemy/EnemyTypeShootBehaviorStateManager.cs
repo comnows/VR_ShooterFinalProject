@@ -10,7 +10,7 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
     public string currentState;
     public Animator animator;
     public NavMeshAgent nav;
-    public GameObject aimingObj;
+    [SerializeField] private GameObject aimingObj;
     public GameObject player;
     public LayerMask whatIsGround, whatIsPlayer;
     private float sightRange, attackRange;
@@ -21,28 +21,26 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
     private GameObject[] playersInSight;
     private EnemySyncData enemySyncData;
     private RealtimeTransform _realtimeTransform;
+    private RealtimeView _realtimeView;
     
-    void Awake()
+    void Start()
     {
-        _realtimeTransform = GetComponent<RealtimeTransform>(); 
+        _realtimeView = GetComponent<RealtimeView>();
+        _realtimeTransform = GetComponent<RealtimeTransform>();
+
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         enemySyncData = GetComponent<EnemySyncData>();
         timeBetweenAttacks = 1.5f;
-        sightRange = 8f;
-        attackRange = 8f;
+        sightRange = 12f;
+        attackRange = 12f;
         fieldOfViewAngle = 120f;
         currentState = "Idle";
     }
 
-    void Start()
-    {
-        if (_realtimeTransform.isUnownedInHierarchy)
-        GetComponent<RealtimeTransform>().SetOwnership(0);
-    }
-
     void Update()
     {
+        currentState = enemySyncData._enemyBehaviorState;
        CheckState();
     }
 
@@ -78,8 +76,8 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
 
         if (player != null)
         {
-            currentState = "Chase";
-            enemySyncData.ChangeBehaviorState(currentState);
+            //currentState = "Chase";
+            enemySyncData.ChangeBehaviorState("Chase");
         }
     }
 
@@ -143,14 +141,14 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
         {
             if (player.GetComponent<PlayerSyncData>()._playerHP > 0)
             {
-                currentState = "Attack";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Attack";
+                enemySyncData.ChangeBehaviorState("Attack");
             }
             else 
             {
                 player = null;
-                currentState = "Idle";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Idle";
+                enemySyncData.ChangeBehaviorState("Idle");
             }
         }
     }
@@ -180,14 +178,14 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
             if (player.GetComponent<PlayerSyncData>()._playerHP > 0)
             {
                 animator.SetBool("isAim",false);
-                currentState = "Chase";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Chase";
+                enemySyncData.ChangeBehaviorState("Chase");
             }
             else 
             {
                 player = null;
-                currentState = "Idle";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Idle";
+                enemySyncData.ChangeBehaviorState("Idle");
             }
         }
         else if (playerInAttackRange)
@@ -195,8 +193,8 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
             if (player.GetComponent<PlayerSyncData>()._playerHP <= 0)
             {
                 player = null;
-                currentState = "Idle";
-                enemySyncData.ChangeBehaviorState(currentState);
+                //currentState = "Idle";
+                enemySyncData.ChangeBehaviorState("Idle");
             }
         }
     }
@@ -204,14 +202,13 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
     void Shoot()
     {
         //audioSource.PlayOneShot(audioSource.clip);
-        RaycastHit hitInfo;
-        if(Physics.Raycast(aimingObj.transform.position, aimingObj.transform.forward, out hitInfo, attackRange))
+        RaycastHit target;
+        if(Physics.Raycast(aimingObj.transform.position, aimingObj.transform.forward, out target, attackRange))
         {
-            Debug.DrawRay(transform.position, transform.forward * attackRange, Color.green, 3);
-
-            if (hitInfo.transform.CompareTag("Player"))
+            Debug.DrawRay(aimingObj.transform.position, aimingObj.transform.forward * attackRange, Color.blue, 1);
+            if (target.transform.tag == "Player")
             {
-                hitInfo.transform.gameObject.GetComponent<PlayerSyncData>().DecreasePlayerHP(5);
+                target.transform.gameObject.GetComponent<PlayerSyncData>().DecreasePlayerHP(5);
             }
         }
         OnAttack?.Invoke();
@@ -238,6 +235,13 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
     private IEnumerator RemoveBody()
     {
         yield return new WaitForSeconds(5);
-        Destroy(gameObject);
+        if (gameObject.tag == "BossGuard")
+        {
+            Realtime.Destroy(gameObject);
+        } 
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

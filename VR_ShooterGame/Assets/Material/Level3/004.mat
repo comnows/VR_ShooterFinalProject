@@ -90,7 +90,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 0
     - _Cutoff: 0.5
-    - _DetailAlbedoMapScale: 0.5
+    - _DetailAlbedoMapScale: 0.25
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
