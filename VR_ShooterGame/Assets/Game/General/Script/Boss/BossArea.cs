@@ -51,16 +51,16 @@ public class BossArea : MonoBehaviour
         for(int i = 1; i <= allPlayerInGame.Length * 2; i++)
         {
             var options = new Realtime.InstantiateOptions {
-            ownedByClient            = true,    // Make sure the RealtimeView on this prefab is owned by this client.
-            preventOwnershipTakeover = true,    // Prevent other clients from calling RequestOwnership() on the root RealtimeView.
-            useInstance              = _realtime // Use the instance of Realtime that fired the didConnectToRoom event.
+            ownedByClient            = true,   
+            preventOwnershipTakeover = true,    
+            useInstance              = _realtime 
             };
 
             GameObject bossGuard = Realtime.Instantiate(enemyToSpawn.name, options);
             bossGuard.tag = "BossGuard";
             _realtimeTransform = bossGuard.GetComponent<RealtimeTransform>();
             _realtimeTransform.SetOwnership(0);
-            bossGuard.transform.position = spawnPoints[i].transform.position;
+            bossGuard.transform.position = spawnPoints[i+1].transform.position;
             SetTarget(bossGuard);
         }
 

@@ -33,10 +33,16 @@ public class PlayerConnectionManager : MonoBehaviour {
         uIScore = GameObject.FindObjectOfType<UIScore>();
     }
 
+    private void Start() 
+    {
+        GameObject.DontDestroyOnLoad(gameObject);
+    }
+
     public void SetPCPlatform()
     {
         Debug.Log("MillPCPress");
         currentPlatform = Platform.PC;
+        _realtime.Connect("Map1");
         CloseButton();
     }
 
@@ -44,11 +50,14 @@ public class PlayerConnectionManager : MonoBehaviour {
     {
         Debug.Log("MillVRPress");
         currentPlatform = Platform.VR;
+        _realtime.Connect("Map1");
         CloseButton();
     }
     
     private void DidConnectToRoom(Realtime realtime) 
     {
+        if (realtime.room.name == "Map1")
+        {
         // Instantiate the CubePlayer for this client once we've successfully connected to the room. Position it 1 meter in the air.
         var options = new Realtime.InstantiateOptions {
             ownedByClient            = true,    // Make sure the RealtimeView on this prefab is owned by this client.
@@ -81,6 +90,8 @@ public class PlayerConnectionManager : MonoBehaviour {
 
         ChangePlayerName(playerGameObject);
         CloseButton();
+        }
+        //Debug.Log("FirstRoomName = " + playerGameObject.GetComponent<Realtime>().room.name);
     }
 
     private void AssignVRGunVariable()
@@ -104,9 +115,7 @@ public class PlayerConnectionManager : MonoBehaviour {
 
     private void CreatePCPlayer()
     {
-        GameObject playerGameObjectChild = playerGameObject.transform.GetChild(0).gameObject;
-
-        GameObject cameraHolder = playerGameObjectChild.transform.GetChild(1).gameObject;
+        GameObject cameraHolder = playerGameObject.transform.GetChild(0).gameObject;
 
         GameObject cameraRecoil = cameraHolder.transform.GetChild(0).gameObject;
 

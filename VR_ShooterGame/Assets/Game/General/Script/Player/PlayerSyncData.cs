@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
-
+using UnityEngine.SceneManagement;
 public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
 {
     public int _playerHP;
@@ -10,7 +10,7 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
     public Vector2 _playerMoveInput;
     public float _playerMoveSpeedMultiplier;
     public string _playerName;
-    public bool _playerIsCanShootGunEffect;
+    public bool _playerIsCanEnterNextLV;
     private GameObject weaponModel;
     private RealtimeView _realtimeView;
 
@@ -21,8 +21,14 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         _playerMoveInput = new Vector2(0.0f,0.0f);
         _playerMoveSpeedMultiplier = 0;
         _playerName = "Player";
-        _playerIsCanShootGunEffect = false;
+        _playerIsCanEnterNextLV = false;
     }
+
+    private void Start()
+    {
+        GameObject.DontDestroyOnLoad(gameObject);
+    }
+    
 
     protected override void OnRealtimeModelReplaced(PlayerSyncDataModel previousModel, PlayerSyncDataModel currentModel) 
     {
@@ -33,7 +39,7 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
             previousModel.playerMoveInputDidChange -= PlayerMoveInputDidChange;
             previousModel.playerMoveSpeedMultiplierDidChange -= PlayerMoveSpeedMultiplierDidChange;
             previousModel.playerNameDidChange -= PlayerNameDidChange;
-            previousModel.playerIsCanShootGunEffectDidChange -= PlayerIsCanShootGunEffectDidChange;
+            previousModel.playerIsCanEnterNextLVDidChange -= PlayerIsCanEnterNextLVDidChange;
         }
         
         if (currentModel != null) {
@@ -45,7 +51,7 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
                 currentModel.playerMoveInput = _playerMoveInput;
                 currentModel.playerMoveSpeedMultiplier = _playerMoveSpeedMultiplier;
                 currentModel.playerName = _playerName;
-                currentModel.playerIsCanShootGunEffect = _playerIsCanShootGunEffect;
+                currentModel.playerIsCanEnterNextLV = _playerIsCanEnterNextLV;
             }
             // Update the mesh render to match the new model
             UpdatePlayerHP();
@@ -53,14 +59,14 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
             UpdatePlayerMoveInput();
             UpdatePlayerMoveSpeedMultiplier();
             UpdatePlayerName();
-            UpdateIsCanShootGunEffect();
+            UpdateIsCanEnterNextLV();
             // Register for events so we'll know if the color changes later
             currentModel.playerHPDidChange += PlayerHPDidChange;
             currentModel.playerScoreDidChange += PlayerScoreDidChange;
             currentModel.playerMoveInputDidChange += PlayerMoveInputDidChange;
             currentModel.playerMoveSpeedMultiplierDidChange += PlayerMoveSpeedMultiplierDidChange;
             currentModel.playerNameDidChange += PlayerNameDidChange;
-            currentModel.playerIsCanShootGunEffectDidChange += PlayerIsCanShootGunEffectDidChange;
+            currentModel.playerIsCanEnterNextLVDidChange += PlayerIsCanEnterNextLVDidChange;
         }
     }
 
@@ -89,9 +95,9 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         UpdatePlayerName();
     }
 
-    private void PlayerIsCanShootGunEffectDidChange(PlayerSyncDataModel model, bool value)
+    private void PlayerIsCanEnterNextLVDidChange(PlayerSyncDataModel model, bool value)
     {
-        UpdateIsCanShootGunEffect();
+        UpdateIsCanEnterNextLV();
     }
 
     private void UpdatePlayerHP() 
@@ -99,6 +105,8 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         _playerHP = model.playerHP;
 
         Debug.Log("PlayerHP = " + _playerHP);
+
+        GetComponent<PlayerHealthController>().ReceiveDamage(_playerHP);
     }
 
     private void UpdatePlayerScore() 
@@ -140,11 +148,11 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         }
     }
 
-    private void UpdateIsCanShootGunEffect()
+    private void UpdateIsCanEnterNextLV()
     {
-        _playerIsCanShootGunEffect = model.playerIsCanShootGunEffect;
-        
-        Debug.Log("PlayerIsCanShootGunEffect = " + _playerIsCanShootGunEffect);
+        _playerIsCanEnterNextLV = model.playerIsCanEnterNextLV;
+                
+        Debug.Log("PlayerIsCanEnterNextLV = " + _playerIsCanEnterNextLV);
     }
 
     public void AddPlayerHP(int hp) 
@@ -181,8 +189,14 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         model.playerName = playerName;
     }
 
-    public void ChangeIsCanShootGunEffect(bool iscanShootGunEffect )
+    public void ChangedIsCanEnterNextLV(bool iscanEnterNextLV )
     {
-        model.playerIsCanShootGunEffect = iscanShootGunEffect;
+        model.playerIsCanEnterNextLV = iscanEnterNextLV;
     }
+
+    // public void PutInDontDestroy()
+    // {
+    //     GameObject.DontDestroyOnLoad(gameObject);
+    //     Debug.Log("Mill DontDestroyOnLoad");
+    // }
 }

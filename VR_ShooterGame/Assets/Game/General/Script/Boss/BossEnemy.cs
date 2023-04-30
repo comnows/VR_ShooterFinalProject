@@ -21,8 +21,8 @@ public class BossEnemy : Enemy
         if (enemySyncData._enemyHP > 0)
         {
             enemySyncData.ChangeEnemyHP(damage,damagesDealer);
-            BossHPUI bossHPUI = GetComponent<BossHPUI>();
-            bossHPUI.UpdateBossHPText();
+            // BossHPUI bossHPUI = GetComponent<BossHPUI>();
+            // bossHPUI.UpdateBossHPText();
         }
     }
 }

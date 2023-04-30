@@ -126,7 +126,7 @@ MonoBehaviour:
     m_Bits: 128
   whatIsPlayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 512
   fieldOfViewAngle: 0
   playerInAttackRange: 0
 --- !u!114 &3428579427453657692

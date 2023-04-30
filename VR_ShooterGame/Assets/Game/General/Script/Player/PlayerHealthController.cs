@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerHealthController : MonoBehaviour
 {
-    public int currentHealth = 100;
+    //public int currentHealth = 100;
     [SerializeField] private int maxHealth = 100;
 
     public event Action<int> OnPlayerHealthUpdate;
@@ -14,12 +14,12 @@ public class PlayerHealthController : MonoBehaviour
 
     private void Start()
     {
+        uiPlayerHealthEffect = GameObject.Find("DamageCanvas").GetComponent<UIPlayerHealthEffect>();
         OnPlayerHealthUpdate += uiPlayerHealthEffect.RefreshPlayerSplitterUI;
     }
 
-    public void ReceiveDamage(int damage)
+    public void ReceiveDamage(int currentHealth)
     {
-        currentHealth -= damage;
         OnPlayerHealthUpdate?.Invoke(currentHealth);
     }
 }

@@ -114,12 +114,6 @@ public class VRGun : MonoBehaviour
 
             nextTimeToFire -= Time.deltaTime;
         }
-
-        if (playerSyncData._playerIsCanShootGunEffect)
-        {
-            OnGunShoot?.Invoke();
-            playerSyncData.ChangeIsCanShootGunEffect(false);
-        }
     }
 
     public void Shoot()
@@ -140,8 +134,6 @@ public class VRGun : MonoBehaviour
         }
 
         RemoveBulletFromMagazine();
-        
-        //playerSyncData.ChangeIsCanShootGunEffect(true);
         OnGunShoot?.Invoke();
     }
 

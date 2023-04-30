@@ -3265,6 +3265,7 @@ MonoBehaviour:
   tracerEffect: {fileID: 2539722562124457984, guid: 8e4991bab6e6e604e812c0b6cf79643f,
     type: 3}
   raycastOrigin: {fileID: 956070524}
+  muzzleFlashPos: {fileID: 0}
 --- !u!114 &3256143919121689728
 MonoBehaviour:
   m_ObjectHideFlags: 0

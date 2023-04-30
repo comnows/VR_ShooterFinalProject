@@ -27,11 +27,32 @@ public class BossBehaviorStateManager : MonoBehaviour
     private GameObject[] playersInSight;
     private EnemySyncData enemySyncData;
     private RealtimeTransform _realtimeTransform;
+    private RealtimeView _realtimeView;
+    public event Action OnSuperAttack;
+    [SerializeField] private EnemyGatlingGunEffect gunEffect;
     
-    void Awake()
+    // void Awake()
+    // {
+    //     _realtimeTransform = GetComponent<RealtimeTransform>(); 
+    //     nav = GetComponent<NavMeshAgent>();
+    //     animator = GetComponentInChildren<Animator>();
+    //     enemySyncData = GetComponent<EnemySyncData>();
+    //     timeBetweenAttacks = 1.5f;
+    //     sightRange = 8f;
+    //     attackRange = 8f;
+    //     fieldOfViewAngle = 120f;
+    //     currentState = "Idle";
+    //     countNormalAttack = 0;
+    //     isSuperAttack = false;
+    //     canRotate = false;
+    //     rotationTime = 5f;
+    //     superAttackTime = rotationTime;
+    // }
+
+    void Start()
     {
-        _realtimeTransform = GetComponent<RealtimeTransform>(); 
-        nav = GetComponent<NavMeshAgent>();
+         _realtimeTransform = GetComponent<RealtimeTransform>(); 
+        //nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         enemySyncData = GetComponent<EnemySyncData>();
         timeBetweenAttacks = 1.5f;
@@ -44,13 +65,19 @@ public class BossBehaviorStateManager : MonoBehaviour
         canRotate = false;
         rotationTime = 5f;
         superAttackTime = rotationTime;
+        // if (_realtimeTransform.isUnownedInHierarchy)
+        // GetComponent<RealtimeTransform>().SetOwnership(0);
     }
 
-    void Start()
-    {
-        if (_realtimeTransform.isUnownedInHierarchy)
-        GetComponent<RealtimeTransform>().SetOwnership(0);
-    }
+    // private void OnEnable()
+    // {
+    //     OnSuperAttack += gunEffect.StartPlayEffect;
+    // }
+
+    // private void OnDisable()
+    // {
+    //     OnSuperAttack -= gunEffect.StartPlayEffect;
+    // }
 
     void Update()
     {
@@ -251,6 +278,8 @@ public class BossBehaviorStateManager : MonoBehaviour
         Debug.Log("Mill SuperCute Attack");
         countNormalAttack = 0;
         animator.SetTrigger("SuperAttack");
+        //OnSuperAttack?.Invoke();
+        GetComponent<EnemyGatlingGunEffect>().StartPlayEffect();
         SuperShoot();
         canRotate = true;
     } 
@@ -281,7 +310,8 @@ public class BossBehaviorStateManager : MonoBehaviour
     private IEnumerator RemoveBody()
     {
         yield return new WaitForSeconds(5);
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        Realtime.Destroy(gameObject);
     }
 
     void Rotate()

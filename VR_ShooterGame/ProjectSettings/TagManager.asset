@@ -10,6 +10,8 @@ TagManager:
   - ARGun
   - BossGuard
   - VRCamera
+  - Realtime
+  - Boss
   layers:
   - Default
   - TransparentFX

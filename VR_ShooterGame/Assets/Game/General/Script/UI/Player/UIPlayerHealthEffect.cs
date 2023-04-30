@@ -6,7 +6,10 @@ using UnityEngine.UI;
 public class UIPlayerHealthEffect : MonoBehaviour
 {
     [SerializeField] private Image splatterImage = null;
-
+    private void Start() 
+    {
+        GameObject.DontDestroyOnLoad(gameObject);    
+    }
     public void RefreshPlayerSplitterUI(int playerHealth)
     {
         Color splatterImageColor = splatterImage.color;

@@ -61,6 +61,7 @@ public class EnemySyncData : RealtimeComponent<EnemySyncDataModel>
             EnemyBehaviorStateManager enemyBehaviorStateManager = gameObject.GetComponent<EnemyBehaviorStateManager>();
             EnemyTypeShieldBehaviorStateManager enemyTypeShieldBehaviorStateManager = gameObject.GetComponent<EnemyTypeShieldBehaviorStateManager>();
             EnemyTypeShootBehaviorStateManager enemyTypeShootBehaviorStateManager = gameObject.GetComponent<EnemyTypeShootBehaviorStateManager>();
+            BossBehaviorStateManager bossBehaviorStateManager = gameObject.GetComponent<BossBehaviorStateManager>();
             ChangeBehaviorState("Die");
 
             if (_damageDealer != null)
@@ -80,6 +81,10 @@ public class EnemySyncData : RealtimeComponent<EnemySyncDataModel>
             else if (enemyTypeShootBehaviorStateManager != null)
             {
                 enemyTypeShootBehaviorStateManager.Die();
+            }
+            else if  (bossBehaviorStateManager != null)
+            {
+                bossBehaviorStateManager.Die();
             }
         } 
     }

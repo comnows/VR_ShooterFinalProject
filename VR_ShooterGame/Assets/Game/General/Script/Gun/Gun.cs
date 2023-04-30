@@ -15,11 +15,13 @@ public class Gun : MonoBehaviour
     [SerializeField] private Camera weaponCamera;
     [SerializeField] private GameObject bulletHolePrefab;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private GameObject player;
 
     private RealtimeView _realtimeView;
     public GameObject currentGun;
     public GunData gunData;
     public GameObject weaponHolder;
+    private PlayerSyncData playerSyncData;
 
     private int damage = 10;
     private float fireRate = 10f;
@@ -30,20 +32,21 @@ public class Gun : MonoBehaviour
     public bool isAimingDownSight = false;
     private bool isReload = false;
 
-    // private void OnEnable()
-    // {
-    //     OnGunShoot += gunEffect.CastFireEffect;
-    // }
+    private void OnEnable()
+    {
+        OnGunShoot += gunEffect.CastFireEffect;
+    }
 
-    // private void OnDisable()
-    // {
-    //     OnGunShoot -= gunEffect.CastFireEffect;
-    // }
+    private void OnDisable()
+    {
+        OnGunShoot -= gunEffect.CastFireEffect;
+    }
 
     void Start()
     {
         //gunData.Initialize();
         //weaponHolder = transform.Find("NonVRController/CameraHolder/CameraRecoil/WeaponCamera/WeaponHolder").gameObject;
+        playerSyncData = player.GetComponent<PlayerSyncData>();
     }
 
     private void Awake() 
@@ -129,8 +132,6 @@ public class Gun : MonoBehaviour
             {
                 target.ReceiveAttack(gunData.bulletDamage, gameObject);
             }
-
-            //GameObject bulletHole = Instantiate(bulletHolePrefab, hitInfo.point + hitInfo.normal * 0.001f, Quaternion.LookRotation(hitInfo.normal));
         }
 
         gunData.RemoveCurrentMagazineAmmo();

@@ -2552,7 +2552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootAction:
-    m_Name: 
+    m_Name: Shoot
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: bd2ef169-6c15-4bde-a3c0-23fc43f950a3

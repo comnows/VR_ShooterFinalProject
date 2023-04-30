@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Normal.Realtime;
 public class GunEffect : MonoBehaviour
 {
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private ParticleSystem hitEffect;
     [SerializeField] private TrailRenderer tracerEffect;
-
     [SerializeField] private Transform raycastOrigin;
     [SerializeField] private Transform raycastDestination;
-
+    [SerializeField] private GameObject muzzleFlashPos;
     private Ray ray;
     private RaycastHit hitInfo;
+    private Realtime _realtime;
+    private Realtime.InstantiateOptions options;
 
     public void CastFireEffect()
     {
@@ -37,7 +38,8 @@ public class GunEffect : MonoBehaviour
 
     private void PlayMuzzleFlash()
     {
-        muzzleFlash.Emit(1);
+        //muzzleFlash.Emit(1);
+        Realtime.Instantiate(muzzleFlash.name, muzzleFlashPos.transform.position, muzzleFlashPos.transform.rotation,options);
     }
 
     private void SetupRay()
@@ -48,7 +50,7 @@ public class GunEffect : MonoBehaviour
     
     private TrailRenderer CreateBulletTracer()
     {
-        var tracer = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
+        TrailRenderer tracer = Realtime.Instantiate(tracerEffect.name, ray.origin, Quaternion.identity,options).GetComponent<TrailRenderer>();
         tracer.AddPosition(ray.origin);
 
         return tracer;
@@ -58,7 +60,8 @@ public class GunEffect : MonoBehaviour
     {
         hitEffect.transform.position = hitInfo.point;
         hitEffect.transform.forward = hitInfo.normal;
-        hitEffect.Emit(1);
+        //hitEffect.Emit(1);
+        Realtime.Instantiate(hitEffect.name, hitInfo.point, hitEffect.transform.rotation,options);
     }
 
     private void SetTracerPositionTo(TrailRenderer tracer, Vector3 point)
