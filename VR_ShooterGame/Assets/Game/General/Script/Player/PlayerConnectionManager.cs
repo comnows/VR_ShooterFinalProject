@@ -99,7 +99,7 @@ public class PlayerConnectionManager : MonoBehaviour {
         {
             foreach(GameObject enemy in enemiesInScene)
             {
-                enemy.GetComponent<RealtimeView>().RequestOwnership();
+                //enemy.GetComponent<RealtimeView>().RequestOwnership();
                 enemy.GetComponent<RealtimeTransform>().RequestOwnership();
             }
         }

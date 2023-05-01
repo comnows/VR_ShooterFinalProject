@@ -130,6 +130,7 @@ public class Gun : MonoBehaviour
 
             if (target != null)
             {
+                Debug.Log("ReceiveAttack");
                 target.ReceiveAttack(gunData.bulletDamage, gameObject);
             }
         }

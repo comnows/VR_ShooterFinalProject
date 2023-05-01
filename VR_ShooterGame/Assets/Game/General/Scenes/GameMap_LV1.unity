@@ -13899,11 +13899,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1871308287953721811, guid: bd0867bc905bf3a42af74d0cf6769f59,
-        type: 3}
-      propertyPath: reviveRange
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1871308287953721812, guid: bd0867bc905bf3a42af74d0cf6769f59,
         type: 3}
       propertyPath: m_Name

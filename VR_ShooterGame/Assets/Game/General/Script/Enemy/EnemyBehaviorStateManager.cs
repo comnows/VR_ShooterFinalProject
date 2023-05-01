@@ -30,7 +30,7 @@ public class EnemyBehaviorStateManager : MonoBehaviour
         enemySyncData = GetComponent<EnemySyncData>();
         timeBetweenAttacks = 1.5f;
         sightRange = 10f;
-        attackRange = 1.5f;
+        attackRange = 2f;
         fieldOfViewAngle = 120f;
         currentState = "Idle";
     }
@@ -38,6 +38,11 @@ public class EnemyBehaviorStateManager : MonoBehaviour
     void Update()
     {
         currentState = enemySyncData._enemyBehaviorState;
+        
+        // if(enemySyncData._enemyTarget != null)
+        // {
+        player = GameObject.Find(enemySyncData._enemyTarget);
+        // }
        CheckState();
     }
 
@@ -70,7 +75,7 @@ public class EnemyBehaviorStateManager : MonoBehaviour
 
         CheckPlayerInSigthRange();
 
-        if (player != null)
+        if (enemySyncData._enemyTarget != "")
         {
             animator.SetTrigger("PrepareToAttack");
 
@@ -107,9 +112,10 @@ public class EnemyBehaviorStateManager : MonoBehaviour
 
     public void SetTarget(GameObject target)
     {
-        if (player == null)
+        if (enemySyncData._enemyTarget == "")
         {
-            player = target;
+            enemySyncData.ChangeEnemyTarget(target.name);
+            //player = target;
         }
         else
         {
@@ -117,7 +123,8 @@ public class EnemyBehaviorStateManager : MonoBehaviour
             float distanceBetweenPlayer2 = Vector3.Distance(target.transform.position, transform.position);
             if (distanceBetweenPlayer1 > distanceBetweenPlayer2)
             {
-                player = target;
+                enemySyncData.ChangeEnemyTarget(target.name);
+                //player = target;
             }
         }
     }
@@ -149,7 +156,8 @@ public class EnemyBehaviorStateManager : MonoBehaviour
             }
             else 
             {
-                player = null;
+                enemySyncData.ChangeEnemyTarget("");
+                //player = null;
                 //currentState = "Idle";
                 enemySyncData.ChangeBehaviorState("Idle");
             }
@@ -183,7 +191,8 @@ public class EnemyBehaviorStateManager : MonoBehaviour
             }
             else 
             {
-                player = null;
+                enemySyncData.ChangeEnemyTarget("");
+                //player = null;
                 //currentState = "Idle";
                 enemySyncData.ChangeBehaviorState("Idle");
             }
@@ -192,7 +201,8 @@ public class EnemyBehaviorStateManager : MonoBehaviour
         {
             if (player.GetComponent<PlayerSyncData>()._playerHP <= 0)
             {
-                player = null;
+                enemySyncData.ChangeEnemyTarget("");
+                //player = null;
                 //currentState = "Idle";
                 enemySyncData.ChangeBehaviorState("Idle");
             }

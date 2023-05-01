@@ -142,9 +142,16 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
 
         GameObject [] playerNameTags = GameObject.FindGameObjectsWithTag("PNameTag");
 
-        foreach(GameObject nameTag in playerNameTags)
+        foreach (GameObject nameTag in playerNameTags)
         {
             nameTag.GetComponent<PlayerNameTag>().UpdateNameTag();
+        }
+        
+        GameObject [] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject player in players)
+        {
+            player.name = player.GetComponent<PlayerSyncData>()._playerName;
         }
     }
 
@@ -193,10 +200,4 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
     {
         model.playerIsCanEnterNextLV = iscanEnterNextLV;
     }
-
-    // public void PutInDontDestroy()
-    // {
-    //     GameObject.DontDestroyOnLoad(gameObject);
-    //     Debug.Log("Mill DontDestroyOnLoad");
-    // }
 }
