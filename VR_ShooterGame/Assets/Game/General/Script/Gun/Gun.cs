@@ -117,7 +117,6 @@ public class Gun : MonoBehaviour
 
     void Shoot()
     {
-        audioSource.PlayOneShot(audioSource.clip);
         RaycastHit hitInfo;
         if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hitInfo, shotRange))
         {
@@ -133,8 +132,14 @@ public class Gun : MonoBehaviour
             //GameObject bulletHole = Instantiate(bulletHolePrefab, hitInfo.point + hitInfo.normal * 0.001f, Quaternion.LookRotation(hitInfo.normal));
         }
 
+        PlaySound(gunData.shootClip);
         gunData.RemoveCurrentMagazineAmmo();
         OnGunShoot?.Invoke();
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 
     private void ApplyKickback()
