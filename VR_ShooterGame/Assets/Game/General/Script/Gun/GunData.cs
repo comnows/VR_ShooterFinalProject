@@ -8,6 +8,7 @@ public class GunData : ScriptableObject
     public int type; //1-primary 2-secondary 3-special
     public GameObject prefab;
     public AnimationClip gunHoldAnimation;
+    public AudioClip shootClip;
 
     [Header("Basic Properties")]
     public int bulletDamage;
