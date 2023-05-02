@@ -11,6 +11,8 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
     public Animator animator;
     public NavMeshAgent nav;
     [SerializeField] private GameObject aimingObj;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip audioClip;
     public GameObject player;
     public LayerMask whatIsGround, whatIsPlayer;
     private float sightRange, attackRange;
@@ -36,6 +38,8 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
         attackRange = 12f;
         fieldOfViewAngle = 120f;
         currentState = "Idle";
+        audioSource = GetComponent<AudioSource>();
+
     }
 
     void Update()
@@ -211,7 +215,13 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
                 target.transform.gameObject.GetComponent<PlayerSyncData>().DecreasePlayerHP(5);
             }
         }
+        PlaySound();
         OnAttack?.Invoke();
+    }
+
+    private void PlaySound()
+    {
+        audioSource.PlayOneShot(audioClip,0.5f);
     }
 
     private void ResetAttack()

@@ -33,6 +33,8 @@ public class PlayerVROwnership : MonoBehaviour
 
         cameraOffset.GetComponent<RealtimeTransform>().RequestOwnership();
         cameraOffset.GetComponent<RealtimeView>().RequestOwnership();
+        
+        cameraOffset.transform.position += new Vector3(0,0.8f,0);
 
         invetorySocket.GetComponent<RealtimeTransform>().RequestOwnership();
         invetorySocket.GetComponent<RealtimeView>().RequestOwnership();

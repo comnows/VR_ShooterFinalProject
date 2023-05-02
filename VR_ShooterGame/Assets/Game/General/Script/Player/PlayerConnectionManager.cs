@@ -92,16 +92,16 @@ public class PlayerConnectionManager : MonoBehaviour {
         CloseButton();
         }
 
-        // GameObject [] enemiesInScene = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject [] enemiesInScene = GameObject.FindGameObjectsWithTag("Enemy");
         
-        // if (enemiesInScene[0].GetComponent<RealtimeView>().isUnownedSelf)
-        // {
-        //     foreach(GameObject enemy in enemiesInScene)
-        //     {
-        //         //enemy.GetComponent<RealtimeView>().RequestOwnership();
-        //         enemy.GetComponent<RealtimeTransform>().RequestOwnership();
-        //     }
-        // }
+        if (enemiesInScene[0].GetComponent<RealtimeView>().isUnownedSelf)
+        {
+            foreach(GameObject enemy in enemiesInScene)
+            {
+                //enemy.GetComponent<RealtimeView>().RequestOwnership();
+                enemy.GetComponent<RealtimeTransform>().RequestOwnership();
+            }
+        }
     }
 
     private void AssignVRGunVariable()
@@ -112,6 +112,7 @@ public class PlayerConnectionManager : MonoBehaviour {
         GameObject arMagazineInventory = inventorySockets.transform.GetChild(1).gameObject;
 
         vrGunGameObject.transform.position = arInventoryAttach.transform.position;
+        GameObject.DontDestroyOnLoad(vrGunGameObject);
         arMagazineInventory.GetComponent<VRMagazineGenerator>().AssignVRGun(vrGunGameObject);
 
         Invoke(nameof(AssignVRGunInARMagazine),1);
@@ -121,6 +122,7 @@ public class PlayerConnectionManager : MonoBehaviour {
     {
        GameObject arMagazine = GameObject.FindGameObjectWithTag("ARMagazine");
        arMagazine.GetComponent<VRGunMagazine>().AssignVRGun(vrGunGameObject);
+        GameObject.DontDestroyOnLoad(arMagazine);    
     }
 
     private void CreatePCPlayer()

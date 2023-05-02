@@ -860,6 +860,8 @@ GameObject:
   - component: {fileID: 1727431670978920969}
   - component: {fileID: 3022066018819789688}
   - component: {fileID: 3099097869083225512}
+  - component: {fileID: 3884928112403898098}
+  - component: {fileID: 1861277947}
   m_Layer: 5
   m_Name: HUD Canvas
   m_TagString: Untagged
@@ -975,6 +977,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d31b935d52f0df448406920d8875e42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magazineAmmoText: {fileID: 6488569736955149917}
+  stashAmmoText: {fileID: 3143808565200960554}
+--- !u!114 &3884928112403898098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727431670978920975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e890045c182984448e2617b02eae8e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerScoreText: {fileID: 1192004475504078893}
+--- !u!114 &1861277947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727431670978920975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99fa3047fb045be4280b9237fe4239cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   magazineAmmoText: {fileID: 6488569736955149917}

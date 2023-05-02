@@ -107,6 +107,8 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         Debug.Log("PlayerHP = " + _playerHP);
 
         GetComponent<PlayerHealthController>().ReceiveDamage(_playerHP);
+        UIPlayerHealth uIPlayerHealth = GameObject.Find("HUD Canvas").GetComponent<UIPlayerHealth>();
+        uIPlayerHealth.RefreshPlayerHealthUI(_playerHP);
     }
 
     private void UpdatePlayerScore() 
@@ -114,7 +116,7 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         _playerScore = model.playerScore;
         if(_playerScore > 0 )
         {
-            UIScore uIScore = GameObject.Find("Canvas").GetComponent<UIScore>();
+            UIScore uIScore = GameObject.Find("HUD Canvas").GetComponent<UIScore>();
             uIScore.UpdateScoreText(gameObject);
         }
         Debug.Log("PlayerScore = " + _playerScore);
