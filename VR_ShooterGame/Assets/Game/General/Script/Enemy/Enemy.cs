@@ -18,22 +18,22 @@ public class Enemy : AttackTarget
     public override void ReceiveAttack(int damage, GameObject damagesDealer)
     {
         TakeDamage(damage,damagesDealer);
-        // EnemyBehaviorStateManager enemyBehaviorStateManager = gameObject.GetComponent<EnemyBehaviorStateManager>();
-        // if (enemyBehaviorStateManager != null) 
-        // {
-        //     if (enemyBehaviorStateManager.player == null)
-        //     {
-        //         enemyBehaviorStateManager.SetTarget(damagesDealer);
-        //     }
-        // }
-        // else
-        // {
-        //     EnemyTypeShootBehaviorStateManager enemyTypeShootBehaviorStateManager = gameObject.GetComponent<EnemyTypeShootBehaviorStateManager>();
-        //     if (enemyTypeShootBehaviorStateManager.player == null)
-        //     {
-        //         enemyTypeShootBehaviorStateManager.SetTarget(damagesDealer);
-        //     }
-        // }
+        EnemyBehaviorStateManager enemyBehaviorStateManager = gameObject.GetComponent<EnemyBehaviorStateManager>();
+        if (enemyBehaviorStateManager != null) 
+        {
+            if (enemyBehaviorStateManager.player == null)
+            {
+                enemyBehaviorStateManager.SetTarget(damagesDealer);
+            }
+        }
+        else
+        {
+            EnemyTypeShootBehaviorStateManager enemyTypeShootBehaviorStateManager = gameObject.GetComponent<EnemyTypeShootBehaviorStateManager>();
+            if (enemyTypeShootBehaviorStateManager.player == null)
+            {
+                enemyTypeShootBehaviorStateManager.SetTarget(damagesDealer);
+            }
+        }
     }
     public virtual void TakeDamage(int damage, GameObject damagesDealer)
     {

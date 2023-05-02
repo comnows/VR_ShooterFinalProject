@@ -13,71 +13,31 @@ public class LevelManager : MonoBehaviour
     // //public GameObject spawnPoint;
     private void Start() 
     {
-        //prev = 1;
         numPlayerInArea = 0;
-        LV = 1;
         isEnterOtherMap = false;
     }
 
-    // private void OnTriggerEnter(Collider other) {
-    //     numPlayerInArea += 1;
-    //     if (other.tag == "Player")
-    //     {   
-    //         // UIScoreBoard uIScoreBoard = GameObject.Find("Canvas").GetComponent<UIScoreBoard>();
-    //         // uIScoreBoard.UpdateScoreBoard(); 
-
-    //         var playersInGame = GameObject.FindGameObjectsWithTag("Player");
-    //         if(playersInGame.Length == numPlayerInArea)
-    //         {
-    //             prev += 1;
-    //             EnterNextLevel(other.gameObject);
-    //             foreach(GameObject player in playersInGame)
-    //             {
-    //                 EnterNextLevel(player);
-    //             }
-    //         }
-    //     }
-    // }
     
-    // private void OnTriggerExit(Collider other) {
-    //     if (other.tag == "Player")
-    //     {
-    //         numPlayerInArea -= 1;
-    //     }
-    // }
-
-    // private void EnterNextLevel(GameObject player)
-    // {
-    //     player.GetComponent<RealtimeTransform>().ClearOwnership();
-    //     Debug.Log("prev = " + prev);
-    //     StartCoroutine(DeleyTeleport(player));
-    // }
-
-    // private IEnumerator DeleyTeleport(GameObject player)
-    // {
-    //     yield return new WaitForSeconds(3);
-    //     var spawnPoint = GameObject.Find("SpawnPointLV" + prev);
-    //     player.transform.position = spawnPoint.transform.position;
-    //     player.GetComponent<RealtimeTransform>().RequestOwnership();
-    // }
+    private void OnTriggerExit(Collider other) {
+        if (other.tag == "Player")
+        {
+            numPlayerInArea -= 1;
+        }
+    }
 
     private void OnTriggerEnter(Collider other) 
     {
         numPlayerInArea += 1;
         if (other.tag == "Player")
         {   
-            // UIScoreBoard uIScoreBoard = GameObject.Find("Canvas").GetComponent<UIScoreBoard>();
-            // uIScoreBoard.UpdateScoreBoard(); 
             var playersInGame = GameObject.FindGameObjectsWithTag("Player");
             if(playersInGame.Length == numPlayerInArea)
             {
                 Debug.Log("MillInCondition");
 
-                //prev += 1;
-                //EnterNextLevel(other.gameObject);
                 foreach(GameObject player in playersInGame)
                 {
-                    //EnterNextLevel(player);
+
                     player.GetComponent<PlayerSyncData>().ChangedIsCanEnterNextLV(true);
                 }
             }
@@ -90,37 +50,22 @@ public class LevelManager : MonoBehaviour
         {
             Debug.Log("MillEnterMyRoom");
             isEnterOtherMap = true;
+            ActivateBlackBG();
+            var playersInGame = GameObject.FindGameObjectsWithTag("Player");
+            other.GetComponent<PlayerSyncData>().ChangedIsCanEnterNextLV(false);
             EnterNextLevel(other.gameObject);
         }
     }
 
     private void EnterNextLevel(GameObject player)
     {
-        Debug.Log("MillEnterMyRoom");
-        //player.GetComponent<RealtimeTransform>().ClearOwnership();
-        //Debug.Log("prev = " + prev);
-        //DontDestroyOnLoad(player);
-        //player.GetComponent<PlayerSyncData>().PutInDontDestroy();
-        //StartCoroutine(DeleyChangePosition(player));
-        //realtimeObj.GetComponent<Realtime>().Connect("Map2");
-        //Debug.Log("RoomName = " + realtimeObj.GetComponent<Realtime>().room.name);
-        //player.GetComponent<Realtime>().room.name;
-        SceneManager.LoadScene(1);
-        //StartCoroutine(DeleyChangePosition(player));
-        //player.transform.position = GameObject.Find("SpawnPointLV" + LV).transform.position;
-        //LV += 1;
-        //DontDestroyOnLoad(player);
-       // _realtime.Connect("MapLV2");
+        isEnterOtherMap = false;
+        numPlayerInArea = 0;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    IEnumerator DeleyChangePosition(GameObject player)
+    private void ActivateBlackBG()
     {
-        yield return new WaitForSeconds(1);
-        player.transform.position = GameObject.Find("SpawnPointLV" + LV).transform.position;
-        LV += 1;
+        GameObject.Find("Canvas").GetComponent<LevelChangingEffect>().ActiveBlackBG();
     }
-
-    // private void OnTriggerExit(Collider other) {
-    //     numPlayerInArea -= 1;
-    // }
 }

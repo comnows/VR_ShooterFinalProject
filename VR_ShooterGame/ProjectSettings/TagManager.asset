@@ -13,6 +13,15 @@ TagManager:
   - Realtime
   - Boss
   - Enemy
+  - Door
+  - Door1Pos
+  - Door2Pos
+  - Canvas
+  - BossGuardPos
+  - NEPos
+  - STEPos
+  - SHEPos
+  - NERPos
   layers:
   - Default
   - TransparentFX

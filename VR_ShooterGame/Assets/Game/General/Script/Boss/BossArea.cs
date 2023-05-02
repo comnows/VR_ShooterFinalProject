@@ -6,22 +6,31 @@ using Normal.Realtime;
 public class BossArea : MonoBehaviour
 {
     private Realtime _realtime;
+    private RealtimeView _realtimeView;
     private RealtimeTransform _realtimeTransform;
     public GameObject bossHPUI;
     [SerializeField] private GameObject enemyToSpawn;
     [SerializeField] private GameObject [] spawnPoints;
+    [SerializeField] private GameObject [] allPlayerInGame;
     private bool canCheckSpawnEnemy, isSpawning;
-    private GameObject [] allPlayerInGame;
+    private bool isGameEnd;
 
     private void Start()
     {
         _realtime = GetComponent<Realtime>();
+        _realtimeView = GetComponent<RealtimeView>();
+        _realtimeView.SetOwnership(0);
+        isGameEnd = false;
     }
     private void Update() 
     {
-        if (canCheckSpawnEnemy && !isSpawning)
+        if (_realtimeView.isOwnedLocallySelf)
         {
-            CheckSpawnEnemy();
+            GameObject boss = GameObject.FindGameObjectWithTag("Boss");
+            if (canCheckSpawnEnemy && !isSpawning && boss != null)
+            {
+                CheckSpawnEnemy();
+            }
         }
     }
     private void OnTriggerEnter(Collider other) 
@@ -30,6 +39,26 @@ public class BossArea : MonoBehaviour
         {
             //bossHPUI.SetActive(true);
             canCheckSpawnEnemy = true;
+        }
+    }
+
+    private void OnTriggerStay(Collider other) 
+    {
+        if (other.tag == "Player")
+        {
+            if (other.GetComponent<RealtimeTransform>().isOwnedLocallySelf)
+            {
+                GameObject [] boss = GameObject.FindGameObjectsWithTag("Boss");
+                GameObject [] bossGuard = GameObject.FindGameObjectsWithTag("BossGuard");
+                
+                if (boss.Length == 0 && bossGuard.Length == 0 && isGameEnd == false)
+                {
+                    isGameEnd = true;
+                    Debug.Log("MillEndMyGame");
+                    GameObject canvas = GameObject.Find("Canvas");
+                    canvas.GetComponent<UIPlayerWinGame>().DeleyPlayerWinGame();
+                }
+            }
         }
     }
 
@@ -47,7 +76,7 @@ public class BossArea : MonoBehaviour
     private void SpawnEnemy()
     {
         allPlayerInGame = GameObject.FindGameObjectsWithTag("Player");
-
+        spawnPoints = GameObject.FindGameObjectsWithTag("BossGuardPos");
         for(int i = 1; i <= allPlayerInGame.Length * 2; i++)
         {
             var options = new Realtime.InstantiateOptions {
@@ -60,24 +89,27 @@ public class BossArea : MonoBehaviour
             bossGuard.tag = "BossGuard";
             _realtimeTransform = bossGuard.GetComponent<RealtimeTransform>();
             _realtimeTransform.SetOwnership(0);
-            bossGuard.transform.position = spawnPoints[i+1].transform.position;
-            SetTarget(bossGuard);
+            bossGuard.GetComponent<RealtimeView>().ClearOwnership();
+            bossGuard.transform.position = spawnPoints[i].transform.position;
+            bossGuard.transform.rotation = spawnPoints[i].transform.rotation;
+            //SetTarget(bossGuard);
         }
 
         isSpawning = false;
     }
 
-    private void SetTarget(GameObject bossGuard)
-    {
-        allPlayerInGame = GameObject.FindGameObjectsWithTag("Player");
-        int randNum = Random.Range(0,allPlayerInGame.Length - 1);
-        EnemyBehaviorStateManager enemyBehaviorStateManager = bossGuard.GetComponent<EnemyBehaviorStateManager>();
-        if (enemyBehaviorStateManager != null) 
-        {
-            if (enemyBehaviorStateManager.player == null)
-            {
-                enemyBehaviorStateManager.SetTarget(allPlayerInGame[randNum]);
-            }
-        }
-    }
+    // private void SetTarget(GameObject bossGuard)
+    // {
+    //     allPlayerInGame = GameObject.FindGameObjectsWithTag("Player");
+    //     int randNum = Random.Range(0,allPlayerInGame.Length - 1);
+    //     EnemyBehaviorStateManager enemyBehaviorStateManager = bossGuard.GetComponent<EnemyBehaviorStateManager>();
+    //     if (enemyBehaviorStateManager != null) 
+    //     {
+    //         if (enemyBehaviorStateManager.player == null)
+    //         {
+    //             Debug.Log("MillLove " + allPlayerInGame[randNum].name);
+    //             enemyBehaviorStateManager.SetTarget(allPlayerInGame[randNum]);
+    //         }
+    //     }
+    // }
 }

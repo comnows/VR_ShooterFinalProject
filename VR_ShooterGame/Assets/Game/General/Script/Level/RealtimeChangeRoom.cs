@@ -30,5 +30,4 @@ public class RealtimeChangeRoom : MonoBehaviour
     {
         boss.transform.position = bossSpawnPoint.transform.position;
     }
-
 }

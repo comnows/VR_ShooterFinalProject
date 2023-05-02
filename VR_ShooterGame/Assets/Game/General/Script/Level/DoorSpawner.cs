@@ -5,42 +5,57 @@ using Normal.Realtime;
 
 public class DoorSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject bossPrefab;
-    [SerializeField] private GameObject bossSpawnPoint;
-    private GameObject boss;
+    [SerializeField] private GameObject door1Prefab;
+    [SerializeField] private GameObject door2Prefab;
+    Realtime.InstantiateOptions options;
     private void OnTriggerEnter(Collider other) {
-        Debug.Log("MillTriggerSpawnLoveLove");
-        if (other.tag == "Player" && GameObject.FindGameObjectsWithTag("Boss").Length == 0)
+        if (other.tag == "Player" && GameObject.FindGameObjectsWithTag("Door").Length == 0)
         {
-            Debug.Log("MillSpawnLoveLove");
             Realtime realtime = GameObject.FindGameObjectWithTag("Realtime").GetComponent<Realtime>();
-            var options = new Realtime.InstantiateOptions {
-            ownedByClient            = true,    // Make sure the RealtimeView on this prefab is owned by this client.
-            preventOwnershipTakeover = false,    // Prevent other clients from calling RequestOwnership() on the root RealtimeView.
-            useInstance              = realtime // Use the instance of Realtime that fired the didConnectToRoom event.
+            options = new Realtime.InstantiateOptions {
+            ownedByClient            = true,    
+            preventOwnershipTakeover = false,    
+            useInstance              = realtime 
             };
-            boss = Realtime.Instantiate(bossPrefab.name,options);
-            boss.GetComponent<RealtimeTransform>().RequestOwnership();
-            Invoke(nameof(ChangeBossPos),1);
-            //boss.transform.position = bossSpawnPoint.transform.position;
+            if (other.GetComponent<RealtimeTransform>().ownerIDSelf == 0)
+            {
+                SpawnDoor1();
+                SpawnDoor2();
+            }
         }
     }
 
-    private void ChangeBossPos()
+    private void SpawnDoor1()
     {
-        //boss.transform.parent = bossSpawnPoint.transform;
-        Vector3 objectScale = boss.transform.localScale;
-        boss.transform.localScale = new Vector3(objectScale.x*2,  objectScale.y*2, objectScale.z*2);
-        //boss.transform.position = new Vector3(0,0,0);
-        boss.transform.position = bossSpawnPoint.transform.position;
-        //Invoke(nameof(ClearParent),2);
-        //boss.transform.parent = null;
-        //boss.GetComponent<RealtimeTransform>().RequestOwnership();
+        GameObject [] door1Pos = GameObject.FindGameObjectsWithTag("Door1Pos");
+        foreach (GameObject doorPos in door1Pos)
+        {
+            GameObject door = Realtime.Instantiate(door1Prefab.name,options);
+            door.GetComponent<RealtimeTransform>().RequestOwnership();
+            StartCoroutine(ChangeDoorPos(door,doorPos));
+        }
     }
 
-    private void ClearParent()
+    private void SpawnDoor2()
     {
-        boss.transform.parent = null;
+        GameObject [] door2Pos = GameObject.FindGameObjectsWithTag("Door2Pos");
+        if (door2Pos.Length != 0)
+        {
+            foreach (GameObject doorPos in door2Pos)
+            {
+                GameObject door = Realtime.Instantiate(door2Prefab.name,options);
+                door.GetComponent<RealtimeTransform>().RequestOwnership();
+                StartCoroutine(ChangeDoorPos(door,doorPos));
+            }
+        }
     }
 
+
+    IEnumerator ChangeDoorPos(GameObject doorToChange,GameObject doorPos)
+    {
+        yield return new WaitForSeconds(0);
+        doorToChange.transform.localScale = doorPos.transform.localScale;
+        doorToChange.transform.position = doorPos.transform.position;
+        doorToChange.transform.rotation = doorPos.transform.rotation;
+    }
 }

@@ -91,18 +91,17 @@ public class PlayerConnectionManager : MonoBehaviour {
         ChangePlayerName(playerGameObject);
         CloseButton();
         }
-        //Debug.Log("FirstRoomName = " + playerGameObject.GetComponent<Realtime>().room.name);
 
-        GameObject [] enemiesInScene = GameObject.FindGameObjectsWithTag("Enemy");
+        // GameObject [] enemiesInScene = GameObject.FindGameObjectsWithTag("Enemy");
         
-        if (enemiesInScene[0].GetComponent<RealtimeView>().isUnownedSelf)
-        {
-            foreach(GameObject enemy in enemiesInScene)
-            {
-                //enemy.GetComponent<RealtimeView>().RequestOwnership();
-                enemy.GetComponent<RealtimeTransform>().RequestOwnership();
-            }
-        }
+        // if (enemiesInScene[0].GetComponent<RealtimeView>().isUnownedSelf)
+        // {
+        //     foreach(GameObject enemy in enemiesInScene)
+        //     {
+        //         //enemy.GetComponent<RealtimeView>().RequestOwnership();
+        //         enemy.GetComponent<RealtimeTransform>().RequestOwnership();
+        //     }
+        // }
     }
 
     private void AssignVRGunVariable()
