@@ -12,14 +12,14 @@ public class EnemySyncData : RealtimeComponent<EnemySyncDataModel>
     private void Awake() 
     
     {
-        // if (gameObject.tag == "Boss")
-        // {
-        // _enemyHP = 500;
-        // }
-        // else
-        // {
+        if (gameObject.tag == "Boss")
+        {
+        _enemyHP = 500;
+        }
+        else
+        {
         _enemyHP = 100;
-        //}
+        }
         _enemyBehaviorState = "Idle";
         _enemyTarget = "";
     }
