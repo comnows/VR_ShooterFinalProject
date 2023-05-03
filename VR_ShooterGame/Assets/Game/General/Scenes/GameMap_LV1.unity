@@ -15785,7 +15785,7 @@ MonoBehaviour:
     type: 3}
   pcButton: {fileID: 259193193}
   vrButton: {fileID: 1131207945}
-  spawnPoint: {fileID: 1931070879}
+  spawnPoint: {fileID: 824958705}
 --- !u!114 &1921414989
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ public class DoorSpawner : MonoBehaviour
             preventOwnershipTakeover = false,    
             useInstance              = realtime 
             };
-            if (other.GetComponent<RealtimeTransform>().ownerIDInHierarchy == 0 && other.GetComponent<RealtimeTransform>().isOwnedLocallyInHierarchy && numPlayerInArea == 2)
+            if (other.GetComponent<RealtimeTransform>().isOwnedLocallySelf && numPlayerInArea == 2)
             {
                 SpawnDoor1();
                 SpawnDoor2();

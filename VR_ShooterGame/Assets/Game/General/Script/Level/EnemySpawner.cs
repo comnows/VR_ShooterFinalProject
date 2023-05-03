@@ -20,7 +20,7 @@ public class EnemySpawner : MonoBehaviour
         if (other.tag == "Player" && GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
         {
             numPlayerInArea += 1;
-            if (other.GetComponent<RealtimeTransform>().ownerIDInHierarchy == 0 && numPlayerInArea == 2)
+            if (other.GetComponent<RealtimeTransform>().isOwnedLocallySelf && numPlayerInArea == 2)
             {
                 Realtime realtime = GameObject.FindGameObjectWithTag("Realtime").GetComponent<Realtime>();
                 options = new Realtime.InstantiateOptions {
