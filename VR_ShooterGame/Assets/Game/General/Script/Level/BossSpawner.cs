@@ -8,10 +8,18 @@ public class BossSpawner : MonoBehaviour
     [SerializeField] private GameObject bossSpawnPoint;
     [SerializeField] private GameObject bossAreaManager;
     private GameObject boss;
+    private int numPlayerInArea;
+    
+    private void Start() 
+    {
+        numPlayerInArea = 0;
+    }
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Player" && GameObject.FindGameObjectsWithTag("Boss").Length == 0)
         {
-            if (other.GetComponent<RealtimeTransform>().ownerIDInHierarchy == 0) 
+            numPlayerInArea += 1;
+            
+            if (other.GetComponent<RealtimeTransform>().ownerIDInHierarchy == 0 && numPlayerInArea == 2) 
             {
                 Realtime realtime = GameObject.FindGameObjectWithTag("Realtime").GetComponent<Realtime>();
                 var options = new Realtime.InstantiateOptions {
@@ -25,6 +33,7 @@ public class BossSpawner : MonoBehaviour
                 boss.transform.position = bossSpawnPoint.transform.position;
                 
                 GameObject bossArea = Realtime.Instantiate(bossAreaManager.name,options);
+                numPlayerInArea = -1;
             }
         }
     }

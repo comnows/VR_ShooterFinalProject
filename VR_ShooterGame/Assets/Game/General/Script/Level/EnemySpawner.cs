@@ -9,10 +9,18 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject shieldEnemyPrefab;
     [SerializeField] private GameObject shootingEnemyPrefab;
     [SerializeField] private GameObject redRoomEnemyPrefab;
+    private int numPlayerInArea;
+
+    private void Start() 
+    {
+        numPlayerInArea = 0;
+    }
     private void OnTriggerEnter(Collider other) {
+
         if (other.tag == "Player" && GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
         {
-            if (other.GetComponent<RealtimeTransform>().ownerIDInHierarchy == 0)
+            numPlayerInArea += 1;
+            if (other.GetComponent<RealtimeTransform>().ownerIDInHierarchy == 0 && numPlayerInArea == 2)
             {
                 Realtime realtime = GameObject.FindGameObjectWithTag("Realtime").GetComponent<Realtime>();
                 options = new Realtime.InstantiateOptions {
@@ -25,6 +33,8 @@ public class EnemySpawner : MonoBehaviour
                 SpawnShootingEnemies();
                 SpawnShieldEnemis();
                 SpawnRedRoomEnemies();
+
+                numPlayerInArea = -1;
             }
         }
     }
