@@ -30,6 +30,8 @@ public class BossBehaviorStateManager : MonoBehaviour
     private RealtimeView _realtimeView;
     public event Action OnSuperAttack;
     [SerializeField] private EnemyGatlingGunEffect gunEffect;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip audioClip;
     
     void Start()
     {
@@ -37,6 +39,7 @@ public class BossBehaviorStateManager : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         enemySyncData = GetComponent<EnemySyncData>();
+        audioSource = GetComponent<AudioSource>();
         timeBetweenAttacks = 1.5f;
         sightRange = 8f;
         attackRange = 8f;
@@ -246,10 +249,16 @@ public class BossBehaviorStateManager : MonoBehaviour
 
             if (hitInfo.transform.CompareTag("Player"))
             {
-                hitInfo.transform.gameObject.GetComponent<PlayerSyncData>().DecreasePlayerHP(5);
+                hitInfo.transform.gameObject.GetComponent<PlayerSyncData>().DecreasePlayerHP(10);
             }
         }
         OnAttack?.Invoke();
+        PlaySound();
+    }
+
+    private void PlaySound()
+    {
+        audioSource.PlayOneShot(audioClip,0.5f);
     }
 
     IEnumerator DeleySuperAtk()

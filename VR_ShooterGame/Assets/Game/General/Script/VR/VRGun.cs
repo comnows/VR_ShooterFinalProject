@@ -11,6 +11,7 @@ public class VRGun : MonoBehaviour
 
     [SerializeField] private GameObject player;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip audioClip;
     public GunData gunData;
 
     public VRGunMagazine magazine;
@@ -44,6 +45,16 @@ public class VRGun : MonoBehaviour
         GameObject vrCamera = GameObject.FindGameObjectWithTag("VRCamera");
         player = vrCamera.transform.parent.gameObject;
         playerSyncData = player.GetComponent<PlayerSyncData>();
+
+        audioSource = player.GetComponent<AudioSource>();
+        // GameObject [] players = GameObject.FindGameObjectsWithTag("Player");
+        // foreach (GameObject player in players)
+        // {
+        //     if (player.GetComponent<PlayerVROwnership>() != null)
+        //     {
+        //         audioSource = player.GetComponent<AudioSource>();
+        //     }
+        // }
     }
 
     private void OnEnable()

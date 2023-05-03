@@ -40,6 +40,14 @@ public class VerticalSlidingDoor : Interactable
 
     public override void VRInteract(SelectEnterEventArgs args)
     {
+
+        startPosition = transform.position;
+        if (_realtimeTransform.isOwnedRemotelySelf || _realtimeTransform.isUnownedSelf)
+        {
+            _realtimeView.RequestOwnership();
+            _realtimeTransform.RequestOwnership();
+        }
+        
         Debug.Log("Door opening");
 
         if (isOpen) return;

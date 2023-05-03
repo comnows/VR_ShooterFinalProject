@@ -9,6 +9,11 @@ public class UIScoreBoard : MonoBehaviour
      private TMP_Text playerNameText;
      private TMP_Text playerScoreText;
 
+     void Start()
+     {
+          GameObject.DontDestroyOnLoad(gameObject);
+     }
+
      public void UpdateScoreBoard()
      {
           scoreBoardPanel.SetActive(true);

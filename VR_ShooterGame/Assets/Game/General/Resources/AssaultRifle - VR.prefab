@@ -409,6 +409,8 @@ MonoBehaviour:
   vrGunEffect: {fileID: 3169770771780966055}
   barrelTransform: {fileID: 3169770771991391495}
   player: {fileID: 0}
+  audioSource: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: 92d35fe1c59bbd14eaee9e3d3b54cea7, type: 3}
   gunData: {fileID: 11400000, guid: c06a8c0c1ad491a438a5a1a8c631eaa8, type: 2}
   magazine: {fileID: 0}
   socketInteractor: {fileID: 3169770772965138455}
@@ -547,7 +549,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3169770772009418620}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Magazine Attach Position
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -689,7 +691,7 @@ GameObject:
   - component: {fileID: 3169770772965138450}
   - component: {fileID: 3169770772965138448}
   - component: {fileID: 3169770772965138455}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Magazine Socket
   m_TagString: Untagged
   m_Icon: {fileID: 0}

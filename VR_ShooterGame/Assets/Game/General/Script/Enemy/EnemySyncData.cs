@@ -78,6 +78,8 @@ public class EnemySyncData : RealtimeComponent<EnemySyncDataModel>
             {
             PlayerSyncData playerSyncData = _damageDealer.GetComponent<PlayerSyncData>();
             playerSyncData.AddPlayerScore(10);
+            playerSyncData.AddPlayerHP(30);
+            
             }
 
             if (enemyBehaviorStateManager != null) 

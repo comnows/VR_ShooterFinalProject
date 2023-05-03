@@ -50,6 +50,12 @@ public class LevelManager : MonoBehaviour
             ActivateBlackBG();
             var playersInGame = GameObject.FindGameObjectsWithTag("Player");
             other.GetComponent<PlayerSyncData>().ChangedIsCanEnterNextLV(false);
+
+
+            GameObject xrManager = GameObject.Find("XR Interaction Manager");
+            GameObject xrDeviceSim = GameObject.Find("XR Device Simulator");
+            GameObject.DontDestroyOnLoad(xrDeviceSim);
+            GameObject.DontDestroyOnLoad(xrManager);
             EnterNextLevel(other.gameObject);
         }
     }

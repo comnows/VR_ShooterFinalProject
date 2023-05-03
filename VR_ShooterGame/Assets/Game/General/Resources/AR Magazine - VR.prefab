@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8015701735242235386}
   - component: {fileID: 6112703502932709148}
   - component: {fileID: 979092199502626772}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: MagazineAR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 1625421927}
   - component: {fileID: 4202967681783066569}
   - component: {fileID: -4941670004315267021}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: AR Magazine - VR
   m_TagString: ARMagazine
   m_Icon: {fileID: 0}

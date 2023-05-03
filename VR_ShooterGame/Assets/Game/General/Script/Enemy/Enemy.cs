@@ -41,7 +41,7 @@ public class Enemy : AttackTarget
         enemySyncData = GetComponent<EnemySyncData>();
         if (enemySyncData._enemyHP > 0)
         {
-            Debug.Log("Enemy HP Clien" + enemySyncData._enemyHP);
+            Debug.Log("Enemy HP Client" + enemySyncData._enemyHP);
             enemySyncData.ChangeEnemyHP(damage,damagesDealer);
         }
     
