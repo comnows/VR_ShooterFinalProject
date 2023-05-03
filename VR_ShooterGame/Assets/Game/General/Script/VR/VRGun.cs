@@ -10,7 +10,7 @@ public class VRGun : MonoBehaviour
     [SerializeField] private Transform barrelTransform;
 
     [SerializeField] private GameObject player;
-
+    [SerializeField] private AudioSource audioSource;
     public GunData gunData;
 
     public VRGunMagazine magazine;
@@ -132,9 +132,15 @@ public class VRGun : MonoBehaviour
                 target.ReceiveAttack(gunData.bulletDamage, this.gameObject);
             }
         }
-
+        PlaySound(gunData.shootClip);
         RemoveBulletFromMagazine();
+        GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(magazine.bulletCount,0);
         OnGunShoot?.Invoke();
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 
     public void RemoveBulletFromMagazine()

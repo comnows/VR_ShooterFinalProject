@@ -1190,7 +1190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b5dcbe83ba0f9342a2a0b2a42dafd63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magazinePrefab: {fileID: 1625421927, guid: 157a2f6fb1361de44a72e111f092c2df, type: 3}
+  magazinePrefab: {fileID: 1625421927, guid: 31b38d8917798c348a84bf4c3dd687eb, type: 3}
   magazineInventory: {fileID: 2082019140744381137}
   vrGun: {fileID: 0}
   createdTransform: {fileID: 2082019141863897179}

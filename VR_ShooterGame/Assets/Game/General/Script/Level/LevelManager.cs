@@ -25,9 +25,10 @@ public class LevelManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) 
     {
-        numPlayerInArea += 1;
         if (other.tag == "Player")
         {   
+            numPlayerInArea += 1;
+            Debug.Log("VRPlayerTrigger");
             var playersInGame = GameObject.FindGameObjectsWithTag("Player");
             if(playersInGame.Length == numPlayerInArea)
             {
@@ -44,6 +45,7 @@ public class LevelManager : MonoBehaviour
     {
         if (other.tag == "Player" && other.GetComponent<PlayerSyncData>()._playerIsCanEnterNextLV && !isEnterOtherMap)
         {
+            Debug.Log("VRPlayerNextLevel");
             isEnterOtherMap = true;
             ActivateBlackBG();
             var playersInGame = GameObject.FindGameObjectsWithTag("Player");

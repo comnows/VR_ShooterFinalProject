@@ -47,7 +47,7 @@ public class VRGunMagazine : MonoBehaviour
 
         AddBulletToGunData();
 
-        Destroy(this.gameObject);
+        Realtime.Destroy(this.gameObject);
     }
 
     public void AddBulletToGunData()
@@ -57,6 +57,7 @@ public class VRGunMagazine : MonoBehaviour
 
         int stashAmmo = vrGun.gunData.currentStashAmmo + bulletCount;
         vrGun.gunData.currentStashAmmo = Mathf.Min(stashAmmo, vrGun.gunData.maxStashAmmo);
+        GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(bulletCount,0);
     }
 
     public void AssignVRGun(GameObject gun)

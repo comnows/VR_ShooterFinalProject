@@ -662,6 +662,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: HUD Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 6488569736955149917, guid: d66be407e9d778644a08f0d6a84db28b,
+        type: 3}
+      propertyPath: m_text
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488569736955149917, guid: d66be407e9d778644a08f0d6a84db28b,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 64
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d66be407e9d778644a08f0d6a84db28b, type: 3}
 --- !u!4 &83734980 stripped
@@ -1814,7 +1824,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &259193194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5991,7 +6001,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
@@ -9334,7 +9344,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1131207946
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15615,7 +15625,7 @@ MonoBehaviour:
     type: 3}
   pcButton: {fileID: 259193193}
   vrButton: {fileID: 1131207945}
-  spawnPoint: {fileID: 824958705}
+  spawnPoint: {fileID: 1931070879}
 --- !u!114 &1921414989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45335,7 +45345,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &8707273951110046273
 MonoBehaviour:
   m_ObjectHideFlags: 0
