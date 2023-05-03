@@ -61,7 +61,12 @@ public class GunEffect : MonoBehaviour
         hitEffect.transform.position = hitInfo.point;
         hitEffect.transform.forward = hitInfo.normal;
         //hitEffect.Emit(1);
+        if (hitInfo.transform.gameObject.tag == "Enemy" || hitInfo.transform.gameObject.tag == "Boss" || hitInfo.transform.gameObject.tag == "BossGuard")
+        {
+            return;
+        }
         Realtime.Instantiate(hitEffect.name, hitInfo.point, hitEffect.transform.rotation,options);
+
     }
 
     private void SetTracerPositionTo(TrailRenderer tracer, Vector3 point)

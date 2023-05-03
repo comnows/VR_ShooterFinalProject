@@ -14,7 +14,7 @@ public class VRGunMagazine : MonoBehaviour
     private void Awake()
     {
         gunMagazineGrabInteractable = GetComponent<XRGrabInteractable>();
-        destroyMagazineCoroutine = DestroyMagazineIn(5f);
+        destroyMagazineCoroutine = DestroyMagazineIn(2f);
     }
 
     private void Start()

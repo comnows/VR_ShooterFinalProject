@@ -11,7 +11,7 @@ public class BossSpawner : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Player" && GameObject.FindGameObjectsWithTag("Boss").Length == 0)
         {
-            if (other.GetComponent<RealtimeTransform>().ownerIDSelf == 0)
+            if (other.GetComponent<RealtimeTransform>().ownerIDInHierarchy == 0) 
             {
                 Realtime realtime = GameObject.FindGameObjectWithTag("Realtime").GetComponent<Realtime>();
                 var options = new Realtime.InstantiateOptions {

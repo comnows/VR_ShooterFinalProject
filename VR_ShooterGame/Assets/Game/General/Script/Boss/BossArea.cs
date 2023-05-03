@@ -24,7 +24,7 @@ public class BossArea : MonoBehaviour
     }
     private void Update() 
     {
-        if (_realtimeView.isOwnedLocallySelf)
+        if (_realtimeView.isOwnedLocallyInHierarchy)
         {
             GameObject boss = GameObject.FindGameObjectWithTag("Boss");
             if (canCheckSpawnEnemy && !isSpawning && boss != null)
@@ -46,7 +46,7 @@ public class BossArea : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            if (other.GetComponent<RealtimeTransform>().isOwnedLocallySelf)
+            if (other.GetComponent<RealtimeTransform>().isOwnedLocallyInHierarchy)
             {
                 GameObject [] boss = GameObject.FindGameObjectsWithTag("Boss");
                 GameObject [] bossGuard = GameObject.FindGameObjectsWithTag("BossGuard");

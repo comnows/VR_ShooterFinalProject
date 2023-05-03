@@ -12,7 +12,7 @@ public class EnemySpawner : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Player" && GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
         {
-            if (other.GetComponent<RealtimeTransform>().ownerIDSelf == 0)
+            if (other.GetComponent<RealtimeTransform>().ownerIDInHierarchy == 0)
             {
                 Realtime realtime = GameObject.FindGameObjectWithTag("Realtime").GetComponent<Realtime>();
                 options = new Realtime.InstantiateOptions {

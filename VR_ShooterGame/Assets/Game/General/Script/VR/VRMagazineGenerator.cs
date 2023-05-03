@@ -37,6 +37,7 @@ public class VRMagazineGenerator : MonoBehaviour
         useInstance              = realtime // Use the instance of Realtime that fired the didConnectToRoom event.
         };
         newMagazine = Realtime.Instantiate(magazinePrefab.name, createdTransform.position, Quaternion.identity,options).GetComponent<VRGunMagazine>();
+        newMagazine.GetComponent<RealtimeTransform>().RequestOwnership();
         GameObject.DontDestroyOnLoad(newMagazine);
     }
 
@@ -107,15 +108,15 @@ public class VRMagazineGenerator : MonoBehaviour
 
     public void CreateNewMagazineOnSelectExited(SelectExitEventArgs args)
     {
-        if(args.interactorObject.hasSelection){return;}
-        Debug.Log("isSelected " + args.interactableObject.isSelected);
-        if(!args.interactableObject.isSelected){return;}
+        //if(args.interactorObject.hasSelection){return;}
+        //Debug.Log("isSelected " + args.interactableObject.isSelected);
+        //if(!args.interactableObject.isSelected){return;}
 
         // if(args.interactableObject.isHovered)
         // {
         // newMagazine = null;
         
-        CreateNewMagazine();
+        //CreateNewMagazine();
         // }
     }
 
