@@ -140,7 +140,7 @@ public class VRGun : MonoBehaviour
 
             if (target != null)
             {
-                target.ReceiveAttack(gunData.bulletDamage, this.gameObject);
+                target.ReceiveAttack(gunData.bulletDamage, player);
             }
         }
         PlaySound(gunData.shootClip);

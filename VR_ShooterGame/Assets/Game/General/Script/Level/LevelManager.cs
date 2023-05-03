@@ -54,7 +54,7 @@ public class LevelManager : MonoBehaviour
 
             GameObject xrManager = GameObject.Find("XR Interaction Manager");
             GameObject xrDeviceSim = GameObject.Find("XR Device Simulator");
-            GameObject.DontDestroyOnLoad(xrDeviceSim);
+            //GameObject.DontDestroyOnLoad(xrDeviceSim);
             GameObject.DontDestroyOnLoad(xrManager);
             EnterNextLevel(other.gameObject);
         }

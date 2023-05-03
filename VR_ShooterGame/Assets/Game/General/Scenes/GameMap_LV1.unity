@@ -552,6 +552,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1192004475504078893, guid: d66be407e9d778644a08f0d6a84db28b,
+        type: 3}
+      propertyPath: m_text
+      value: '0
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 1727431670978920974, guid: d66be407e9d778644a08f0d6a84db28b,
         type: 3}
       propertyPath: m_Pivot.x
@@ -661,6 +668,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HUD Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727431670978920975, guid: d66be407e9d778644a08f0d6a84db28b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6488569736955149917, guid: d66be407e9d778644a08f0d6a84db28b,
         type: 3}
@@ -6006,7 +6018,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
@@ -6363,6 +6375,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy (25)
+      objectReference: {fileID: 0}
+    - target: {fileID: 430068918888795718, guid: b2f3f8adcdfb3e9428afa44739bf48cc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 430068918888795719, guid: b2f3f8adcdfb3e9428afa44739bf48cc,
         type: 3}
@@ -15758,7 +15775,7 @@ MonoBehaviour:
     type: 3}
   pcButton: {fileID: 259193193}
   vrButton: {fileID: 1131207945}
-  spawnPoint: {fileID: 824958705}
+  spawnPoint: {fileID: 216900035}
 --- !u!114 &1921414989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15884,6 +15901,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1931070880}
+  - component: {fileID: 1931070881}
+  - component: {fileID: 1931070882}
   m_Layer: 0
   m_Name: SpawnPointLV1 (1)
   m_TagString: Untagged
@@ -15906,6 +15925,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1931070881
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931070879}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1931070882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931070879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4788b3262d757114383ad1340ce8c2c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1945956534 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 430068918888795719, guid: b2f3f8adcdfb3e9428afa44739bf48cc,

@@ -19,6 +19,7 @@ public class UIScore : MonoBehaviour
     }
     public void UpdateScoreText(GameObject player)
     {
+        playerSyncData = player.GetComponent<PlayerSyncData>();
         playerScoreText.text = playerSyncData._playerScore.ToString();
     }
 }
