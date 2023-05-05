@@ -1007,6 +1007,7 @@ GameObject:
   - component: {fileID: 2082019140744381138}
   - component: {fileID: 448663892249511375}
   - component: {fileID: 448663892249511376}
+  - component: {fileID: 1557483374}
   m_Layer: 0
   m_Name: AR Magazine Inventory
   m_TagString: Untagged
@@ -1237,6 +1238,18 @@ MonoBehaviour:
   _syncScale: 0
   _syncVelocity: 1
   _maintainOwnershipWhileSleeping: 0
+--- !u!114 &1557483374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082019140744381226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5866bda2a951e45499e144e2f88cec60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2082019140841995101
 GameObject:
   m_ObjectHideFlags: 0
@@ -2083,6 +2096,7 @@ GameObject:
   - component: {fileID: 1935747456269620947}
   - component: {fileID: -6361774624484496981}
   - component: {fileID: 177925826}
+  - component: {fileID: 3290620028832082492}
   m_Layer: 9
   m_Name: 'Player - XR Origin '
   m_TagString: Player
@@ -2504,6 +2518,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3290620028832082492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082019140990093064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5866bda2a951e45499e144e2f88cec60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2082019141384303908
 GameObject:
   m_ObjectHideFlags: 0
@@ -4329,7 +4355,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4233710854029365735}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: AimTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4344,7 +4370,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6201048533826179217}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.07, z: 2.303}
+  m_LocalPosition: {x: 0, y: 2.07, z: 0.342}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

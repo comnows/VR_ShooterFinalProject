@@ -9,7 +9,6 @@ public class MovePlayerToPoint : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log("MillEnterNewLevel");
             other.GetComponent<RealtimeTransform>().ClearOwnership();
             other.transform.position = movePoint.transform.position;
             other.GetComponent<RealtimeTransform>().RequestOwnership();
@@ -17,21 +16,6 @@ public class MovePlayerToPoint : MonoBehaviour
             if (other.GetComponent<PlayerVROwnership>() != null)
             {
                 StartCoroutine(DeleyChangePosition(other.gameObject));
-            // GameObject inventorySockets = other.transform.GetChild(2).gameObject;
-            // GameObject arInventory = inventorySockets.transform.GetChild(0).gameObject;
-            // GameObject arMagazineInventory = inventorySockets.transform.GetChild(1).gameObject;
-
-            // GameObject arGun = GameObject.FindGameObjectWithTag("ARGun");
-            // GameObject arMagazine = GameObject.FindGameObjectWithTag("ARMagazine");
-
-            // arGun.GetComponent<RealtimeTransform>().ClearOwnership();
-            // arMagazine.GetComponent<RealtimeTransform>().ClearOwnership();
-
-            // arGun.transform.position = arInventory.transform.GetChild(0).gameObject.transform.position;
-            // arMagazine.transform.position = arMagazineInventory.transform.position;
-
-            // arGun.GetComponent<RealtimeTransform>().RequestOwnership();
-            // arMagazine.GetComponent<RealtimeTransform>().RequestOwnership();
             }
         }
     }

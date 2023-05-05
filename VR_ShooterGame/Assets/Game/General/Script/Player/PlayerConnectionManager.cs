@@ -112,7 +112,7 @@ public class PlayerConnectionManager : MonoBehaviour {
         GameObject arMagazineInventory = inventorySockets.transform.GetChild(1).gameObject;
 
         vrGunGameObject.transform.position = arInventoryAttach.transform.position;
-        GameObject.DontDestroyOnLoad(vrGunGameObject);
+        //GameObject.DontDestroyOnLoad(vrGunGameObject);
         arMagazineInventory.GetComponent<VRMagazineGenerator>().AssignVRGun(vrGunGameObject);
 
         Invoke(nameof(AssignVRGunInARMagazine),1);
@@ -122,7 +122,7 @@ public class PlayerConnectionManager : MonoBehaviour {
     {
        GameObject arMagazine = GameObject.FindGameObjectWithTag("ARMagazine");
        arMagazine.GetComponent<VRGunMagazine>().AssignVRGun(vrGunGameObject);
-        GameObject.DontDestroyOnLoad(arMagazine);    
+        // GameObject.DontDestroyOnLoad(arMagazine);    
     }
 
     private void CreatePCPlayer()

@@ -9,32 +9,26 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject shieldEnemyPrefab;
     [SerializeField] private GameObject shootingEnemyPrefab;
     [SerializeField] private GameObject redRoomEnemyPrefab;
-    private int numPlayerInArea;
-
-    private void Start() 
-    {
-        numPlayerInArea = 0;
-    }
     private void OnTriggerEnter(Collider other) {
 
         if (other.tag == "Player" && GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
         {
-            numPlayerInArea += 1;
-            if (other.GetComponent<RealtimeTransform>().isOwnedLocallySelf && numPlayerInArea == 2)
+            if (other.GetComponent<RealtimeTransform>().isOwnedLocallySelf)
             {
-                Realtime realtime = GameObject.FindGameObjectWithTag("Realtime").GetComponent<Realtime>();
-                options = new Realtime.InstantiateOptions {
-                ownedByClient            = false,    
-                preventOwnershipTakeover = false,    
-                useInstance              = realtime 
-                };
+                if (other.GetComponent<RealtimeTransform>().ownerIDInHierarchy == 0)
+                {
+                    Realtime realtime = GameObject.FindGameObjectWithTag("Realtime").GetComponent<Realtime>();
+                    options = new Realtime.InstantiateOptions {
+                    ownedByClient            = false,    
+                    preventOwnershipTakeover = false,    
+                    useInstance              = realtime 
+                    };
 
-                SpawnNormalEnemies();
-                SpawnShootingEnemies();
-                SpawnShieldEnemis();
-                SpawnRedRoomEnemies();
-
-                numPlayerInArea = -1;
+                    SpawnNormalEnemies();
+                    SpawnShootingEnemies();
+                    SpawnShieldEnemis();
+                    SpawnRedRoomEnemies();
+                }
             }
         }
     }

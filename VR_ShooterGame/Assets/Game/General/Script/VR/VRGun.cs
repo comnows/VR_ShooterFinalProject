@@ -47,14 +47,8 @@ public class VRGun : MonoBehaviour
         playerSyncData = player.GetComponent<PlayerSyncData>();
 
         audioSource = player.GetComponent<AudioSource>();
-        // GameObject [] players = GameObject.FindGameObjectsWithTag("Player");
-        // foreach (GameObject player in players)
-        // {
-        //     if (player.GetComponent<PlayerVROwnership>() != null)
-        //     {
-        //         audioSource = player.GetComponent<AudioSource>();
-        //     }
-        // }
+
+        GameObject.DontDestroyOnLoad(gameObject);
     }
 
     private void OnEnable()

@@ -13,13 +13,19 @@ public class VRMagazineGenerator : MonoBehaviour
     public Transform createdTransform;
 
     private VRGunMagazine newMagazine;
+    private bool isMagazineInSocket;
 
     void Start()
     {
-        Invoke(nameof(CreateMagazine),1.2f);
+        if (gameObject.GetComponent<RealtimeTransform>().isOwnedLocallySelf)
+        {
+        isMagazineInSocket = false;
+
+        Invoke(nameof(CreateNewMagazine),1.2f);
         //CreateNewMagazine();
 
         magazineInventory.hoverExited.AddListener(CreateNewMagazineOnHoverExited);
+        }
     }
 
     public void CreateNewMagazine()
@@ -38,7 +44,7 @@ public class VRMagazineGenerator : MonoBehaviour
         };
         newMagazine = Realtime.Instantiate(magazinePrefab.name, createdTransform.position, Quaternion.identity,options).GetComponent<VRGunMagazine>();
         newMagazine.GetComponent<RealtimeTransform>().RequestOwnership();
-        GameObject.DontDestroyOnLoad(newMagazine);
+        //GameObject.DontDestroyOnLoad(newMagazine);
     }
 
     public void SetupMagazine()
@@ -124,6 +130,28 @@ public class VRMagazineGenerator : MonoBehaviour
     {
         vrGun = gun.GetComponent<VRGun>();
     }
+
+    // private void OnTriggerStay(Collider other) {
+    //     if (other.gameObject.tag == "ARMagazine")
+    //     {
+    //         isMagazineInSocket = true;
+    //         Debug.Log("Magazine in Socket");
+    //     }
+    // }
+
+    // private void OnTriggerExit(Collider other) {
+    //     if (other.gameObject.tag == "ARMagazine")
+    //     {
+    //         isMagazineInSocket = false;
+    //         Debug.Log("Magazine out Socket");
+            
+    //         if (!isMagazineInSocket)
+    //         {
+    //             Debug.Log("CreateMagazine");
+    //             CreateNewMagazine();
+    //         }
+    //     }
+    // }
 }
 
 

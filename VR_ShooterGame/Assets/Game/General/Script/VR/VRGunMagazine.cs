@@ -21,6 +21,7 @@ public class VRGunMagazine : MonoBehaviour
     {
         gunMagazineGrabInteractable.hoverEntered.AddListener(CancelDestroyMagazineOnHoverEntered);
         gunMagazineGrabInteractable.hoverExited.AddListener(DestroyMagazineOnHoverExited);
+        GameObject.DontDestroyOnLoad(gameObject);
     }
 
     public void CancelDestroyMagazineOnHoverEntered(HoverEnterEventArgs args)
@@ -47,7 +48,7 @@ public class VRGunMagazine : MonoBehaviour
 
         AddBulletToGunData();
         
-        GameObject.Find("AR Magazine Inventory").GetComponent<VRMagazineGenerator>().CreateMagazine();
+        //GameObject.Find("AR Magazine Inventory").GetComponent<VRMagazineGenerator>().CreateMagazine();
 
         Realtime.Destroy(this.gameObject);
     }

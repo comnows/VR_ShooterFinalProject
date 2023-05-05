@@ -27,6 +27,9 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
     private void Start()
     {
         GameObject.DontDestroyOnLoad(gameObject);
+        _realtimeView = gameObject.GetComponent<RealtimeView>();
+        Debug.Log("this player = " + gameObject.name + " ownerIDInHierarchy " + _realtimeView.ownerIDInHierarchy);
+        Debug.Log("this player = " + gameObject.name + " ownerIDSelf " + _realtimeView.ownerIDSelf);
     }
     
 

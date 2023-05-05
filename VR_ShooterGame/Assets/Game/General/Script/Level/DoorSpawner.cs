@@ -9,27 +9,23 @@ public class DoorSpawner : MonoBehaviour
     [SerializeField] private GameObject door2Prefab;
     Realtime.InstantiateOptions options;
 
-        private int numPlayerInArea;
-    
-    private void Start() 
+    private void OnTriggerEnter(Collider other) 
     {
-        numPlayerInArea = 0;
-    }
-    private void OnTriggerEnter(Collider other) {
         if (other.tag == "Player" && GameObject.FindGameObjectsWithTag("Door").Length == 0)
         {
-            numPlayerInArea += 1;
-            Realtime realtime = GameObject.FindGameObjectWithTag("Realtime").GetComponent<Realtime>();
-            options = new Realtime.InstantiateOptions {
-            ownedByClient            = true,    
-            preventOwnershipTakeover = false,    
-            useInstance              = realtime 
-            };
-            if (other.GetComponent<RealtimeTransform>().isOwnedLocallySelf && numPlayerInArea == 2)
+            if (other.GetComponent<RealtimeTransform>().isOwnedLocallySelf)
             {
-                SpawnDoor1();
-                SpawnDoor2();
-                numPlayerInArea = -1;
+                if (other.GetComponent<RealtimeTransform>().ownerIDInHierarchy == 0)
+                {
+                    Realtime realtime = GameObject.FindGameObjectWithTag("Realtime").GetComponent<Realtime>();
+                    options = new Realtime.InstantiateOptions {
+                    ownedByClient            = true,    
+                    preventOwnershipTakeover = false,    
+                    useInstance              = realtime 
+                    };
+                    SpawnDoor1();
+                    SpawnDoor2();
+                }
             }
         }
     }
