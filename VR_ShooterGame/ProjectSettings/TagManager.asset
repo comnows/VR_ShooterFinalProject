@@ -22,6 +22,9 @@ TagManager:
   - STEPos
   - SHEPos
   - NERPos
+  - STEKPos
+  - NEKPos
+  - SHEKPos
   layers:
   - Default
   - TransparentFX

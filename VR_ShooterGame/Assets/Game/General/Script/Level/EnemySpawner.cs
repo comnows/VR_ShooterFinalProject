@@ -9,6 +9,9 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject shieldEnemyPrefab;
     [SerializeField] private GameObject shootingEnemyPrefab;
     [SerializeField] private GameObject redRoomEnemyPrefab;
+    [SerializeField] private GameObject shootingKitChenEnemyPrefab;
+    [SerializeField] private GameObject normalKitChenEnemyPrefab;
+    [SerializeField] private GameObject shieldEnemyKitchenPrefab;
     private void OnTriggerEnter(Collider other) {
 
         if (other.tag == "Player" && GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
@@ -28,6 +31,9 @@ public class EnemySpawner : MonoBehaviour
                     SpawnShootingEnemies();
                     SpawnShieldEnemis();
                     SpawnRedRoomEnemies();
+                    SpawnShootingEnemiesKitchenRoom();
+                    SpawnNormalEnemiesKitchenRoom();
+                    SpawnShieldEnemisKitchenRoom();
                 }
             }
         }
@@ -78,6 +84,42 @@ public class EnemySpawner : MonoBehaviour
             redRoomEnemy.GetComponent<RealtimeTransform>().RequestOwnership();
             redRoomEnemy.transform.position = spawnpos.transform.position;
             redRoomEnemy.transform.rotation = spawnpos.transform.rotation;
+        }
+    }
+
+    private void SpawnShootingEnemiesKitchenRoom()
+    {
+        GameObject [] shootingKitchenEnemiesSPos = GameObject.FindGameObjectsWithTag("STEKPos");
+        foreach(GameObject spawnpos in shootingKitchenEnemiesSPos)
+        {
+            GameObject shootingKitChenEnemy = Realtime.Instantiate(shootingKitChenEnemyPrefab.name,options);
+            shootingKitChenEnemy.GetComponent<RealtimeTransform>().RequestOwnership();
+            shootingKitChenEnemy.transform.position = spawnpos.transform.position;
+            shootingKitChenEnemy.transform.rotation = spawnpos.transform.rotation;
+        }
+    }
+
+    private void SpawnNormalEnemiesKitchenRoom()
+    {
+        GameObject [] normalKitchenEnemiesPos = GameObject.FindGameObjectsWithTag("NEKPos");
+        foreach(GameObject spawnpos in normalKitchenEnemiesPos)
+        {
+            GameObject shootingKitChenEnemy = Realtime.Instantiate(normalKitChenEnemyPrefab.name,options);
+            shootingKitChenEnemy.GetComponent<RealtimeTransform>().RequestOwnership();
+            shootingKitChenEnemy.transform.position = spawnpos.transform.position;
+            shootingKitChenEnemy.transform.rotation = spawnpos.transform.rotation;
+        }
+    }
+
+    private void SpawnShieldEnemisKitchenRoom()
+    {
+        GameObject [] shieldEnemyKitchenPos = GameObject.FindGameObjectsWithTag("SHEKPos");
+        foreach(GameObject spawnpos in shieldEnemyKitchenPos)
+        {
+            GameObject shieldEnemy = Realtime.Instantiate(shieldEnemyKitchenPrefab.name,options);
+            shieldEnemy.GetComponent<RealtimeTransform>().RequestOwnership();
+            shieldEnemy.transform.position = spawnpos.transform.position;
+            shieldEnemy.transform.rotation = spawnpos.transform.rotation;
         }
     }
 }
