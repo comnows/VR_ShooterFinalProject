@@ -2,168 +2,201 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Normal.Realtime;
 
 public class GunSwitching : MonoBehaviour
 {
-//     public event Action OnGunSwitch;
+    public event Action OnGunSwitch;
 
-//     private GunSwitchingInput gunSwitchingInput;
-//     private GunLoadout gunLoadout;
-//     private Gun gun;
-//     private GunEffect gunEffect;
+    private RealtimeView realtimeView;
+    private GunSwitchingInput gunSwitchingInput;
+    private GunLoadout gunLoadout;
+    private Gun gun;
+    private GunEffect gunEffect;
 
-//     [SerializeField] private Animator rigControllerAnimator;
-//     //private AnimatorOverrideController animatorOverrideController;
+    [SerializeField] private Animator armsRigControllerAnimator;
+    [SerializeField] private Animator rigControllerAnimator;
 
-//     public Transform weaponLeftGrip;
-//     public Transform weaponRightGrip;
+    [SerializeField] private Transform fpsGunHolder;
+    [SerializeField] private Transform gunHolder;
 
-//     [SerializeField] private Transform gunHolder;
+    private int selectedGun = 0;
 
-//     private int selectedGun = 0;
+    private void Awake()
+    {
+        realtimeView = GetComponent<RealtimeView>();
+        gunSwitchingInput = GetComponent<GunSwitchingInput>();
+        gunLoadout = GetComponent<GunLoadout>();
+        gun = GetComponent<Gun>();
+    }
 
-//     private void Awake()
-//     {
-//         gunSwitchingInput = GetComponent<GunSwitchingInput>();
-//         gunLoadout = GetComponent<GunLoadout>();
-//         gun = GetComponent<Gun>();
+    void Update()
+    {
+        int previousSelectedGun = selectedGun;
+        if(gunSwitchingInput.gunSwitchingControlsActions.PrimaryWeapon.triggered)
+        {
+            selectedGun = 0;
+        }
 
-//         // animator = GetComponentInChildren<Animator>();
-//         // animatorOverrideController = animator.runtimeAnimatorController as AnimatorOverrideController;
-//     }
+        if(gunSwitchingInput.gunSwitchingControlsActions.SecondaryWeapon.triggered)
+        {
+            selectedGun = 1;
+        }
 
-//     // Update is called once per frame
-//     void Update()
-//     {
-//         int previousSelectedGun = selectedGun;
-//         if(gunSwitchingInput.gunSwitchingControlsActions.PrimaryWeapon.triggered)
-//         {
-//             selectedGun = 0;
-//         }
+        if(gunSwitchingInput.ScrollSwitchInput > 0f)
+        {
+            selectedGun++;
+            selectedGun %= gunLoadout.guns.Length;
+            // selectedGun %= 2;
 
-//         if(gunSwitchingInput.gunSwitchingControlsActions.SecondaryWeapon.triggered)
-//         {
-//             selectedGun = 1;
-//         }
+            Debug.Log("Selected gun = " + selectedGun);
+        }
 
-//         if(gunSwitchingInput.ScrollSwitchInput > 0f)
-//         {
-//             selectedGun++;
-//             selectedGun %= gunLoadout.guns.Length;
-//             // selectedGun %= 2;
+        if(gunSwitchingInput.ScrollSwitchInput < 0f)
+        {
+            selectedGun--;
 
-//             Debug.Log("Selected gun = " + selectedGun);
-//         }
+            if(selectedGun < 0)
+            {
+                selectedGun = gunLoadout.guns.Length - 1;
+                // selectedGun = 1;
+            }
 
-//         if(gunSwitchingInput.ScrollSwitchInput < 0f)
-//         {
-//             selectedGun--;
+            Debug.Log("Selected gun = " + selectedGun);
+        }
 
-//             if(selectedGun < 0)
-//             {
-//                 selectedGun = gunLoadout.guns.Length - 1;
-//                 // selectedGun = 1;
-//             }
+        if(previousSelectedGun != selectedGun)
+        {
+            SelectGun();
+        }
+    }
 
-//             Debug.Log("Selected gun = " + selectedGun);
-//         }
+    private void SelectGun()
+    {
+        int gunLoadoutIndex = 0;
 
-//         if(previousSelectedGun != selectedGun)
-//         {
-//             SelectGun();
-//         }
-//     }
+        foreach(GunData gunData in gunLoadout.guns)
+        {
+            if(gunLoadoutIndex == selectedGun)
+            {
+                //destroy current gun
+                // GameObject destroyedGun = gunHolder.GetChild(0).gameObject;
+                // Destroy(destroyedGun);
 
-//     private void SelectGun()
-//     {
-//         int gunLoadoutIndex = 0;
+                //create selected gun
+                //GameObject fpsCreatedGun = Instantiate (gunData.fpsPrefab);
+                //EquipFpsWeapon(fpsCreatedGun);
 
-//         foreach(GunData gunData in gunLoadout.guns)
-//         {
-//             if(gunLoadoutIndex == selectedGun)
-//             {
-//                 //destroy current gun
-//                 // GameObject destroyedGun = gunHolder.GetChild(0).gameObject;
-//                 // Destroy(destroyedGun);
+                GameObject createdGun = Instantiate(gunData.prefab);
+                //EquipWeapon(createdGun);
 
-//                 //create selected gun
-//                 GameObject createdGun = Instantiate(gunData.prefab);
-//                 EquipWeapon(createdGun, gunData);
-//                 // gun.currentGun = createdGun;
-//                 // gun.gunData = gunData;
+                SetupNewGunData(gunData);
 
-//                 OnGunSwitch?.Invoke();
-//             }
+                if(realtimeView.isOwnedLocallyInHierarchy)
+                {
+                    EquipFpsWeapon(createdGun);
+                }
+                else
+                {
+                    EquipWeapon(createdGun);
+                }
+                // gun.currentGun = createdGun;
+                // gun.gunData = gunData;
 
-//             gunLoadoutIndex++;
-//         }
-//     }
+                OnGunSwitch?.Invoke();
+            }
 
-//     private void EquipWeapon(GameObject newGun, GunData newGunData)
-//     {
-//         DestroyGun();
+            gunLoadoutIndex++;
+        }
+    }
 
-//         SetupNewGun(newGun, newGunData);
+    private void EquipFpsWeapon(GameObject newFpsGun)
+    {
+        DestroyGun(gun.fpsCurrentGun);
 
-//         SetGunTransform();
+        SetupNewFpsGun(newFpsGun);
 
-//         SetupNewGunEffects(newGun);
+        SetFpsGunTransform();
 
-//         // Invoke(nameof(SetAnimationDelayed), 0.001f);
-//         //PlayEquipAnimation();
-//     }
+        SetupOriginGunEffects(newFpsGun);
 
-//     private void DestroyGun()
-//     {
-//         if(gun.currentGun)
-//         {
-//             Destroy(gun.currentGun);
-//         }
-//     }
+        PlayFpsEquipAnimation();
+    }
 
-//     private void SetupNewGun(GameObject newGun, GunData newGunData)
-//     {
-//         gun.currentGun = newGun;
-//         gun.gunData = newGunData;
-//     }
+    private void EquipWeapon(GameObject newGun)
+    {
+        DestroyGun(gun.currentGun);
 
-//     private void SetGunTransform()
-//     {
-//         gun.currentGun.transform.parent = gun.weaponHolder.transform;
-//         gun.currentGun.transform.localPosition = Vector3.zero;
-//         gun.currentGun.transform.localRotation = Quaternion.identity;
-//     }
+        SetupNewGun(newGun);
 
-//     private void SetupNewGunEffects(GameObject newGun)
-//     {
-//         Transform raycastOrigin = newGun.transform.Find("RaycastOrigin");
-//         gunEffect.SetRaycastOrigin(raycastOrigin);
+        SetGunTransform();
 
-//         Transform effectsTransform = newGun.transform.Find("Effects");
-//         ParticleSystem muzzleFlash = effectsTransform.Find("MuzzleFlash").GetComponent<ParticleSystem>();
-//         ParticleSystem hitEffect = effectsTransform.Find("HitEffect").GetComponent<ParticleSystem>();
-//         gunEffect.SetGunEffect(muzzleFlash, hitEffect);
-//     }
+        SetupOriginGunEffects(newGun);
 
-//     private void PlayEquipAnimation()
-//     {
-//         rigControllerAnimator.Play(gun.gunData.name + "_Equip");
-//     }
+        PlayEquipAnimation();
+    }
 
-//     // private void SetAnimationDelayed()
-//     // {
-//     //     animatorOverrideController["AssualtRifle_Hold"] = gun.gunData.gunHoldAnimation;
-//     // }
+    private void DestroyGun(GameObject gunGameObject)
+    {
+        if(gunGameObject)
+        {
+            Destroy(gunGameObject);
+        }
+    }
 
-//     // [ContextMenu("Save weapon pose")]
-//     // private void SaveWeaponPose()
-//     // {
-//     //     GameObjectRecorder recorder = new GameObjectRecorder(gameObject);
-//     //     recorder.BindComponentsOfType<Transform>(gun.weaponHolder, false);
-//     //     recorder.BindComponentsOfType<Transform>(weaponLeftGrip.gameObject, false);
-//     //     recorder.BindComponentsOfType<Transform>(weaponRightGrip.gameObject, false);
-//     //     recorder.TakeSnapshot(0.0f);
-//     //     recorder.SaveToClip(gun.gunData.gunHoldAnimation);
-//     //     UnityEditor.AssetDatabase.SaveAssets();
-//     // }
+    private void SetupNewFpsGun(GameObject newFpsGun)
+    {
+        gun.fpsCurrentGun = newFpsGun;
+    }
+
+    private void SetupNewGun(GameObject newGun)
+    {
+        gun.currentGun = newGun;
+    }
+
+    private void SetupNewGunData(GunData newGunData)
+    {
+        gun.gunData = newGunData;
+    }
+
+    private void SetFpsGunTransform()
+    {
+        gun.fpsCurrentGun.transform.parent = gun.fpsWeaponHolder.transform;
+        gun.fpsCurrentGun.transform.localPosition = Vector3.zero;
+        gun.fpsCurrentGun.transform.localRotation = Quaternion.identity;
+    }
+
+    private void SetGunTransform()
+    {
+        gun.currentGun.transform.parent = gun.weaponHolder.transform;
+        gun.currentGun.transform.localPosition = Vector3.zero;
+        gun.currentGun.transform.localRotation = Quaternion.identity;
+    }
+
+    private void SetupOriginFpsGunEffects(GameObject newFpsGun)
+    {
+        Transform raycastOrigin = newFpsGun.transform.Find("RaycastOrigin");
+
+    }
+
+    private void SetupOriginGunEffects(GameObject newGun)
+    {
+        Transform raycastOrigin = newGun.transform.Find("RaycastOrigin");
+        gunEffect.SetRaycastOrigin(raycastOrigin);
+
+        // Transform effectsTransform = newGun.transform.Find("Effects");
+        // ParticleSystem muzzleFlash = effectsTransform.Find("MuzzleFlash").GetComponent<ParticleSystem>();
+        // ParticleSystem hitEffect = effectsTransform.Find("HitEffect").GetComponent<ParticleSystem>();
+        // gunEffect.SetGunEffect(muzzleFlash, hitEffect);
+    }
+
+    private void PlayFpsEquipAnimation()
+    {
+        armsRigControllerAnimator.Play(gun.gunData.name + "_Arms_Equip");
+    }
+
+    private void PlayEquipAnimation()
+    {
+        rigControllerAnimator.Play(gun.gunData.name + "_Equip");
+    }
 }

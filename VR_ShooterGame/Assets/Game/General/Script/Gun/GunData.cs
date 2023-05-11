@@ -6,6 +6,7 @@ public class GunData : ScriptableObject
     [Header("General")]
     public new string name;
     public int type; //1-primary 2-secondary 3-special
+    public GameObject fpsPrefab;
     public GameObject prefab;
     public AnimationClip gunHoldAnimation;
     public AudioClip shootClip;

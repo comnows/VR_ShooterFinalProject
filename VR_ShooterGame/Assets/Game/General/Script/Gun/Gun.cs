@@ -18,8 +18,10 @@ public class Gun : MonoBehaviour
     [SerializeField] private GameObject player;
 
     private RealtimeView _realtimeView;
+    public GameObject fpsCurrentGun;
     public GameObject currentGun;
     public GunData gunData;
+    public GameObject fpsWeaponHolder;
     public GameObject weaponHolder;
     private PlayerSyncData playerSyncData;
 
@@ -74,11 +76,11 @@ public class Gun : MonoBehaviour
                 {
                     if(gunInput.shootAction.triggered)
                     {
-                        if(CanShoot())
-                        {
-                            nextTimeToFire = 1f / gunData.fireRatePerSecond;
+                        //if(CanShoot())
+                        //{
+                            //nextTimeToFire = 1f / gunData.fireRatePerSecond;
                             Shoot();
-                        }
+                        //}
                     }
                 }
 
@@ -113,7 +115,7 @@ public class Gun : MonoBehaviour
 
     bool CanReload()
     {
-        bool canReload = !isReload && gunData.currentMagazineAmmo < gunData.magazineSize && gunData.currentStashAmmo > 0;
+        bool canReload = !isReload && gunData.currentMagazineAmmo < gunData.magazineSize && gunData.currentStashAmmo > 0 && gunData.isAmmoLimited;
 
         return canReload;
     }

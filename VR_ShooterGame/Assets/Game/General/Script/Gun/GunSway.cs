@@ -25,7 +25,7 @@ public class GunSway : MonoBehaviour
     {
         mouse = Vector2.ClampMagnitude(mouse, maxTurn);
 
-        Quaternion rotationX = Quaternion.AngleAxis(mouse.y, Vector3.right);
+        Quaternion rotationX = Quaternion.AngleAxis(-mouse.y, Vector3.right);
         Quaternion rotationY = Quaternion.AngleAxis(mouse.x, Vector3.up);
 
         Quaternion targetRotation = rotationX * rotationY;
