@@ -2350,6 +2350,7 @@ MonoBehaviour:
   gunInput: {fileID: 6880171645126352213}
   playerCamera: {fileID: 6880171645392386899}
   weaponCamera: {fileID: 6880171646359449903}
+  armsRigControllerAnimator: {fileID: 1223136374}
   bulletHolePrefab: {fileID: 5660087631366076683, guid: 4feb40fd024890841a17cc2831a63360,
     type: 3}
   audioSource: {fileID: 8735860594198857893}

@@ -13,6 +13,7 @@ public class Gun : MonoBehaviour
     [SerializeField] private GunInput gunInput;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Camera weaponCamera;
+    [SerializeField] private Animator armsRigControllerAnimator;
     [SerializeField] private GameObject bulletHolePrefab;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private GameObject player;
@@ -95,7 +96,17 @@ public class Gun : MonoBehaviour
                     if(!gunData.canAimDownSight) return;
                     
                     isAimingDownSight = !isAimingDownSight;
-                    StartCoroutine(AimingDownSight());
+                    armsRigControllerAnimator.SetBool("IsAimDownSight", isAimingDownSight);
+                    // StartCoroutine(AimingDownSight());
+                }
+                
+                if(isAimingDownSight)
+                {
+                    SetFieldOfView(Mathf.Lerp(playerCamera.fieldOfView, gunData.aimFieldOfView, Time.deltaTime * gunData.aimSpeed));
+                }
+                else
+                {
+                    SetFieldOfView(Mathf.Lerp(playerCamera.fieldOfView, defaultFieldOfView, Time.deltaTime * gunData.aimSpeed));
                 }
                 
                 // if(gunInput.reloadAction.triggered && CanReload())
