@@ -12,7 +12,7 @@ public class GunSwitching : MonoBehaviour
     private GunSwitchingInput gunSwitchingInput;
     private GunLoadout gunLoadout;
     private Gun gun;
-    private GunEffect gunEffect;
+    [SerializeField] private GunEffect gunEffect;
 
     [SerializeField] private Animator armsRigControllerAnimator;
     [SerializeField] private Animator rigControllerAnimator;
@@ -91,6 +91,7 @@ public class GunSwitching : MonoBehaviour
                 //EquipWeapon(createdGun);
 
                 SetupNewGunData(gunData);
+                SetupMagazine(createdGun);
 
                 if(realtimeView.isOwnedLocallyInHierarchy)
                 {
@@ -159,6 +160,14 @@ public class GunSwitching : MonoBehaviour
         gun.gunData = newGunData;
     }
 
+    private void SetupMagazine(GameObject newGun)
+    {
+        if(gun.gunData.name == "AssaultRifle")
+        {
+            gun.magazineGameObject = newGun.transform.Find("AssaultRifleModel/MagazineAR").gameObject;
+        }
+    }
+
     private void SetFpsGunTransform()
     {
         gun.fpsCurrentGun.transform.parent = gun.fpsWeaponHolder.transform;
@@ -171,6 +180,7 @@ public class GunSwitching : MonoBehaviour
         gun.currentGun.transform.parent = gun.weaponHolder.transform;
         gun.currentGun.transform.localPosition = Vector3.zero;
         gun.currentGun.transform.localRotation = Quaternion.identity;
+        gun.currentGun.transform.localScale = Vector3.one;
     }
 
     private void SetupOriginFpsGunEffects(GameObject newFpsGun)
@@ -182,6 +192,7 @@ public class GunSwitching : MonoBehaviour
     private void SetupOriginGunEffects(GameObject newGun)
     {
         Transform raycastOrigin = newGun.transform.Find("RaycastOrigin");
+        Debug.Log("RaycastOrigin is " + raycastOrigin);
         gunEffect.SetRaycastOrigin(raycastOrigin);
 
         // Transform effectsTransform = newGun.transform.Find("Effects");

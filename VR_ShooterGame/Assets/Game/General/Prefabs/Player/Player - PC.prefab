@@ -1032,6 +1032,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8372892956416577924}
   - component: {fileID: 1223136374}
+  - component: {fileID: 583014865}
   m_Layer: 0
   m_Name: RigLayers
   m_TagString: Untagged
@@ -1076,6 +1077,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &583014865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854177338790628207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 102bd38d66fc8e549b80ceba6271ec7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2125400409015399869
 GameObject:
   m_ObjectHideFlags: 0
@@ -2163,6 +2176,7 @@ GameObject:
   - component: {fileID: 6880171645126352220}
   - component: {fileID: 6880171645126352213}
   - component: {fileID: 6880171645126352214}
+  - component: {fileID: 5036750460606654168}
   - component: {fileID: 4206993759831475632}
   - component: {fileID: 6880171645126352216}
   - component: {fileID: 6880171645126352215}
@@ -2340,12 +2354,31 @@ MonoBehaviour:
     type: 3}
   audioSource: {fileID: 8735860594198857893}
   player: {fileID: 0}
-  fpsCurrentGun: {fileID: 0}
-  currentGun: {fileID: 0}
+  magazineGameObject: {fileID: 1357305796231120242}
+  fpsCurrentGun: {fileID: 8372523401096629684}
+  currentGun: {fileID: 119521058101993653}
   gunData: {fileID: 11400000, guid: c06a8c0c1ad491a438a5a1a8c631eaa8, type: 2}
-  fpsWeaponHolder: {fileID: 0}
+  fpsWeaponHolder: {fileID: 1152936732}
   weaponHolder: {fileID: 8542548053487129544}
   isAimingDownSight: 0
+--- !u!114 &5036750460606654168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6880171645126352208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c83a3d5670a989848b2d54ca2fad98b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigControllerAnimator: {fileID: 1358467960}
+  armsRigControllerAnimator: {fileID: 1223136374}
+  gunAnimationEvents: {fileID: 583014865}
+  gunInput: {fileID: 6880171645126352213}
+  gun: {fileID: 6880171645126352214}
+  leftHandTransform: {fileID: 2327887382721953178}
 --- !u!114 &4206993759831475632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2416,8 +2449,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0fdde058a9054b4691e6405c5349711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  armsRigControllerAnimator: {fileID: 0}
-  rigControllerAnimator: {fileID: 0}
+  gunEffect: {fileID: 4206993759831475632}
+  armsRigControllerAnimator: {fileID: 1223136374}
+  rigControllerAnimator: {fileID: 1358467960}
   fpsGunHolder: {fileID: 0}
   gunHolder: {fileID: 0}
 --- !u!114 &6880171645126352219
@@ -2434,7 +2468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guns:
   - {fileID: 11400000, guid: c06a8c0c1ad491a438a5a1a8c631eaa8, type: 2}
-  - {fileID: 11400000, guid: 8416fc2861355814f970b947dd69e875, type: 2}
+  - {fileID: 11400000, guid: 722f6263e4d2e624e848abea0e9b93ea, type: 2}
 --- !u!82 &8735860594198857893
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5203,11 +5237,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 6880171645126352214}
-  recoilX: -2
-  recoilY: 2
-  recoilZ: 0.35
-  adsRecoilX: -0.5
-  adsRecoilY: 0.5
+  recoilX: -0.225
+  recoilY: 0.3
+  recoilZ: 0.1
+  adsRecoilX: -0.1
+  adsRecoilY: 0.15
   adsRecoilZ: 0
   snappiness: 6
   returnSpeed: 1.25
@@ -6023,13 +6057,25 @@ PrefabInstance:
     - target: {fileID: 8849469495234150434, guid: 49bafd85045cda840a8d7c5d146f5c91,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49bafd85045cda840a8d7c5d146f5c91, type: 3}
+--- !u!1 &1357305796231120242 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2029032559286651108, guid: 49bafd85045cda840a8d7c5d146f5c91,
+    type: 3}
+  m_PrefabInstance: {fileID: 1080455110986091926}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4456288269797748817 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3686590610650447303, guid: 49bafd85045cda840a8d7c5d146f5c91,
+    type: 3}
+  m_PrefabInstance: {fileID: 1080455110986091926}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8372523401096629684 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8849469495234150434, guid: 49bafd85045cda840a8d7c5d146f5c91,
     type: 3}
   m_PrefabInstance: {fileID: 1080455110986091926}
   m_PrefabAsset: {fileID: 0}
@@ -6223,6 +6269,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49bafd85045cda840a8d7c5d146f5c91, type: 3}
+--- !u!1 &119521058101993653 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8849469495234150434, guid: 49bafd85045cda840a8d7c5d146f5c91,
+    type: 3}
+  m_PrefabInstance: {fileID: 8892144547435339927}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5210199652721450320 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3686590610650447303, guid: 49bafd85045cda840a8d7c5d146f5c91,

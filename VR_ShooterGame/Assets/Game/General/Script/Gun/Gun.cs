@@ -17,6 +17,8 @@ public class Gun : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private GameObject player;
 
+    public GameObject magazineGameObject;
+
     private RealtimeView _realtimeView;
     public GameObject fpsCurrentGun;
     public GameObject currentGun;
@@ -59,8 +61,8 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        if (_realtimeView.isOwnedLocallyInHierarchy)
-        {
+        // if (_realtimeView.isOwnedLocallyInHierarchy)
+        // {
                 if(gunData.isAutoFire)
                 {
                     if(gunInput.ShootInput && CanShoot())
@@ -96,14 +98,14 @@ public class Gun : MonoBehaviour
                     StartCoroutine(AimingDownSight());
                 }
                 
-                if(gunInput.reloadAction.triggered && CanReload())
-                {
-                    if(gunData.isAmmoLimited && gunData.currentStashAmmo <= 0) return;
+                // if(gunInput.reloadAction.triggered && CanReload())
+                // {
+                //     if(gunData.isAmmoLimited && gunData.currentStashAmmo <= 0) return;
                     
-                    Debug.Log("Gun Reload");
-                    StartCoroutine(Reload());
-                }
-        }
+                //     Debug.Log("Gun Reload");
+                //     StartCoroutine(Reload());
+                // }
+        // }
     }
 
     bool CanShoot()
@@ -113,7 +115,7 @@ public class Gun : MonoBehaviour
         return canShoot;
     }
 
-    bool CanReload()
+    public bool CanReload()
     {
         bool canReload = !isReload && gunData.currentMagazineAmmo < gunData.magazineSize && gunData.currentStashAmmo > 0 && gunData.isAmmoLimited;
 
@@ -196,19 +198,19 @@ public class Gun : MonoBehaviour
         weaponCamera.fieldOfView = fov;
     }
 
-    IEnumerator Reload()
+    public IEnumerator Reload()
     {
         isReload = true;
 
         yield return new WaitForSeconds(gunData.reloadTime);
 
-        gunData.Reload();
-        OnGunReload?.Invoke(gunData.currentMagazineAmmo, gunData.currentStashAmmo);
+        // gunData.Reload();
+        // OnGunReload?.Invoke(gunData.currentMagazineAmmo, gunData.currentStashAmmo);
 
         isReload = false;
     }
 
-    void CancelReload()
+    public void CancelReload()
     {
         StopCoroutine(Reload());
 

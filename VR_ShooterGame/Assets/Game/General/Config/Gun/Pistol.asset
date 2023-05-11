@@ -14,15 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Pistol
   type: 2
-  prefab: {fileID: 0}
-  maxStashAmmo: 0
-  magazineSize: 12
+  prefab: {fileID: 8688101942146344956, guid: a023bf8d0112f78418afe22f62e78d6b, type: 3}
+  gunHoldAnimation: {fileID: 7400000, guid: 3baf72132eee8e44cabdf868a391cc60, type: 2}
+  shootClip: {fileID: 8300000, guid: 1e940d15337ad1e43b0cc1b2430d7c06, type: 3}
   bulletDamage: 5
+  reloadTime: 1
+  isAutoFire: 0
   fireRatePerSecond: 1
   kickback: 0.01
-  reloadTime: 1
+  canAimDownSight: 0
   aimSpeed: 0
   aimFieldOfView: 0
-  gunHoldAnimation: {fileID: 7400000, guid: 3baf72132eee8e44cabdf868a391cc60, type: 2}
+  isAmmoLimited: 0
+  maxStashAmmo: 0
+  magazineSize: 12
   currentStashAmmo: 999
   currentMagazineAmmo: 12
