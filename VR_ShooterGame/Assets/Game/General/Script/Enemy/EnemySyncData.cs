@@ -14,11 +14,11 @@ public class EnemySyncData : RealtimeComponent<EnemySyncDataModel>
     {
         if (gameObject.tag == "Boss")
         {
-        _enemyHP = 500;
+        _enemyHP = 1500;
         }
         else
         {
-        _enemyHP = 100;
+        _enemyHP = 200;
         }
         _enemyBehaviorState = "Idle";
         _enemyTarget = "";
@@ -85,7 +85,7 @@ public class EnemySyncData : RealtimeComponent<EnemySyncDataModel>
             {
             PlayerSyncData playerSyncData = _damageDealer.GetComponent<PlayerSyncData>();
             playerSyncData.AddPlayerScore(10);
-            playerSyncData.AddPlayerHP(30);
+            playerSyncData.AddPlayerHP(15);
             
             }
 

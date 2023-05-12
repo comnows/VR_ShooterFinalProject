@@ -251,7 +251,7 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
         } 
         else
         {
-            Destroy(gameObject);
+            Realtime.Destroy(gameObject);
         }
     }
 }

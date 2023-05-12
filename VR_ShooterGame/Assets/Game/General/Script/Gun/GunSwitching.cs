@@ -21,6 +21,7 @@ public class GunSwitching : MonoBehaviour
     [SerializeField] private Transform gunHolder;
 
     private int selectedGun = 0;
+    Realtime.InstantiateOptions options;
 
     private void Awake()
     {
@@ -87,7 +88,9 @@ public class GunSwitching : MonoBehaviour
                 //GameObject fpsCreatedGun = Instantiate (gunData.fpsPrefab);
                 //EquipFpsWeapon(fpsCreatedGun);
 
-                GameObject createdGun = Instantiate(gunData.prefab);
+                //GameObject createdGun = Instantiate(gunData.prefab);
+
+                GameObject createdGun = Realtime.Instantiate(gunData.prefab.name,options);
                 //EquipWeapon(createdGun);
 
                 SetupNewGunData(gunData);
@@ -141,7 +144,14 @@ public class GunSwitching : MonoBehaviour
     {
         if(gunGameObject)
         {
-            Destroy(gunGameObject);
+            if (gunGameObject.GetComponent<RealtimeTransform>() != null)
+            {
+            Realtime.Destroy(gunGameObject);
+            }
+            else
+            {
+                Destroy(gunGameObject);
+            }
         }
     }
 
@@ -158,6 +168,14 @@ public class GunSwitching : MonoBehaviour
     private void SetupNewGunData(GunData newGunData)
     {
         gun.gunData = newGunData;
+        if (gun.gunData.type == 2)
+        {
+            GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(999,999);
+        }
+        else
+        {
+            GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(gun.gunData.currentMagazineAmmo,gun.gunData.currentStashAmmo);
+        }
     }
 
     private void SetupMagazine(GameObject newGun)
@@ -192,9 +210,10 @@ public class GunSwitching : MonoBehaviour
     private void SetupOriginGunEffects(GameObject newGun)
     {
         Transform raycastOrigin = newGun.transform.Find("RaycastOrigin");
+        GameObject muzzleFlashPos = newGun.transform.Find("MuzzleFlashPos").gameObject;
         Debug.Log("RaycastOrigin is " + raycastOrigin);
         gunEffect.SetRaycastOrigin(raycastOrigin);
-
+        gunEffect.SetMuzzleFlashPos(muzzleFlashPos);
         // Transform effectsTransform = newGun.transform.Find("Effects");
         // ParticleSystem muzzleFlash = effectsTransform.Find("MuzzleFlash").GetComponent<ParticleSystem>();
         // ParticleSystem hitEffect = effectsTransform.Find("HitEffect").GetComponent<ParticleSystem>();

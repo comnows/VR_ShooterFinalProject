@@ -151,6 +151,14 @@ public class Gun : MonoBehaviour
 
         PlaySound(gunData.shootClip);
         gunData.RemoveCurrentMagazineAmmo();
+        if (gunData.type == 2)
+        {
+            GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(999,999);
+        }
+        else
+        {
+            GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(gunData.currentMagazineAmmo,gunData.currentStashAmmo);
+        }
         OnGunShoot?.Invoke();
     }
 
@@ -217,7 +225,7 @@ public class Gun : MonoBehaviour
 
         // gunData.Reload();
         // OnGunReload?.Invoke(gunData.currentMagazineAmmo, gunData.currentStashAmmo);
-
+        GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(gunData.currentMagazineAmmo,gunData.currentStashAmmo);
         isReload = false;
     }
 

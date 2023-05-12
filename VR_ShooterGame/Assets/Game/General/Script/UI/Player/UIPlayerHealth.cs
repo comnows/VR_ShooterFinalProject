@@ -13,6 +13,6 @@ public class UIPlayerHealth : MonoBehaviour
     }
     public void RefreshPlayerHealthUI(int health)
     {
-        HealthText.text = health.ToString();
+        HealthText.text = health.ToString() + "%";
     }
 }

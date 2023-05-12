@@ -17,7 +17,21 @@ public class GunReload : MonoBehaviour
 
     private GameObject magazineHand;
 
-    private void Awake()
+    // private void Awake()
+    // {
+    //     realtimeView = GetComponent<RealtimeView>();
+
+    //     if(realtimeView.isOwnedLocallyInHierarchy)
+    //     {
+    //         gunAnimationEvents = transform.Find("CameraHolder/CameraRecoil/WeaponCamera/RigLayers").GetComponent<GunAnimationEvents>();
+    //     }
+    //     else
+    //     {
+    //         gunAnimationEvents = transform.Find("Soldier/RigLayers").GetComponent<GunAnimationEvents>();
+    //     }
+    // }
+
+    void Start()
     {
         realtimeView = GetComponent<RealtimeView>();
 
@@ -29,10 +43,8 @@ public class GunReload : MonoBehaviour
         {
             gunAnimationEvents = transform.Find("Soldier/RigLayers").GetComponent<GunAnimationEvents>();
         }
-    }
 
-    void Start()
-    {
+
         if(gunAnimationEvents)
         {
             gunAnimationEvents.GunAnimationEvent.AddListener(OnAnimationEvent);

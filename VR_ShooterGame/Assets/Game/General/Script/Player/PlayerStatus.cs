@@ -11,7 +11,7 @@ public class PlayerStatus : MonoBehaviour
     private GameObject weaponCamera,rigBodyObj,rigHandObj;
     public int playerHP;
     [SerializeField] private GameObject helpMeText;
-    [SerializeField] private GameObject weaponModel;
+    //[SerializeField] private GameObject weaponModel;
     RealtimeView _realTimeView; 
     private void Start()
     {
@@ -62,7 +62,7 @@ public class PlayerStatus : MonoBehaviour
     private void ChangePlayerStatusToDead()
     {
         weaponCamera.SetActive(false);
-        weaponModel.SetActive(false);
+        //weaponModel.SetActive(false);
         rigBody.weight = 0;
         rigHand.weight = 0;
         animator.SetBool("IsDead",true);
@@ -80,7 +80,7 @@ public class PlayerStatus : MonoBehaviour
         {
             weaponCamera.SetActive(true);
         }
-        weaponModel.SetActive(true);
+        //weaponModel.SetActive(true);
         rigBody.weight = 1;
         rigHand.weight = 1;
         GetComponent<PlayerMovement>().enabled = true;

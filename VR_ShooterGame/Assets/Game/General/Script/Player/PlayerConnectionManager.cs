@@ -29,7 +29,7 @@ public class PlayerConnectionManager : MonoBehaviour {
         // Notify us when Realtime successfully connects to the room
         _realtime.didConnectToRoom += DidConnectToRoom;
 
-        uIAmmo = GameObject.FindObjectOfType<UIAmmo>();
+        //uIAmmo = GameObject.FindObjectOfType<UIAmmo>();
         uIScore = GameObject.FindObjectOfType<UIScore>();
     }
 
@@ -137,14 +137,32 @@ public class PlayerConnectionManager : MonoBehaviour {
 
         weaponCamera.GetComponent<Camera>().enabled = true;
 
+        GameObject soldier = playerGameObject.transform.Find("Soldier").gameObject;
+        soldier.SetActive(false);
         normalCamera.SetActive(true);
 
         RealtimeView _realtimeView = playerGameObject.GetComponent<RealtimeView>();  
         if (_realtimeView.isOwnedLocallyInHierarchy)
         {       
-            uIAmmo.InitScript(playerGameObject);
+            //uIAmmo.InitScript(playerGameObject);
+            Gun gun = playerGameObject.GetComponent<Gun>();
+            GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(gun.gunData.currentMagazineAmmo,gun.gunData.currentStashAmmo);
             uIScore.InitScript(playerGameObject);
         }
+
+        GameObject [] allPlayers = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in allPlayers)
+        {
+            if (player.GetComponent<Gun>() != null)
+            {
+                if (player.GetComponent<RealtimeTransform>().isOwnedRemotelyInHierarchy)
+                {
+                GameObject rigLayers = player.transform.Find("RigLayers").gameObject;
+                rigLayers.SetActive(true);
+                }
+            }
+        }
+
     }
 
     private void CloseButton()

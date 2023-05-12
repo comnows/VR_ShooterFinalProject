@@ -60,7 +60,7 @@ public class VRGunMagazine : MonoBehaviour
 
         int stashAmmo = vrGun.gunData.currentStashAmmo + bulletCount;
         vrGun.gunData.currentStashAmmo = Mathf.Min(stashAmmo, vrGun.gunData.maxStashAmmo);
-        GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(bulletCount,0);
+        GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(vrGun.gunData.currentMagazineAmmo,0);
     }
 
     public void AssignVRGun(GameObject gun)

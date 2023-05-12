@@ -79,6 +79,11 @@ public class GunEffect : MonoBehaviour
         raycastOrigin = newRaycastOrigin;
     }
 
+    public void SetMuzzleFlashPos(GameObject newMuzzleFlashPos)
+    {
+        muzzleFlashPos = newMuzzleFlashPos;
+    }
+
     public void SetGunEffect(ParticleSystem newMuzzleEffect, ParticleSystem newHitEffect)
     {
         muzzleFlash = newMuzzleEffect;
