@@ -138,7 +138,12 @@ public class VRGun : MonoBehaviour
             }
         }
         PlaySound(gunData.shootClip);
-        RemoveBulletFromMagazine();
+
+        if(gunData.isAmmoLimited)
+        {
+            RemoveBulletFromMagazine();
+        }
+        
         GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(magazine.bulletCount,0);
         OnGunShoot?.Invoke();
     }
