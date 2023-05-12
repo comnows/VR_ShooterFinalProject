@@ -24,12 +24,12 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
     private EnemySyncData enemySyncData;
     private RealtimeTransform _realtimeTransform;
     private RealtimeView _realtimeView;
-    
+    private Vector3 enemyRayPos;
     void Start()
     {
         _realtimeView = GetComponent<RealtimeView>();
         _realtimeTransform = GetComponent<RealtimeTransform>();
-
+        enemyRayPos = new Vector3(0,2,0);
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         enemySyncData = GetComponent<EnemySyncData>();
@@ -91,18 +91,18 @@ public class EnemyTypeShootBehaviorStateManager : MonoBehaviour
 
         foreach (Collider target in targets)
         {
-            Vector3 direction = (target.transform.position - transform.position).normalized;
+            Vector3 direction = (target.transform.position - transform.position + enemyRayPos).normalized;
             float angle = Vector3.Angle(direction, transform.forward);
             if (angle <= fieldOfViewAngle * 0.5f)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, direction, out hit, sightRange))
+                if (Physics.Raycast(transform.position + enemyRayPos, direction, out hit, sightRange))
                 {
-                    Debug.DrawLine(transform.position, hit.point, Color.green);
+                    Debug.DrawLine(transform.position + enemyRayPos, hit.point, Color.green);
                 }
                 else
                 {
-                    Debug.DrawLine(transform.position, transform.position + direction * sightRange, Color.red);
+                    Debug.DrawLine(transform.position + enemyRayPos, transform.position + direction * sightRange, Color.red);
                     if (target.gameObject.GetComponent<PlayerSyncData>()._playerHP > 0)
                     {
                         SetTarget(target.gameObject);

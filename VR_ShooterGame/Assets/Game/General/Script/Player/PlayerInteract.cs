@@ -14,7 +14,7 @@ public class PlayerInteract : MonoBehaviour
     private float holdTimer;
     private Color rayColor = Color.blue;
     
-    [SerializeField] private float interactRange = 5f, reviveRange = 1.5f;
+    [SerializeField] private float interactRange = 5f, reviveRange = 3f;
 
     private void Awake()
     {
@@ -54,7 +54,7 @@ public class PlayerInteract : MonoBehaviour
         if(Physics.Raycast(reviveRay, out targetToRevive, reviveRange))
         {
             PlayerStatus playerStatus = targetToRevive.transform.GetComponent<PlayerStatus>();
-            if (playerStatus != null && playerStatus.playerHP <=0)
+            if (targetToRevive.transform.GetComponent<PlayerSyncData>()._playerHP <=0)
             {
                 holdTimer -= Time.deltaTime;
                 if (holdTimer < 0)
