@@ -95,7 +95,7 @@ public class VRMagazineGenerator : MonoBehaviour
         // {
         newMagazine = null;
         
-        CreateNewMagazine();
+        //CreateNewMagazine();
         // }
 
         magazineInventory.hoverExited.RemoveListener(CreateNewMagazineOnHoverExited);
@@ -106,7 +106,7 @@ public class VRMagazineGenerator : MonoBehaviour
     {
         if(args.interactorObject.hasSelection){return;}
 
-        CreateNewMagazine();
+        //CreateNewMagazine();
 
         magazineInventory.selectExited.RemoveListener(CreateNewMagazineOnStart);
         magazineInventory.selectExited.AddListener(CreateNewMagazineOnSelectExited);

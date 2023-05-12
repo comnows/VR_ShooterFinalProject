@@ -48,7 +48,7 @@ public class VRGunMagazine : MonoBehaviour
 
         AddBulletToGunData();
         
-        //GameObject.Find("AR Magazine Inventory").GetComponent<VRMagazineGenerator>().CreateMagazine();
+        GameObject.Find("AR Magazine Inventory").GetComponent<VRMagazineGenerator>().CreateMagazine();
 
         Realtime.Destroy(this.gameObject);
     }

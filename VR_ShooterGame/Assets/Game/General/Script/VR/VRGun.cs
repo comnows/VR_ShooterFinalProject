@@ -144,7 +144,7 @@ public class VRGun : MonoBehaviour
             RemoveBulletFromMagazine();
         }
         
-        GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(magazine.bulletCount,0);
+        GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(magazine.bulletCount,gunData.currentStashAmmo);
         OnGunShoot?.Invoke();
     }
 

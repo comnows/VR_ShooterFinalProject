@@ -23,6 +23,7 @@ public class AmmoBox : Interactable
             stashAmmo -= stashSpace;
             
             //ammo added event trigger for UI or else
+            GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(gunData.currentMagazineAmmo,gunData.currentStashAmmo);
         }
         else
         {
@@ -31,6 +32,7 @@ public class AmmoBox : Interactable
             stashAmmo -= stashAmmo;
 
             //ammo added event trigger for UI or else
+            GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(gunData.currentMagazineAmmo,gunData.currentStashAmmo);
         }
 
         gun.OnGunReload?.Invoke(gun.gunData.currentMagazineAmmo, gun.gunData.currentStashAmmo); //edit ammo ui text
@@ -57,6 +59,7 @@ public class AmmoBox : Interactable
             stashAmmo -= stashSpace;
             
             //ammo added event trigger for UI or else
+            GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(gunData.currentMagazineAmmo,gunData.currentStashAmmo);
         }
         else
         {
@@ -65,6 +68,7 @@ public class AmmoBox : Interactable
             stashAmmo -= stashAmmo;
 
             //ammo added event trigger for UI or else
+            GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(gunData.currentMagazineAmmo,gunData.currentStashAmmo);
         }
 
         //gun.OnGunReload?.Invoke(gun.gunData.currentMagazineAmmo, gun.gunData.currentStashAmmo); //edit ammo ui text
