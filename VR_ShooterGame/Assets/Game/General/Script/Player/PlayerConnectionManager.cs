@@ -135,6 +135,9 @@ public class PlayerConnectionManager : MonoBehaviour {
 
         GameObject normalCamera = cameraRecoil.transform.GetChild(1).gameObject;
 
+        GameObject rigLayers = weaponCamera.transform.GetChild(0).gameObject;
+
+        rigLayers.SetActive(true);
         weaponCamera.GetComponent<Camera>().enabled = true;
 
         GameObject soldier = playerGameObject.transform.Find("Soldier").gameObject;
@@ -145,23 +148,28 @@ public class PlayerConnectionManager : MonoBehaviour {
         if (_realtimeView.isOwnedLocallyInHierarchy)
         {       
             //uIAmmo.InitScript(playerGameObject);
+            
             Gun gun = playerGameObject.GetComponent<Gun>();
             GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(gun.gunData.currentMagazineAmmo,gun.gunData.currentStashAmmo);
             uIScore.InitScript(playerGameObject);
         }
 
-        GameObject [] allPlayers = GameObject.FindGameObjectsWithTag("Player");
-        foreach (GameObject player in allPlayers)
-        {
-            if (player.GetComponent<Gun>() != null)
-            {
-                if (player.GetComponent<RealtimeTransform>().isOwnedRemotelyInHierarchy)
-                {
-                GameObject rigLayers = player.transform.Find("RigLayers").gameObject;
-                rigLayers.SetActive(true);
-                }
-            }
-        }
+        // GameObject [] allPlayers = GameObject.FindGameObjectsWithTag("Player");
+        // foreach (GameObject player in allPlayers)
+        // {
+        //     //PlayerVROwnership playerVROwnerShip = player.TryGetComponent<PlayerVROwnership>();
+        //     GameObject inventorySocket = player.transform.Find("Inventory Sockets").gameObject;
+        //     if (inventorySocket == null)
+        //     {
+        //         Debug.Log("aaaaaaaaaaaaa");
+        //         if (player.GetComponent<RealtimeTransform>().isOwnedRemotelyInHierarchy)
+        //         {
+        //         Debug.Log("Bbbbbbbbbbbb");
+        //         GameObject rigLayers = player.transform.Find("RigLayers").gameObject;
+        //         rigLayers.SetActive(false);
+        //         }
+        //     }
+        // }
 
     }
 

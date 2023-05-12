@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
         if (_realtimeView.isOwnedLocallyInHierarchy)
             LocalStart();
 
-        if (!_realtimeView.isOwnedLocallyInHierarchy)
+        if (_realtimeView.isOwnedLocallyInHierarchy)
         {
             weaponModel = this.transform.Find("Soldier/RigLayers/WeaponHolder/WeaponPivot/AssualtRifleModel/AssaultRifle(1)/AR").gameObject;
             int LayerIgnoreRaycast = LayerMask.NameToLayer("Default");
