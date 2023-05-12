@@ -13,7 +13,7 @@ public class BossSuperAtkObj : MonoBehaviour
     {
         if (other.tag == "Player" && enemySyncData._enemyHP > 0)
         {
-            other.GetComponent<PlayerSyncData>().DecreasePlayerHP(30);
+            other.GetComponent<PlayerSyncData>().DecreasePlayerHP(15);
         }
     }
 }

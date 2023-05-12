@@ -14,7 +14,7 @@ public class EnemySyncData : RealtimeComponent<EnemySyncDataModel>
     {
         if (gameObject.tag == "Boss")
         {
-        _enemyHP = 5000;
+        _enemyHP = 2000;
         }
         else
         {
