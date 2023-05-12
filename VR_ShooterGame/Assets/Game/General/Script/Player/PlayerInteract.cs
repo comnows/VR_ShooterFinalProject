@@ -53,20 +53,23 @@ public class PlayerInteract : MonoBehaviour
 
         if(Physics.Raycast(reviveRay, out targetToRevive, reviveRange))
         {
-            PlayerStatus playerStatus = targetToRevive.transform.GetComponent<PlayerStatus>();
-            if (targetToRevive.transform.GetComponent<PlayerSyncData>()._playerHP <=0)
+            if (targetToRevive.transform.gameObject.tag == "Player")
             {
-                holdTimer -= Time.deltaTime;
-                if (holdTimer < 0)
+                PlayerStatus playerStatus = targetToRevive.transform.GetComponent<PlayerStatus>();
+                if (targetToRevive.transform.GetComponent<PlayerSyncData>()._playerHP <=0)
                 {
-                    playerStatus.RevivingPlayer();
+                    holdTimer -= Time.deltaTime;
+                    if (holdTimer < 0)
+                    {
+                        playerStatus.RevivingPlayer();
+                    }
+                    rayColor = Color.green;
+                    Debug.Log(hitInfo.transform.name);
                 }
-                rayColor = Color.green;
-                Debug.Log(hitInfo.transform.name);
-            }
-            else
-            {
-                holdTimer = reviveTime;
+                else
+                {
+                    holdTimer = reviveTime;
+                }
             }
         }
 

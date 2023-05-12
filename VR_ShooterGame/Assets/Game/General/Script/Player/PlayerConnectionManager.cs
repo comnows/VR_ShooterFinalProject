@@ -92,16 +92,6 @@ public class PlayerConnectionManager : MonoBehaviour {
         CloseButton();
         }
 
-        // GameObject [] enemiesInScene = GameObject.FindGameObjectsWithTag("Enemy");
-        
-        // if (enemiesInScene[0].GetComponent<RealtimeView>().isUnownedSelf)
-        // {
-        //     foreach(GameObject enemy in enemiesInScene)
-        //     {
-        //         //enemy.GetComponent<RealtimeView>().RequestOwnership();
-        //         enemy.GetComponent<RealtimeTransform>().RequestOwnership();
-        //     }
-        // }
     }
 
     private void AssignVRGunVariable()
@@ -153,24 +143,6 @@ public class PlayerConnectionManager : MonoBehaviour {
             GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(gun.gunData.currentMagazineAmmo,gun.gunData.currentStashAmmo);
             uIScore.InitScript(playerGameObject);
         }
-
-        // GameObject [] allPlayers = GameObject.FindGameObjectsWithTag("Player");
-        // foreach (GameObject player in allPlayers)
-        // {
-        //     //PlayerVROwnership playerVROwnerShip = player.TryGetComponent<PlayerVROwnership>();
-        //     GameObject inventorySocket = player.transform.Find("Inventory Sockets").gameObject;
-        //     if (inventorySocket == null)
-        //     {
-        //         Debug.Log("aaaaaaaaaaaaa");
-        //         if (player.GetComponent<RealtimeTransform>().isOwnedRemotelyInHierarchy)
-        //         {
-        //         Debug.Log("Bbbbbbbbbbbb");
-        //         GameObject rigLayers = player.transform.Find("RigLayers").gameObject;
-        //         rigLayers.SetActive(false);
-        //         }
-        //     }
-        // }
-
     }
 
     private void CloseButton()
