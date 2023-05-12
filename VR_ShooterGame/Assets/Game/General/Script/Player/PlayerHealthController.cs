@@ -18,7 +18,6 @@ public class PlayerHealthController : MonoBehaviour
         _realtimeView = gameObject.GetComponent<RealtimeView>();
         if ( _realtimeView.isOwnedLocallyInHierarchy)
         {
-            Debug.Log("MillSubscriptUI");
             uiPlayerHealthEffect = GameObject.Find("DamageCanvas").GetComponent<UIPlayerHealthEffect>();
             OnPlayerHealthUpdate += uiPlayerHealthEffect.RefreshPlayerSplitterUI;
         }

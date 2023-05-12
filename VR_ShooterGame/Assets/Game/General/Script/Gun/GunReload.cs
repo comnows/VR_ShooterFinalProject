@@ -21,14 +21,14 @@ public class GunReload : MonoBehaviour
     {
         realtimeView = GetComponent<RealtimeView>();
 
-        // if(realtimeView.isOwnedLocallyInHierarchy)
-        // {
-        //     gunAnimationEvents = transform.Find("CameraHolder/CameraRecoil/WeaponCamera/RigLayers").GetComponent<GunAnimationEvents>();
-        // }
-        // else
-        // {
-        //     gunAnimationEvents = transform.Find("Soldier/RigLayers").GetComponent<GunAnimationEvents>();
-        // }
+        if(realtimeView.isOwnedLocallyInHierarchy)
+        {
+            gunAnimationEvents = transform.Find("CameraHolder/CameraRecoil/WeaponCamera/RigLayers").GetComponent<GunAnimationEvents>();
+        }
+        else
+        {
+            gunAnimationEvents = transform.Find("Soldier/RigLayers").GetComponent<GunAnimationEvents>();
+        }
     }
 
     void Start()
@@ -41,8 +41,8 @@ public class GunReload : MonoBehaviour
 
     void Update()
     {
-        // if(realtimeView.isOwnedLocallyInHierarchy)
-        // {
+        if(realtimeView.isOwnedLocallyInHierarchy)
+        {
             if(gunInput.reloadAction.triggered && gun.CanReload())
             {
                 if(gun.gunData.isAmmoLimited && gun.gunData.currentStashAmmo <= 0) return;
@@ -52,7 +52,7 @@ public class GunReload : MonoBehaviour
                 armsRigControllerAnimator.SetTrigger("Reload");
                 StartCoroutine(gun.Reload());
             }
-        // }
+        }
     }
 
     private void OnAnimationEvent(string eventName)
