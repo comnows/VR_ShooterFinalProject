@@ -25,6 +25,7 @@ TagManager:
   - STEKPos
   - NEKPos
   - SHEKPos
+  - PlayerBody
   layers:
   - Default
   - TransparentFX

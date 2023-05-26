@@ -414,6 +414,10 @@ MonoBehaviour:
   gunData: {fileID: 11400000, guid: c06a8c0c1ad491a438a5a1a8c631eaa8, type: 2}
   magazine: {fileID: 0}
   socketInteractor: {fileID: 3169770772965138455}
+  rifleShotSoundObj: {fileID: 6958660211387380808, guid: 8849d78ee29beef45bb27bc88decafa7,
+    type: 3}
+  pistolShotSoundObj: {fileID: 2208008266682839749, guid: ed4b993b22bf12844992a4f11ac0c3a7,
+    type: 3}
 --- !u!114 &3169770771780966055
 MonoBehaviour:
   m_ObjectHideFlags: 0

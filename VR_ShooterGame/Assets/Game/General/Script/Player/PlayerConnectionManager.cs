@@ -23,14 +23,11 @@ public class PlayerConnectionManager : MonoBehaviour {
 
     private void Awake() 
     {
-        // Get the Realtime component on this game object
         _realtime = GetComponent<Realtime>();
-
-        // Notify us when Realtime successfully connects to the room
         _realtime.didConnectToRoom += DidConnectToRoom;
 
         //uIAmmo = GameObject.FindObjectOfType<UIAmmo>();
-        uIScore = GameObject.FindObjectOfType<UIScore>();
+        //uIScore = GameObject.FindObjectOfType<UIScore>();
     }
 
     private void Start() 
@@ -40,7 +37,6 @@ public class PlayerConnectionManager : MonoBehaviour {
 
     public void SetPCPlatform()
     {
-        Debug.Log("MillPCPress");
         currentPlatform = Platform.PC;
         _realtime.Connect("Map1");
         CloseButton();
@@ -48,7 +44,6 @@ public class PlayerConnectionManager : MonoBehaviour {
 
     public void SetVRPlatform()
     {
-        Debug.Log("MillVRPress");
         currentPlatform = Platform.VR;
         _realtime.Connect("Map1");
         CloseButton();
@@ -58,11 +53,10 @@ public class PlayerConnectionManager : MonoBehaviour {
     {
         if (realtime.room.name == "Map1")
         {
-        // Instantiate the CubePlayer for this client once we've successfully connected to the room. Position it 1 meter in the air.
         var options = new Realtime.InstantiateOptions {
-            ownedByClient            = true,    // Make sure the RealtimeView on this prefab is owned by this client.
-            preventOwnershipTakeover = false,    // Prevent other clients from calling RequestOwnership() on the root RealtimeView.
-            useInstance              = realtime // Use the instance of Realtime that fired the didConnectToRoom event.
+            ownedByClient            = true,  
+            preventOwnershipTakeover = false,  
+            useInstance              = realtime 
             };
 
         switch (currentPlatform)
@@ -72,6 +66,7 @@ public class PlayerConnectionManager : MonoBehaviour {
             CreatePCPlayer();
             break;
         case Platform.VR:
+            GameObject.Find("HUD Canvas").SetActive(false);
             playerGameObject = Realtime.Instantiate(_prefabVRPlayer.name, options);
             vrGunGameObject = Realtime.Instantiate(_prefabVRGun.name, options);
             vrGunGameObject.GetComponent<RealtimeTransform>().RequestOwnership();
@@ -102,7 +97,6 @@ public class PlayerConnectionManager : MonoBehaviour {
         GameObject arMagazineInventory = inventorySockets.transform.GetChild(1).gameObject;
 
         vrGunGameObject.transform.position = arInventoryAttach.transform.position;
-        //GameObject.DontDestroyOnLoad(vrGunGameObject);
         arMagazineInventory.GetComponent<VRMagazineGenerator>().AssignVRGun(vrGunGameObject);
 
         Invoke(nameof(AssignVRGunInARMagazine),1);
@@ -112,7 +106,6 @@ public class PlayerConnectionManager : MonoBehaviour {
     {
        GameObject arMagazine = GameObject.FindGameObjectWithTag("ARMagazine");
        arMagazine.GetComponent<VRGunMagazine>().AssignVRGun(vrGunGameObject);
-        // GameObject.DontDestroyOnLoad(arMagazine);    
     }
 
     private void CreatePCPlayer()
@@ -141,7 +134,7 @@ public class PlayerConnectionManager : MonoBehaviour {
             
             Gun gun = playerGameObject.GetComponent<Gun>();
             GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(gun.gunData.currentMagazineAmmo,gun.gunData.currentStashAmmo);
-            uIScore.InitScript(playerGameObject);
+            //uIScore.InitScript(playerGameObject);
         }
     }
 

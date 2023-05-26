@@ -27,6 +27,11 @@ public class VRGun : MonoBehaviour
     private PlayerSyncData playerSyncData;
     public event Action OnGunShoot;
 
+    private Realtime.InstantiateOptions options;
+
+    public GameObject rifleShotSoundObj;
+    public GameObject pistolShotSoundObj;
+
     private void Awake()
     {
         gunData = gunData.Clone();
@@ -144,13 +149,34 @@ public class VRGun : MonoBehaviour
             RemoveBulletFromMagazine();
         }
         
-        GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(magazine.bulletCount,0);
+        GameObject [] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach(GameObject player in players)
+        {
+            if (player.transform.GetComponent<PlayerVROwnership>() != null)
+            {
+                GameObject cameraOffset = gameObject.transform.GetChild(0).gameObject;
+                GameObject mainCamera = cameraOffset.transform.GetChild(0).gameObject;
+                UIPlayerBullet uIPlayerBullet = mainCamera.transform.GetChild(0).GetComponent<UIPlayerBullet>();
+                uIPlayerBullet.RefreshPlayerAmmoText(magazine.bulletCount,0);
+                //GameObject.Find("VRHUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(magazine.bulletCount,0);
+            }
+        }
+
         OnGunShoot?.Invoke();
     }
 
     private void PlaySound(AudioClip clip)
     {
-        audioSource.PlayOneShot(clip);
+        //audioSource.PlayOneShot(clip);
+
+        if (gunData.type == 1)
+        {
+            GameObject soundObj = Realtime.Instantiate(rifleShotSoundObj.name, gameObject.transform.position, gameObject.transform.rotation,options);
+        }
+        else if (gunData.type == 2)
+        {
+            GameObject soundObj = Realtime.Instantiate(pistolShotSoundObj.name, gameObject.transform.position, gameObject.transform.rotation,options);
+        }
     }
 
     public void RemoveBulletFromMagazine()

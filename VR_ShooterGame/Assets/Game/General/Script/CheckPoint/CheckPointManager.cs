@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Normal.Realtime;
 public class CheckPointManager : MonoBehaviour
 {
     private Vector3 currentRespawnPointPos;
@@ -11,6 +12,7 @@ public class CheckPointManager : MonoBehaviour
     {
         checkPointSyncData = GetComponent<CheckPointSyncData>();
         currentRespawnPointPos = checkPointSyncData._respawnPointPos;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void CheckUpdateCheckPoint(Vector3 enteredCheckPointPos)
@@ -30,6 +32,14 @@ public class CheckPointManager : MonoBehaviour
         StartCoroutine(RespawnPlayers());
     }
 
+    public void CheckRespawnVRPlayers(GameObject player)
+    {
+        if (player.GetComponent<RealtimeView>().isOwnedLocallyInHierarchy)
+        {
+        StartCoroutine(RespawnVRPlayers(player));
+        }
+    }
+
     private IEnumerator RespawnPlayers()
     {
         yield return new WaitForSeconds (3);
@@ -37,17 +47,39 @@ public class CheckPointManager : MonoBehaviour
         players = GameObject.FindGameObjectsWithTag("Player");
         foreach(GameObject player in players)
         {
-            PlayerSyncData playerSyncData = player.GetComponent<PlayerSyncData>();
-            int playerHP = playerSyncData._playerHP;
-
-            if (playerHP <= 0)
+            if (player.transform.GetComponent<PlayerStatus>() != null)
             {
-                player.GetComponent<PlayerMovement>().enabled = true;
-                player.GetComponent<Gun>().enabled = true;
-                playerSyncData.AddPlayerHP(100);
-                player.transform.position = currentRespawnPointPos;
+            player.GetComponent<PlayerStatus>().RevivingPlayer();
+            RealtimeTransform _realtimeTransform = player.GetComponent<RealtimeTransform>();
+            _realtimeTransform.ClearOwnership();
+            player.transform.position = currentRespawnPointPos;
+            _realtimeTransform.RequestOwnership();
             }
-            //player.GetComponent<CheckPointManager>().CheckRespawnPlayers();
         }
+    }
+
+    private IEnumerator RespawnVRPlayers(GameObject player)
+    {
+        yield return new WaitForSeconds (3);
+        RealtimeTransform _realtimeTransform = player.GetComponent<RealtimeTransform>();
+        _realtimeTransform.ClearOwnership();
+        player.transform.position = currentRespawnPointPos;
+        _realtimeTransform.RequestOwnership();
+
+        GameObject inventorySockets = player.transform.GetChild(2).gameObject;
+        GameObject arInventory = inventorySockets.transform.GetChild(0).gameObject;
+        GameObject arMagazineInventory = inventorySockets.transform.GetChild(1).gameObject;
+
+        GameObject arGun = GameObject.FindGameObjectWithTag("ARGun");
+        GameObject arMagazine = GameObject.FindGameObjectWithTag("ARMagazine");
+
+        arGun.GetComponent<RealtimeTransform>().ClearOwnership();
+        arMagazine.GetComponent<RealtimeTransform>().ClearOwnership();
+
+        arGun.transform.position = arInventory.transform.GetChild(0).gameObject.transform.position;
+        arMagazine.transform.position = arMagazineInventory.transform.position;
+
+        arGun.GetComponent<RealtimeTransform>().RequestOwnership();
+        arMagazine.GetComponent<RealtimeTransform>().RequestOwnership();
     }
 }

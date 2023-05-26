@@ -14,7 +14,7 @@ public class LevelChangingEffect : MonoBehaviour
 
     IEnumerator DeActivateBlackBG()
     {
-        yield return new WaitForSeconds(7);
+        yield return new WaitForSeconds(5);
         blackBG.SetActive(false);
     }
 }

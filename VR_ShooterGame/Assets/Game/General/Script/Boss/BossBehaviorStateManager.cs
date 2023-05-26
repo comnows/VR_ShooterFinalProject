@@ -32,7 +32,7 @@ public class BossBehaviorStateManager : MonoBehaviour
     [SerializeField] private EnemyGatlingGunEffect gunEffect;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip audioClip;
-    
+    private Vector3 enemyRayPos;
     void Start()
     {
          _realtimeTransform = GetComponent<RealtimeTransform>(); 
@@ -41,8 +41,8 @@ public class BossBehaviorStateManager : MonoBehaviour
         enemySyncData = GetComponent<EnemySyncData>();
         audioSource = GetComponent<AudioSource>();
         timeBetweenAttacks = 1.5f;
-        sightRange = 8f;
-        attackRange = 8f;
+        sightRange = 5f;
+        attackRange = 5f;
         fieldOfViewAngle = 120f;
         currentState = "Idle";
         countNormalAttack = 0;
@@ -50,7 +50,7 @@ public class BossBehaviorStateManager : MonoBehaviour
         canRotate = false;
         rotationTime = 5f;
         superAttackTime = rotationTime;
-
+        enemyRayPos = new Vector3(0,1,0);
     }
 
     void Update()
@@ -75,11 +75,25 @@ public class BossBehaviorStateManager : MonoBehaviour
             break;
 
             case "Chase":
-            ChasePlayer();
+            if (enemySyncData._enemyTarget != "")
+            {
+                ChasePlayer();
+            }
+            else 
+            {
+                enemySyncData.ChangeBehaviorState("Idle");
+            }
             break;
-
+            
             case "Attack":
+            if (enemySyncData._enemyTarget != "")
+            {
             AttackPlayer();
+            }
+            else 
+            {
+                enemySyncData.ChangeBehaviorState("Idle");
+            }
             break;
 
             case "Die":
@@ -98,7 +112,6 @@ public class BossBehaviorStateManager : MonoBehaviour
 
         if (enemySyncData._enemyTarget != "")
         {
-            //currentState = "Chase";
             enemySyncData.ChangeBehaviorState("Chase");
         }
     }
@@ -109,18 +122,22 @@ public class BossBehaviorStateManager : MonoBehaviour
 
         foreach (Collider target in targets)
         {
-            Vector3 direction = (target.transform.position - transform.position).normalized;
+            Vector3 direction = (target.transform.position - transform.position + enemyRayPos).normalized;
             float angle = Vector3.Angle(direction, transform.forward);
             if (angle <= fieldOfViewAngle * 0.5f)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, direction, out hit, sightRange))
+                if (Physics.Raycast(transform.position + enemyRayPos, direction, out hit, sightRange))
                 {
-                    Debug.DrawLine(transform.position, hit.point, Color.green);
+                    if (target.gameObject.GetComponent<PlayerSyncData>()._playerHP > 0)
+                    {
+                        SetTarget(target.gameObject);
+                    }
+                    Debug.DrawLine(transform.position + enemyRayPos, hit.point, Color.green);
                 }
                 else
                 {
-                    Debug.DrawLine(transform.position, transform.position + direction * sightRange, Color.red);
+                    Debug.DrawLine(transform.position + enemyRayPos, transform.position + direction * sightRange, Color.red);
                     if (target.gameObject.GetComponent<PlayerSyncData>()._playerHP > 0)
                     {
                         SetTarget(target.gameObject);
@@ -135,6 +152,7 @@ public class BossBehaviorStateManager : MonoBehaviour
         if (enemySyncData._enemyTarget == "")
         {
             enemySyncData.ChangeEnemyTarget(target.name);
+            //player = GameObject.Find(enemySyncData._enemyTarget);
             //player = target;
         }
         else
@@ -144,6 +162,7 @@ public class BossBehaviorStateManager : MonoBehaviour
             if (distanceBetweenPlayer1 > distanceBetweenPlayer2)
             {
                 enemySyncData.ChangeEnemyTarget(target.name);
+                //player = GameObject.Find(enemySyncData._enemyTarget);
                 //player = target;
             }
         }
@@ -155,7 +174,10 @@ public class BossBehaviorStateManager : MonoBehaviour
 
         CheckPlayerInSigthRange();
 
+        if (enemySyncData._enemyTarget != "")
+        {
         nav.SetDestination(player.transform.position);
+        }
 
         float distanceBetweenTarget = Vector3.Distance(player.transform.position, transform.position);
         
@@ -170,7 +192,7 @@ public class BossBehaviorStateManager : MonoBehaviour
             }
             else 
             {
-                enemySyncData._enemyTarget = "";
+                enemySyncData.ChangeEnemyTarget("");
                 //player = null;
                 //currentState = "Idle";
                 enemySyncData.ChangeBehaviorState("Idle");
@@ -182,8 +204,10 @@ public class BossBehaviorStateManager : MonoBehaviour
     {
         animator.SetBool("isChase",false);
         animator.SetBool("isAim",true);
-        nav.SetDestination(transform.position);
 
+        if (enemySyncData._enemyTarget != "")
+        {
+        nav.SetDestination(transform.position);
         if (!isSuperAttack)
         {
         transform.LookAt(player.transform);
@@ -193,7 +217,6 @@ public class BossBehaviorStateManager : MonoBehaviour
         {
             if (player.GetComponent<PlayerSyncData>()._playerHP > 0 && countNormalAttack < 4)
             {
-                Debug.Log("Mill Cute Attack");
                 countNormalAttack += 1;
                 animator.SetTrigger("Attack");
                 Shoot();
@@ -221,7 +244,7 @@ public class BossBehaviorStateManager : MonoBehaviour
             }
             else 
             {
-                enemySyncData._enemyTarget = "";
+                enemySyncData.ChangeEnemyTarget("");
                 //player = null;
                 //currentState = "Idle";
                 enemySyncData.ChangeBehaviorState("Idle");
@@ -231,11 +254,12 @@ public class BossBehaviorStateManager : MonoBehaviour
         {
             if (player.GetComponent<PlayerSyncData>()._playerHP <= 0)
             {
-                enemySyncData._enemyTarget = "";
-                //player = null;
+                enemySyncData.ChangeEnemyTarget("");
+                player = null;
                 //currentState = "Idle";
                 enemySyncData.ChangeBehaviorState("Idle");
             }
+        }
         }
     }
 
@@ -297,8 +321,17 @@ public class BossBehaviorStateManager : MonoBehaviour
     
     private IEnumerator RemoveBody()
     {
+        if (_realtimeView.isUnownedInHierarchy)
+        {
+            _realtimeView.RequestOwnership();
+        }
+
         yield return new WaitForSeconds(5);
-        Realtime.Destroy(gameObject);
+
+        if (_realtimeView.isOwnedLocallyInHierarchy)
+        {
+            Realtime.Destroy(gameObject);
+        }
     }
 
     void Rotate()

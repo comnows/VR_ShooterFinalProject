@@ -50,7 +50,7 @@ public class LevelManager : MonoBehaviour
             ActivateBlackBG();
             var playersInGame = GameObject.FindGameObjectsWithTag("Player");
             other.GetComponent<PlayerSyncData>().ChangedIsCanEnterNextLV(false);
-
+            other.GetComponent<RealtimeTransform>().ClearOwnership();
 
             GameObject xrManager = GameObject.Find("XR Interaction Manager");
             GameObject xrDeviceSim = GameObject.Find("XR Device Simulator");

@@ -13,18 +13,18 @@ public class PlayerHealthController : MonoBehaviour
     public UIPlayerHealthEffect uiPlayerHealthEffect;
     RealtimeView _realtimeView;
 
-    private void Start()
-    {
-        _realtimeView = gameObject.GetComponent<RealtimeView>();
-        if ( _realtimeView.isOwnedLocallyInHierarchy)
-        {
-            uiPlayerHealthEffect = GameObject.Find("DamageCanvas").GetComponent<UIPlayerHealthEffect>();
-            OnPlayerHealthUpdate += uiPlayerHealthEffect.RefreshPlayerSplitterUI;
-        }
-    }
+    // private void Start()
+    // {
+    //     _realtimeView = gameObject.GetComponent<RealtimeView>();
+    //     if ( _realtimeView.isOwnedLocallyInHierarchy)
+    //     {
+    //         uiPlayerHealthEffect = GameObject.Find("DamageCanvas").GetComponent<UIPlayerHealthEffect>();
+    //         OnPlayerHealthUpdate += uiPlayerHealthEffect.RefreshPlayerSplitterUI;
+    //     }
+    // }
 
-    public void ReceiveDamage(int currentHealth)
-    {
-        OnPlayerHealthUpdate?.Invoke(currentHealth);
-    }
+    // public void ReceiveDamage(int currentHealth)
+    // {
+    //     OnPlayerHealthUpdate?.Invoke(currentHealth);
+    // }
 }

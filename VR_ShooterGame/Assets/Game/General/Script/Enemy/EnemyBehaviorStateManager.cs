@@ -56,11 +56,25 @@ public class EnemyBehaviorStateManager : MonoBehaviour
             break;
 
             case "Chase":
-            ChasePlayer();
+            if (enemySyncData._enemyTarget != "")
+            {
+                ChasePlayer();
+            }
+            else 
+            {
+                enemySyncData.ChangeBehaviorState("Idle");
+            }
             break;
             
             case "Attack":
+            if (enemySyncData._enemyTarget != "")
+            {
             AttackPlayer();
+            }
+            else 
+            {
+                enemySyncData.ChangeBehaviorState("Idle");
+            }
             break;
 
             case "Die":
@@ -143,7 +157,10 @@ public class EnemyBehaviorStateManager : MonoBehaviour
 
         CheckPlayerInSigthRange();
 
+        if (enemySyncData._enemyTarget != "")
+        {
         nav.SetDestination(player.transform.position);
+        }
 
         float distanceBetweenTarget = Vector3.Distance(player.transform.position, transform.position);
         playerInAttackRange = distanceBetweenTarget <= attackRange;
@@ -230,12 +247,14 @@ public class EnemyBehaviorStateManager : MonoBehaviour
     
     private IEnumerator RemoveBody()
     {
-        yield return new WaitForSeconds(5);
-        if (gameObject.tag == "BossGuard")
+        if (_realtimeView.isUnownedInHierarchy)
         {
-            Realtime.Destroy(gameObject);
-        } 
-        else
+            _realtimeView.RequestOwnership();
+        }
+
+        yield return new WaitForSeconds(5);
+
+        if (_realtimeView.isOwnedLocallyInHierarchy)
         {
             Realtime.Destroy(gameObject);
         }

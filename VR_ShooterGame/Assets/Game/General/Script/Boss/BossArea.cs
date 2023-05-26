@@ -55,8 +55,20 @@ public class BossArea : MonoBehaviour
                 {
                     isGameEnd = true;
                     Debug.Log("MillEndMyGame");
-                    GameObject canvas = GameObject.Find("Canvas");
-                    canvas.GetComponent<UIPlayerWinGame>().DeleyPlayerWinGame();
+                    if (other.transform.GetComponent<PlayerStatus>() != null)
+                    {
+                        GameObject canvas = GameObject.Find("Canvas");
+                        canvas.GetComponent<UIPlayerWinGame>().DeleyPlayerWinGame();
+                    }
+                    else
+                    {
+                        GameObject cameraOffset = other.transform.GetChild(0).gameObject;
+                        GameObject mainCamera = cameraOffset.transform.GetChild(0).gameObject;
+                        UIPlayerWinGame uIPlayerWinGame = mainCamera.transform.GetChild(0).GetComponent<UIPlayerWinGame>();
+                        uIPlayerWinGame.DeleyPlayerWinGame();
+                        UIScoreBoard uIScoreBoard = mainCamera.transform.GetChild(0).GetComponent<UIScoreBoard>();
+                        uIScoreBoard.UpdateScoreBoard();  
+                    }
                 }
             }
         }

@@ -7,13 +7,14 @@ public class MovePlayerToPoint : MonoBehaviour
     [SerializeField] private GameObject movePoint;
     private void OnTriggerStay(Collider other) 
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" && other.gameObject.GetComponent<RealtimeView>().isOwnedLocallyInHierarchy)
         {
-            other.GetComponent<RealtimeTransform>().ClearOwnership();
+            Debug.Log("Mill Move Point");
+            //other.GetComponent<RealtimeTransform>().ClearOwnership();
             other.transform.position = movePoint.transform.position;
             other.GetComponent<RealtimeTransform>().RequestOwnership();
 
-            if (other.GetComponent<PlayerVROwnership>() != null)
+            if (other.transform.GetComponent<PlayerVROwnership>() != null)
             {
                 StartCoroutine(DeleyChangePosition(other.gameObject));
             }

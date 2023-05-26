@@ -40,15 +40,15 @@ public class PlayerMovement : MonoBehaviour
         if (_realtimeView.isOwnedLocallyInHierarchy)
             LocalStart();
 
-        if (_realtimeView.isOwnedLocallyInHierarchy)
-        {
-            weaponModel = this.transform.Find("Soldier/RigLayers/WeaponHolder/WeaponPivot/AssualtRifleModel/AssaultRifle(1)/AR").gameObject;
-            int LayerIgnoreRaycast = LayerMask.NameToLayer("Default");
-            weaponModel.layer = LayerIgnoreRaycast;
+        // if (_realtimeView.isOwnedLocallyInHierarchy)
+        // {
+        //     weaponModel = this.transform.Find("Soldier/RigLayers/WeaponHolder/WeaponPivot/AssualtRifleModel/AssaultRifle(1)/AR").gameObject;
+        //     int LayerIgnoreRaycast = LayerMask.NameToLayer("Default");
+        //     weaponModel.layer = LayerIgnoreRaycast;
 
-            weaponModel = this.transform.Find("Soldier/RigLayers/WeaponHolder/WeaponPivot/AssualtRifleModel/AssaultRifle(1)/MagazineAR").gameObject;
-            weaponModel.layer = LayerIgnoreRaycast;
-        }
+        //     weaponModel = this.transform.Find("Soldier/RigLayers/WeaponHolder/WeaponPivot/AssualtRifleModel/AssaultRifle(1)/MagazineAR").gameObject;
+        //     weaponModel.layer = LayerIgnoreRaycast;
+        // }
     }
 
     private void LocalStart() {

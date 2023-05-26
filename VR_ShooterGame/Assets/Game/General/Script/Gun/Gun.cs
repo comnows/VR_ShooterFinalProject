@@ -18,6 +18,10 @@ public class Gun : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private GameObject player;
 
+    private Realtime.InstantiateOptions options;
+
+    public GameObject rifleShotSoundObj;
+    public GameObject pistolShotSoundObj;
     public GameObject magazineGameObject;
 
     private RealtimeView _realtimeView;
@@ -164,7 +168,16 @@ public class Gun : MonoBehaviour
 
     private void PlaySound(AudioClip clip)
     {
-        audioSource.PlayOneShot(clip);
+        //audioSource.PlayOneShot(clip);
+        if (gunData.type == 1)
+        {
+            GameObject soundObj = Realtime.Instantiate(rifleShotSoundObj.name, gameObject.transform.position, gameObject.transform.rotation,options);
+        }
+        else if (gunData.type == 2)
+        {
+            GameObject soundObj = Realtime.Instantiate(pistolShotSoundObj.name, gameObject.transform.position, gameObject.transform.rotation,options);
+        }
+        //soundObj.GetComponent<GunSound>().PlaySound(clip);
     }
 
     private void ApplyKickback()

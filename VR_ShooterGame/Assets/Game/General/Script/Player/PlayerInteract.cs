@@ -55,6 +55,7 @@ public class PlayerInteract : MonoBehaviour
         {
             if (targetToRevive.transform.gameObject.tag == "Player")
             {
+                //GameObject player = targetToRevive.transform.parent.gameObject;
                 PlayerStatus playerStatus = targetToRevive.transform.GetComponent<PlayerStatus>();
                 if (targetToRevive.transform.GetComponent<PlayerSyncData>()._playerHP <=0)
                 {

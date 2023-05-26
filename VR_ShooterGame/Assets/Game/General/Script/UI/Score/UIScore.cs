@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+using Normal.Realtime;
 public class UIScore : MonoBehaviour
 {
     PlayerSyncData playerSyncData;
@@ -19,7 +19,10 @@ public class UIScore : MonoBehaviour
     }
     public void UpdateScoreText(GameObject player)
     {
+        if (player.GetComponent<RealtimeView>().isOwnedLocallyInHierarchy)
+        {
         playerSyncData = player.GetComponent<PlayerSyncData>();
         playerScoreText.text = playerSyncData._playerScore.ToString();
+        }
     }
 }

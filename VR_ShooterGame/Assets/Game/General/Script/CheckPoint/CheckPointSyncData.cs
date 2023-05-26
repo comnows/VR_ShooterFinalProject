@@ -43,7 +43,7 @@ public class CheckPointSyncData : RealtimeComponent<CheckPointDataModel>
 
         //players = GameObject.FindGameObjectsWithTag("Player");  
         Debug.Log(" SyncPos = " + _respawnPointPos);
-        checkPointManager.CheckRespawnPlayers();
+        //checkPointManager.CheckRespawnPlayers();
 
         // foreach(GameObject player in players)
         // {

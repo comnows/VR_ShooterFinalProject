@@ -60,7 +60,20 @@ public class VRGunMagazine : MonoBehaviour
 
         int stashAmmo = vrGun.gunData.currentStashAmmo + bulletCount;
         vrGun.gunData.currentStashAmmo = Mathf.Min(stashAmmo, vrGun.gunData.maxStashAmmo);
-        GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(vrGun.gunData.currentMagazineAmmo,0);
+
+        GameObject [] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach(GameObject player in players)
+        {
+            if (player.transform.GetComponent<PlayerVROwnership>() != null)
+            {
+                GameObject cameraOffset = gameObject.transform.GetChild(0).gameObject;
+                GameObject mainCamera = cameraOffset.transform.GetChild(0).gameObject;
+                UIPlayerBullet uIPlayerBullet = mainCamera.transform.GetChild(0).GetComponent<UIPlayerBullet>();
+                uIPlayerBullet.RefreshPlayerAmmoText(vrGun.gunData.currentMagazineAmmo,0);
+                //GameObject.Find("VRHUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(magazine.bulletCount,0);
+            }
+        }
+        //GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(vrGun.gunData.currentMagazineAmmo,0);
     }
 
     public void AssignVRGun(GameObject gun)

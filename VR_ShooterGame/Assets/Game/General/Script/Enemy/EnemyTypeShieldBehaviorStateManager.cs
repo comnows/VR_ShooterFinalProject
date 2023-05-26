@@ -41,6 +41,7 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
     void Update()
     {
         currentState = enemySyncData._enemyBehaviorState;
+        player = GameObject.Find(enemySyncData._enemyTarget);
        CheckState();
     }
 
@@ -53,17 +54,38 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
             break;
 
             case "Chase":
-            ChasePlayer();
+            if (enemySyncData._enemyTarget != "")
+            {
+                ChasePlayer();
+            }
+            else 
+            {
+                enemySyncData.ChangeBehaviorState("Idle");
+            }
             break;
 
             case "Defence":
-            Defence();
+            if (enemySyncData._enemyTarget != "")
+            {
+                Defence();
+            }
+            else 
+            {
+                enemySyncData.ChangeBehaviorState("Idle");
+            }
             break;
             
             case "Attack":
+            if (enemySyncData._enemyTarget != "")
+            {
             AttackPlayer();
+            }
+            else 
+            {
+                enemySyncData.ChangeBehaviorState("Idle");
+            }
             break;
-
+            
             case "Die":
             Death();
             break;
@@ -114,9 +136,10 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
 
     public void SetTarget(GameObject target)
     {
-        if (player == null)
+       if (enemySyncData._enemyTarget == "")
         {
-            player = target;
+            enemySyncData.ChangeEnemyTarget(target.name);
+            //player = target;
         }
         else
         {
@@ -124,7 +147,7 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
             float distanceBetweenPlayer2 = Vector3.Distance(target.transform.position, transform.position);
             if (distanceBetweenPlayer1 > distanceBetweenPlayer2)
             {
-                player = target;
+                enemySyncData.ChangeEnemyTarget(target.name);
             }
         }
     }
@@ -141,7 +164,11 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
 
         CheckPlayerInSigthRange();
 
+
+        if (enemySyncData._enemyTarget != "")
+        {
         nav.SetDestination(player.transform.position);
+        }
 
         float distanceBetweenTarget = Vector3.Distance(player.transform.position, transform.position);
         
@@ -156,7 +183,7 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
             }
             else 
             {
-                player = null;
+                enemySyncData.ChangeEnemyTarget("");
                 //currentState = "Idle";
                 enemySyncData.ChangeBehaviorState("Idle");
             }
@@ -222,7 +249,7 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
             }
             else 
             {
-                player = null;
+               enemySyncData.ChangeEnemyTarget("");
                 //currentState = "Idle";
                 enemySyncData.ChangeBehaviorState("Idle");
             }
@@ -231,7 +258,7 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
         {
             if (player.GetComponent<PlayerSyncData>()._playerHP <= 0)
             {
-                player = null;
+                enemySyncData.ChangeEnemyTarget("");
                 //currentState = "Idle";
                 enemySyncData.ChangeBehaviorState("Idle");
             }
@@ -258,12 +285,14 @@ public class EnemyTypeShieldBehaviorStateManager : MonoBehaviour
     
     private IEnumerator RemoveBody()
     {
-        yield return new WaitForSeconds(5);
-        if (gameObject.tag == "BossGuard")
+        if (_realtimeView.isUnownedInHierarchy)
         {
-            Realtime.Destroy(gameObject);
-        } 
-        else
+            _realtimeView.RequestOwnership();
+        }
+
+        yield return new WaitForSeconds(5);
+
+        if (_realtimeView.isOwnedLocallyInHierarchy)
         {
             Realtime.Destroy(gameObject);
         }
