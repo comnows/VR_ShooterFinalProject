@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Collections;
 using Normal.Realtime;
 
-public class PlayerConnectionManager : MonoBehaviour {
+public class PlayerConnectionManager : MonoBehaviour
+{
     [SerializeField] private GameObject _prefab;
     [SerializeField] private GameObject _prefabVRPlayer;
     [SerializeField] private GameObject _prefabVRGun;
@@ -18,10 +19,10 @@ public class PlayerConnectionManager : MonoBehaviour {
     private UIScore uIScore;
     private RealtimeTransform _realtimeTransform;
 
-    private enum Platform {VR,PC};
+    private enum Platform { VR, PC };
     private Platform currentPlatform;
 
-    private void Awake() 
+    private void Awake()
     {
         _realtime = GetComponent<Realtime>();
         _realtime.didConnectToRoom += DidConnectToRoom;
@@ -30,7 +31,7 @@ public class PlayerConnectionManager : MonoBehaviour {
         //uIScore = GameObject.FindObjectOfType<UIScore>();
     }
 
-    private void Start() 
+    private void Start()
     {
         GameObject.DontDestroyOnLoad(gameObject);
     }
@@ -48,43 +49,44 @@ public class PlayerConnectionManager : MonoBehaviour {
         _realtime.Connect("Map1");
         CloseButton();
     }
-    
-    private void DidConnectToRoom(Realtime realtime) 
+
+    private void DidConnectToRoom(Realtime realtime)
     {
         if (realtime.room.name == "Map1")
         {
-        var options = new Realtime.InstantiateOptions {
-            ownedByClient            = true,  
-            preventOwnershipTakeover = false,  
-            useInstance              = realtime 
+            var options = new Realtime.InstantiateOptions
+            {
+                ownedByClient = true,
+                preventOwnershipTakeover = false,
+                useInstance = realtime
             };
 
-        switch (currentPlatform)
-        {
-        case Platform.PC:
-            playerGameObject = Realtime.Instantiate(_prefab.name, options);
-            CreatePCPlayer();
-            break;
-        case Platform.VR:
-            GameObject.Find("HUD Canvas").SetActive(false);
-            playerGameObject = Realtime.Instantiate(_prefabVRPlayer.name, options);
-            vrGunGameObject = Realtime.Instantiate(_prefabVRGun.name, options);
-            vrGunGameObject.GetComponent<RealtimeTransform>().RequestOwnership();
-            Invoke(nameof(AssignVRGunVariable),1);
-            //AssignVRGunVariable();
-            break;
-        default:
-            playerGameObject = Realtime.Instantiate(_prefabVRPlayer.name, options);
-            vrGunGameObject = Realtime.Instantiate(_prefabVRGun.name, options);
-            vrGunGameObject.GetComponent<RealtimeTransform>().RequestOwnership();
-            Invoke(nameof(AssignVRGunVariable),1);
-            break;
-        }
-        
-        playerGameObject.transform.position = spawnPoint.transform.position;
+            switch (currentPlatform)
+            {
+                case Platform.PC:
+                    playerGameObject = Realtime.Instantiate(_prefab.name, options);
+                    CreatePCPlayer();
+                    break;
+                case Platform.VR:
+                    GameObject.Find("HUD Canvas").SetActive(false);
+                    playerGameObject = Realtime.Instantiate(_prefabVRPlayer.name, options);
+                    vrGunGameObject = Realtime.Instantiate(_prefabVRGun.name, options);
+                    vrGunGameObject.GetComponent<RealtimeTransform>().RequestOwnership();
+                    Invoke(nameof(AssignVRGunVariable), 1);
+                    //AssignVRGunVariable();
+                    break;
+                default:
+                    playerGameObject = Realtime.Instantiate(_prefabVRPlayer.name, options);
+                    vrGunGameObject = Realtime.Instantiate(_prefabVRGun.name, options);
+                    vrGunGameObject.GetComponent<RealtimeTransform>().RequestOwnership();
+                    Invoke(nameof(AssignVRGunVariable), 1);
+                    break;
+            }
 
-        ChangePlayerName(playerGameObject);
-        CloseButton();
+            playerGameObject.transform.position = spawnPoint.transform.position;
+
+            ChangePlayerName(playerGameObject);
+            CloseButton();
         }
 
     }
@@ -99,13 +101,13 @@ public class PlayerConnectionManager : MonoBehaviour {
         vrGunGameObject.transform.position = arInventoryAttach.transform.position;
         arMagazineInventory.GetComponent<VRMagazineGenerator>().AssignVRGun(vrGunGameObject);
 
-        Invoke(nameof(AssignVRGunInARMagazine),1);
+        Invoke(nameof(AssignVRGunInARMagazine), 1);
     }
 
     private void AssignVRGunInARMagazine()
     {
-       GameObject arMagazine = GameObject.FindGameObjectWithTag("ARMagazine");
-       arMagazine.GetComponent<VRGunMagazine>().AssignVRGun(vrGunGameObject);
+        GameObject arMagazine = GameObject.FindGameObjectWithTag("ARMagazine");
+        arMagazine.GetComponent<VRGunMagazine>().AssignVRGun(vrGunGameObject);
     }
 
     private void CreatePCPlayer()
@@ -127,13 +129,13 @@ public class PlayerConnectionManager : MonoBehaviour {
         soldier.SetActive(false);
         normalCamera.SetActive(true);
 
-        RealtimeView _realtimeView = playerGameObject.GetComponent<RealtimeView>();  
+        RealtimeView _realtimeView = playerGameObject.GetComponent<RealtimeView>();
         if (_realtimeView.isOwnedLocallyInHierarchy)
-        {       
+        {
             //uIAmmo.InitScript(playerGameObject);
-            
+
             Gun gun = playerGameObject.GetComponent<Gun>();
-            GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(gun.gunData.currentMagazineAmmo,gun.gunData.currentStashAmmo);
+            GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(gun.gunData.currentMagazineAmmo, gun.gunData.currentStashAmmo);
             //uIScore.InitScript(playerGameObject);
         }
     }
@@ -146,7 +148,7 @@ public class PlayerConnectionManager : MonoBehaviour {
 
     private void ChangePlayerName(GameObject connectedPlayer)
     {
-        GameObject [] allPlayerInGame = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] allPlayerInGame = GameObject.FindGameObjectsWithTag("Player");
         string connectedPlayerName = "Player " + allPlayerInGame.Length;
         connectedPlayer.GetComponent<PlayerSyncData>().ChangedPlayerName(connectedPlayerName);
     }
