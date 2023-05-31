@@ -10,20 +10,23 @@ public class MovePlayerToPoint : MonoBehaviour
         if (other.gameObject.tag == "Player" && other.gameObject.GetComponent<RealtimeView>().isOwnedLocallyInHierarchy)
         {
             Debug.Log("Mill Move Point");
-            //other.GetComponent<RealtimeTransform>().ClearOwnership();
+            other.GetComponent<RealtimeTransform>().ClearOwnership();
             other.transform.position = movePoint.transform.position;
             other.GetComponent<RealtimeTransform>().RequestOwnership();
 
             if (other.transform.GetComponent<PlayerVROwnership>() != null)
             {
-                StartCoroutine(DeleyChangePosition(other.gameObject));
+                StartCoroutine(DeleyChangeVRPosition(other.gameObject));
             }
         }
     }
 
-    IEnumerator DeleyChangePosition(GameObject player)
+    // IEnumerator Deley
+
+    IEnumerator DeleyChangeVRPosition(GameObject player)
     {
         yield return new WaitForSeconds(1);
+
         GameObject inventorySockets = player.transform.GetChild(2).gameObject;
             GameObject arInventory = inventorySockets.transform.GetChild(0).gameObject;
             GameObject arMagazineInventory = inventorySockets.transform.GetChild(1).gameObject;

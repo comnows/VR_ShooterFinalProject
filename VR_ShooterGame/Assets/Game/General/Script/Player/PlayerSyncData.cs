@@ -110,20 +110,20 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         Debug.Log("PlayerHP = " + _playerHP);
 
         //GetComponent<PlayerHealthController>().ReceiveDamage(_playerHP);
-        if (gameObject.GetComponent<PlayerStatus>() != null)
-        {
+        // if (gameObject.GetComponent<PlayerStatus>() != null)
+        // {
             UIPlayerHealthEffect uiPlayerHealthEffect = GameObject.Find("DamageCanvas").GetComponent<UIPlayerHealthEffect>();
             uiPlayerHealthEffect.RefreshPlayerSplitterUI(_playerHP,gameObject);
             UIPlayerHealth uIPlayerHealth = GameObject.Find("HUD Canvas").GetComponent<UIPlayerHealth>();
             uIPlayerHealth.RefreshPlayerHealthUI(_playerHP,gameObject);
-        }
-        else
-        {
-            GameObject cameraOffset = gameObject.transform.GetChild(0).gameObject;
-            GameObject mainCamera = cameraOffset.transform.GetChild(0).gameObject;
-            UIPlayerHealth uIPlayerHealth = mainCamera.transform.GetChild(0).GetComponent<UIPlayerHealth>();
-            uIPlayerHealth.RefreshPlayerHealthUI(_playerHP,gameObject);
-        }
+        // }
+        // else
+        // {
+        //     GameObject cameraOffset = gameObject.transform.GetChild(0).gameObject;
+        //     GameObject mainCamera = cameraOffset.transform.GetChild(0).gameObject;
+        //     UIPlayerHealth uIPlayerHealth = mainCamera.transform.GetChild(0).GetComponent<UIPlayerHealth>();
+        //     uIPlayerHealth.RefreshPlayerHealthUI(_playerHP,gameObject);
+        // }
 
         bool canLoadCheckpoint = true;
 
@@ -166,18 +166,18 @@ public class PlayerSyncData : RealtimeComponent<PlayerSyncDataModel>
         _playerScore = model.playerScore;
         if(_playerScore > 0 )
         {
-            if (gameObject.GetComponent<PlayerStatus>() != null)
-        {
+        //     if (gameObject.GetComponent<PlayerStatus>() != null)
+        // {
             UIScore uIScore = GameObject.Find("HUD Canvas").GetComponent<UIScore>();
             uIScore.UpdateScoreText(gameObject);
-        }
-        else
-        {
-            GameObject cameraOffset = gameObject.transform.GetChild(0).gameObject;
-            GameObject mainCamera = cameraOffset.transform.GetChild(0).gameObject;
-            UIScore uIScore = mainCamera.transform.GetChild(0).GetComponent<UIScore>();
-            uIScore.UpdateScoreText(gameObject);
-        }
+        // }
+        // else
+        // {
+            // GameObject cameraOffset = gameObject.transform.GetChild(0).gameObject;
+            // GameObject mainCamera = cameraOffset.transform.GetChild(0).gameObject;
+            // UIScore uIScore = mainCamera.transform.GetChild(0).GetComponent<UIScore>();
+            // uIScore.UpdateScoreText(gameObject);
+        //}
         
             //UIScore uIScore = GameObject.Find("HUD Canvas").GetComponent<UIScore>();
             //uIScore.UpdateScoreText(gameObject);

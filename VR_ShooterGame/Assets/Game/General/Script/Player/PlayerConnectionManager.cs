@@ -68,7 +68,7 @@ public class PlayerConnectionManager : MonoBehaviour
                     CreatePCPlayer();
                     break;
                 case Platform.VR:
-                    GameObject.Find("HUD Canvas").SetActive(false);
+                    //GameObject.Find("HUD Canvas").SetActive(false);
                     playerGameObject = Realtime.Instantiate(_prefabVRPlayer.name, options);
                     vrGunGameObject = Realtime.Instantiate(_prefabVRGun.name, options);
                     vrGunGameObject.GetComponent<RealtimeTransform>().RequestOwnership();

@@ -73,7 +73,7 @@ public class VRGunMagazine : MonoBehaviour
                 //GameObject.Find("VRHUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(magazine.bulletCount,0);
             }
         }
-        //GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(vrGun.gunData.currentMagazineAmmo,0);
+        GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(vrGun.gunData.currentMagazineAmmo,0);
     }
 
     public void AssignVRGun(GameObject gun)

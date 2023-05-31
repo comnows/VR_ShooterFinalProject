@@ -149,18 +149,18 @@ public class VRGun : MonoBehaviour
             RemoveBulletFromMagazine();
         }
         
-        GameObject [] players = GameObject.FindGameObjectsWithTag("Player");
-        foreach(GameObject player in players)
-        {
-            if (player.transform.GetComponent<PlayerVROwnership>() != null)
-            {
-                GameObject cameraOffset = gameObject.transform.GetChild(0).gameObject;
-                GameObject mainCamera = cameraOffset.transform.GetChild(0).gameObject;
-                UIPlayerBullet uIPlayerBullet = mainCamera.transform.GetChild(0).GetComponent<UIPlayerBullet>();
-                uIPlayerBullet.RefreshPlayerAmmoText(magazine.bulletCount,0);
-                //GameObject.Find("VRHUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(magazine.bulletCount,0);
-            }
-        }
+        // GameObject [] players = GameObject.FindGameObjectsWithTag("Player");
+        // foreach(GameObject player in players)
+        // {
+        //     if (player.transform.GetComponent<PlayerVROwnership>() != null)
+        //     {
+        //         GameObject cameraOffset = gameObject.transform.GetChild(0).gameObject;
+        //         GameObject mainCamera = cameraOffset.transform.GetChild(0).gameObject;
+        //         UIPlayerBullet uIPlayerBullet = mainCamera.transform.GetChild(0).GetComponent<UIPlayerBullet>();
+        //         uIPlayerBullet.RefreshPlayerAmmoText(magazine.bulletCount,0);
+        GameObject.Find("HUD Canvas").GetComponent<UIPlayerBullet>().RefreshPlayerAmmoText(magazine.bulletCount,0);
+        //     }
+        // }
 
         OnGunShoot?.Invoke();
     }

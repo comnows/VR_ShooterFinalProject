@@ -14,10 +14,17 @@ public class PlayerVROwnership : MonoBehaviour
     void Start()
     {
         _realtimeView = GetComponent<RealtimeView>();
+        
         if (_realtimeView.isOwnedLocallyInHierarchy)
         {
             SetOwnerShip();
         }
+        // else if(_realtimeView.isOwnedRemotelyInHierarchy)
+        // {
+        //     GameObject cameraOffset = transform.GetChild(0).gameObject;
+        //     GameObject vrCamera = cameraOffset.transform.GetChild(0).gameObject;
+        //     vrCamera.SetActive(false);
+        // }
     }
 
     void SetOwnerShip()
@@ -27,6 +34,7 @@ public class PlayerVROwnership : MonoBehaviour
         GameObject cameraOffset = transform.GetChild(0).gameObject;
         GameObject playerModel = transform.GetChild(1).gameObject;
         GameObject invetorySocket = transform.GetChild(2).gameObject;
+ 
 
         playerModel.GetComponent<RealtimeTransform>().RequestOwnership();
         playerModel.GetComponent<RealtimeView>().RequestOwnership();
