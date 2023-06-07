@@ -7,7 +7,7 @@ using Normal.Realtime;
 
 public class BossBehaviorStateManager : MonoBehaviour
 {
-    public event Action OnAttack; 
+    public event Action OnAttack;
     public string currentState;
     public Animator animator;
     public NavMeshAgent nav;
@@ -20,10 +20,10 @@ public class BossBehaviorStateManager : MonoBehaviour
     public bool playerInAttackRange;
     private float timeBetweenAttacks;
     private bool alreadyAttacked;
-    public bool isSuperAttack,canRotate;
+    public bool isSuperAttack, canRotate;
     private int countNormalAttack;
     private float superAttackTime;
-    float rotationTime = 5f; 
+    float rotationTime = 5f;
     private GameObject[] playersInSight;
     private EnemySyncData enemySyncData;
     private RealtimeTransform _realtimeTransform;
@@ -35,7 +35,8 @@ public class BossBehaviorStateManager : MonoBehaviour
     private Vector3 enemyRayPos;
     void Start()
     {
-         _realtimeTransform = GetComponent<RealtimeTransform>(); 
+        _realtimeView = GetComponent<RealtimeView>();
+        _realtimeTransform = GetComponent<RealtimeTransform>();
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         enemySyncData = GetComponent<EnemySyncData>();
@@ -50,7 +51,7 @@ public class BossBehaviorStateManager : MonoBehaviour
         canRotate = false;
         rotationTime = 5f;
         superAttackTime = rotationTime;
-        enemyRayPos = new Vector3(0,1,0);
+        enemyRayPos = new Vector3(0, 1, 0);
     }
 
     void Update()
@@ -63,50 +64,50 @@ public class BossBehaviorStateManager : MonoBehaviour
         {
             Rotate();
         }
-       CheckState();
+        CheckState();
     }
 
     private void CheckState()
     {
-        switch(currentState)
+        switch (currentState)
         {
             case "Idle":
-            Idle();
-            break;
+                Idle();
+                break;
 
             case "Chase":
-            if (enemySyncData._enemyTarget != "")
-            {
-                ChasePlayer();
-            }
-            else 
-            {
-                enemySyncData.ChangeBehaviorState("Idle");
-            }
-            break;
-            
+                if (enemySyncData._enemyTarget != "")
+                {
+                    ChasePlayer();
+                }
+                else
+                {
+                    enemySyncData.ChangeBehaviorState("Idle");
+                }
+                break;
+
             case "Attack":
-            if (enemySyncData._enemyTarget != "")
-            {
-            AttackPlayer();
-            }
-            else 
-            {
-                enemySyncData.ChangeBehaviorState("Idle");
-            }
-            break;
+                if (enemySyncData._enemyTarget != "")
+                {
+                    AttackPlayer();
+                }
+                else
+                {
+                    enemySyncData.ChangeBehaviorState("Idle");
+                }
+                break;
 
             case "Die":
-            Death();
-            break;
+                Death();
+                break;
 
-        } 
+        }
     }
 
     private void Idle()
     {
-        animator.SetBool("isChase",false);
-        animator.SetBool("isAim",false);
+        animator.SetBool("isChase", false);
+        animator.SetBool("isAim", false);
 
         CheckPlayerInSigthRange();
 
@@ -170,27 +171,27 @@ public class BossBehaviorStateManager : MonoBehaviour
 
     private void ChasePlayer()
     {
-        animator.SetBool("isChase",true);
+        animator.SetBool("isChase", true);
 
         CheckPlayerInSigthRange();
 
         if (enemySyncData._enemyTarget != "")
         {
-        nav.SetDestination(player.transform.position);
+            nav.SetDestination(player.transform.position);
         }
 
         float distanceBetweenTarget = Vector3.Distance(player.transform.position, transform.position);
-        
+
         playerInAttackRange = distanceBetweenTarget <= attackRange;
 
-        if (playerInAttackRange) 
+        if (playerInAttackRange)
         {
             if (player.GetComponent<PlayerSyncData>()._playerHP > 0)
             {
                 //currentState = "Attack";
                 enemySyncData.ChangeBehaviorState("Attack");
             }
-            else 
+            else
             {
                 enemySyncData.ChangeEnemyTarget("");
                 //player = null;
@@ -202,64 +203,64 @@ public class BossBehaviorStateManager : MonoBehaviour
 
     private void AttackPlayer()
     {
-        animator.SetBool("isChase",false);
-        animator.SetBool("isAim",true);
+        animator.SetBool("isChase", false);
+        animator.SetBool("isAim", true);
 
         if (enemySyncData._enemyTarget != "")
         {
-        nav.SetDestination(transform.position);
-        if (!isSuperAttack)
-        {
-        transform.LookAt(player.transform);
-        }
+            nav.SetDestination(transform.position);
+            if (!isSuperAttack)
+            {
+                transform.LookAt(player.transform);
+            }
 
-        if (!alreadyAttacked)
-        {
-            if (player.GetComponent<PlayerSyncData>()._playerHP > 0 && countNormalAttack < 4)
+            if (!alreadyAttacked)
             {
-                countNormalAttack += 1;
-                animator.SetTrigger("Attack");
-                Shoot();
-                alreadyAttacked = true;
-                Invoke(nameof(ResetAttack), timeBetweenAttacks);
+                if (player.GetComponent<PlayerSyncData>()._playerHP > 0 && countNormalAttack < 4)
+                {
+                    countNormalAttack += 1;
+                    animator.SetTrigger("Attack");
+                    Shoot();
+                    alreadyAttacked = true;
+                    Invoke(nameof(ResetAttack), timeBetweenAttacks);
+                }
+                else if (player.GetComponent<PlayerSyncData>()._playerHP > 0 && countNormalAttack >= 4)
+                {
+                    alreadyAttacked = true;
+                    isSuperAttack = true;
+                    StartCoroutine(DeleySuperAtk());
+                }
             }
-            else if (player.GetComponent<PlayerSyncData>()._playerHP > 0 && countNormalAttack >= 4)
-            {
-                alreadyAttacked = true;
-                isSuperAttack = true;
-                StartCoroutine(DeleySuperAtk());
-            }
-        }
 
-        float distanceBetweenTarget = Vector3.Distance(player.transform.position, transform.position);
-        playerInAttackRange = distanceBetweenTarget <= attackRange;
+            float distanceBetweenTarget = Vector3.Distance(player.transform.position, transform.position);
+            playerInAttackRange = distanceBetweenTarget <= attackRange;
 
-        if (!playerInAttackRange)
-        {
-            if (player.GetComponent<PlayerSyncData>()._playerHP > 0)
+            if (!playerInAttackRange)
             {
-                animator.SetBool("isAim",false);
-                //currentState = "Chase";
-                enemySyncData.ChangeBehaviorState("Chase");
+                if (player.GetComponent<PlayerSyncData>()._playerHP > 0)
+                {
+                    animator.SetBool("isAim", false);
+                    //currentState = "Chase";
+                    enemySyncData.ChangeBehaviorState("Chase");
+                }
+                else
+                {
+                    enemySyncData.ChangeEnemyTarget("");
+                    //player = null;
+                    //currentState = "Idle";
+                    enemySyncData.ChangeBehaviorState("Idle");
+                }
             }
-            else 
+            else if (playerInAttackRange)
             {
-                enemySyncData.ChangeEnemyTarget("");
-                //player = null;
-                //currentState = "Idle";
-                enemySyncData.ChangeBehaviorState("Idle");
+                if (player.GetComponent<PlayerSyncData>()._playerHP <= 0)
+                {
+                    enemySyncData.ChangeEnemyTarget("");
+                    player = null;
+                    //currentState = "Idle";
+                    enemySyncData.ChangeBehaviorState("Idle");
+                }
             }
-        }
-        else if (playerInAttackRange)
-        {
-            if (player.GetComponent<PlayerSyncData>()._playerHP <= 0)
-            {
-                enemySyncData.ChangeEnemyTarget("");
-                player = null;
-                //currentState = "Idle";
-                enemySyncData.ChangeBehaviorState("Idle");
-            }
-        }
         }
     }
 
@@ -267,7 +268,7 @@ public class BossBehaviorStateManager : MonoBehaviour
     {
         //audioSource.PlayOneShot(audioSource.clip);
         RaycastHit hitInfo;
-        if(Physics.Raycast(aimingObj.transform.position, aimingObj.transform.forward, out hitInfo, attackRange))
+        if (Physics.Raycast(aimingObj.transform.position, aimingObj.transform.forward, out hitInfo, attackRange))
         {
             Debug.DrawRay(aimingObj.transform.position, aimingObj.transform.forward * attackRange, Color.green, 3);
 
@@ -282,7 +283,7 @@ public class BossBehaviorStateManager : MonoBehaviour
 
     private void PlaySound()
     {
-        audioSource.PlayOneShot(audioClip,0.5f);
+        audioSource.PlayOneShot(audioClip, 0.5f);
     }
 
     IEnumerator DeleySuperAtk()
@@ -294,7 +295,7 @@ public class BossBehaviorStateManager : MonoBehaviour
         GetComponent<EnemyGatlingGunEffect>().StartPlayEffect();
         SuperShoot();
         canRotate = true;
-    } 
+    }
 
     void SuperShoot()
     {
@@ -304,7 +305,7 @@ public class BossBehaviorStateManager : MonoBehaviour
     private void ResetAttack()
     {
         Debug.Log("Reset Attack");
-        animator.SetBool("isChase",false);
+        animator.SetBool("isChase", false);
         alreadyAttacked = false;
     }
 
@@ -318,7 +319,7 @@ public class BossBehaviorStateManager : MonoBehaviour
     {
         currentState = enemySyncData._enemyBehaviorState;
     }
-    
+
     private IEnumerator RemoveBody()
     {
         if (_realtimeView.isUnownedInHierarchy)
@@ -335,10 +336,10 @@ public class BossBehaviorStateManager : MonoBehaviour
     }
 
     void Rotate()
-    {   
-        float rotationSpeed = 360f / rotationTime; 
-        transform.Rotate(Vector3.up, 360f); 
-        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime); 
+    {
+        float rotationSpeed = 360f / rotationTime;
+        transform.Rotate(Vector3.up, 360f);
+        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
 
         superAttackTime -= Time.deltaTime;
 
