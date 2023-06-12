@@ -1,16 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Normal.Realtime;
 
 public class PlayerLookMovement : MonoBehaviour
 {
+    [SerializeField] private Transform cameraHolder;
     [SerializeField] private Transform playerBody;
 
     private float xInput;
     private float yInput;
 
-    private float mouseSensitivity = 100f;
+    [SerializeField] private float mouseSensitivity = 1200f;
     private float xRotation = 0f;
+
+    private RealtimeView _realtimeView;
+
+    private void Awake() 
+    {
+        _realtimeView = GetComponent<RealtimeView>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -21,9 +30,14 @@ public class PlayerLookMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SetRotation();
-        Rotate();
+        if (_realtimeView.isOwnedLocallyInHierarchy)
+            LocalUpdate();
+    }
 
+    void LocalUpdate()
+    {
+        SetVerticalRotation();
+        VerticalRotate();
         RotateBody();
     }
 
@@ -33,16 +47,16 @@ public class PlayerLookMovement : MonoBehaviour
         yInput = lookInput.y;
     }
 
-    public void SetRotation()
+    public void SetVerticalRotation()
     {
         xRotation -= yInput;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
     }
 
-    private void Rotate()
+    private void VerticalRotate()
     {
         // transform.localEulerAngles = Vector3.right * xRotation;
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
     }
 
     public void RotateBody()

@@ -3,7 +3,29 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - CheckPoint
+  - PNameTag
+  - ARMagazine
+  - ARGun
+  - BossGuard
+  - VRCamera
+  - Realtime
+  - Boss
+  - Enemy
+  - Door
+  - Door1Pos
+  - Door2Pos
+  - Canvas
+  - BossGuardPos
+  - NEPos
+  - STEPos
+  - SHEPos
+  - NERPos
+  - STEKPos
+  - NEKPos
+  - SHEKPos
+  - PlayerBody
   layers:
   - Default
   - TransparentFX
@@ -12,12 +34,12 @@ TagManager:
   - Water
   - UI
   - Weapon
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - Grab
+  - Body
+  - Second Hand Grab
+  - Wall
+  - Interactable
   - 
   - 
   - 

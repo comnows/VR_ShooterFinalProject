@@ -6,10 +6,10 @@ using UnityEngine.InputSystem;
 public class GunInput : MonoBehaviour
 {
     GunInputActions gunInputActions;
-    Gun gun;
 
-    InputAction shootAction;
-    InputAction aimingAction;
+    public InputAction shootAction;
+    public InputAction aimAction;
+    public InputAction reloadAction;
 
     public bool ShootInput { get; private set; } = false;
 
@@ -17,41 +17,50 @@ public class GunInput : MonoBehaviour
     {
         gunInputActions = new GunInputActions();
 
-        InitShootAction();
+        InitGunInputAction();
+    }
+
+    private void InitGunInputAction()
+    {
+        shootAction = gunInputActions.GunControls.Shoot;
+        aimAction = gunInputActions.GunControls.Aim;
+        reloadAction = gunInputActions.GunControls.Reload;
     }
 
     private void OnEnable() 
     {
         gunInputActions.GunControls.Enable();
+
+        AddGunActionsListener();
     }
 
     private void OnDisable() 
     {
         gunInputActions.GunControls.Disable();
-    }
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+
+        RemoveGunActionsListener();
     }
 
-    // Update is called once per frame
-    void Update()
+    void AddGunActionsListener()
     {
-        
+        AddShootActionListener();
     }
 
-    void InitGunActions()
+    void RemoveGunActionsListener()
     {
-
+        RemoveShootActionListener();
     }
 
-    void InitShootAction()
+    void AddShootActionListener()
     {
-        shootAction = gunInputActions.GunControls.Shoot;
         shootAction.performed += SetShootInput;
         shootAction.canceled += SetShootInput;
+    }
+
+    void RemoveShootActionListener()
+    {
+        shootAction.performed -= SetShootInput;
+        shootAction.canceled -= SetShootInput;
     }
 
     void SetShootInput(InputAction.CallbackContext context)
@@ -67,6 +76,5 @@ public class GunInput : MonoBehaviour
             Debug.Log("Shoot released");
         }
     }
-
 
 }

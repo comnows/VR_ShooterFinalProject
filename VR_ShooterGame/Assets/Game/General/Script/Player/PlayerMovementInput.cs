@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Normal.Realtime;
 
 public class PlayerMovementInput : MonoBehaviour
 {
@@ -10,74 +11,110 @@ public class PlayerMovementInput : MonoBehaviour
     [SerializeField] PlayerLookMovement playerLookMovement;
 
     InputAction moveAction;
-    InputAction lookAction;
+    public InputAction lookAction;
     InputAction sprintAction;
+    public InputAction jumpAction;
 
-    Vector2 moveInput;
+    public Vector2 MoveInput { get; private set; }
     Vector2 lookDirection;
 
     bool isMouse;
-    bool isSprint;
+    public bool IsSprint { get; private set; }
 
     private float lookSensitivity = 100f;
+    private PlayerSyncData playerSyncData;
+    private RealtimeView _realtimeView;
 
     void Awake()
     {
+        _realtimeView = GetComponent<RealtimeView>(); 
         playerInputActions = new PlayerInputActions();
         playerMovement = GetComponent<PlayerMovement>();
+        playerSyncData = GetComponent<PlayerSyncData>();  
         // playerLookMovement = GetComponentInChildren<PlayerLookMovement>();
 
-        InitActions();
+        InitMovementActions();
+    }
+
+    private void InitMovementActions()
+    {
+        moveAction = playerInputActions.PlayerControls.Move;
+        lookAction = playerInputActions.PlayerControls.Look;
+        jumpAction = playerInputActions.PlayerControls.Jump;
+        sprintAction = playerInputActions.PlayerControls.Sprint;
     }
 
     void OnEnable()
     {
         playerInputActions.PlayerControls.Enable();
+
+        AddMovementActionsListener();
     }
 
     void OnDisable() 
     {
         playerInputActions.PlayerControls.Disable();
+
+        RemoveMovementActionsListener();
     }
 
-    void InitActions()
+    void AddMovementActionsListener()
     {
-        InitMoveAction();
-        InitLookAction();
+        AddMoveActionListener();
+        AddLookActionListener();
+        AddSprintActionListener();
     }
 
-    void InitMoveAction()
+    void AddMoveActionListener()
     {
-        moveAction = playerInputActions.PlayerControls.Move;
-        moveAction.performed += GetMoveInputAndSetMoveDirection;
-        moveAction.canceled += SetZeroMoveDirection;
+        moveAction.performed += SetMoveInput;
+        moveAction.canceled += SetMoveInput;
     }
 
-    void InitLookAction()
+    void AddLookActionListener()
     {
-        lookAction = playerInputActions.PlayerControls.Look;
         lookAction.performed += GetLookInput;
         lookAction.canceled += SetLookInput;
     }
 
-    void InitSprintAction()
+    void AddSprintActionListener()
     {
-        sprintAction = playerInputActions.PlayerControls.Sprint;
         sprintAction.performed += GetSprintInput;
+        sprintAction.canceled += GetSprintInput;
     }
 
-    void GetMoveInputAndSetMoveDirection(InputAction.CallbackContext context)
+    void RemoveMovementActionsListener()
     {
-        moveInput = context.ReadValue<Vector2>();
-
-        playerMovement.SetMoveDirection(moveInput);
+        RemoveMoveActionListener();
+        RemoveLookActionListener();
+        RemoveSprintActionListener();
     }
 
-    void SetZeroMoveDirection(InputAction.CallbackContext context)
+    void RemoveMoveActionListener()
     {
-        moveInput = Vector2.zero;
+        moveAction.performed -= SetMoveInput;
+        moveAction.canceled -= SetMoveInput;
+    }
 
-        playerMovement.SetMoveDirection(moveInput);
+    void RemoveLookActionListener()
+    {
+        lookAction.performed -= GetLookInput;
+        lookAction.canceled -= SetLookInput;
+    }
+
+    void RemoveSprintActionListener()
+    {
+        sprintAction.performed -= GetSprintInput;
+        sprintAction.canceled -= GetSprintInput;
+    }
+
+    void SetMoveInput(InputAction.CallbackContext context)
+    {
+        if (_realtimeView.isOwnedLocallyInHierarchy)
+        {
+            MoveInput = context.ReadValue<Vector2>();
+            playerSyncData.ChangedPlayerMoveInput(MoveInput);
+        }
     }
     
     void GetLookInput(InputAction.CallbackContext context)
@@ -100,6 +137,6 @@ public class PlayerMovementInput : MonoBehaviour
 
     void GetSprintInput(InputAction.CallbackContext context)
     {
-        isSprint = context.ReadValueAsButton();
+        IsSprint = context.ReadValueAsButton();
     }
 }
